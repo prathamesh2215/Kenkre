@@ -1,0 +1,6 @@
+[04-May-2017 17:50:43 Asia/Calcutta] PHP Warning:  include(include/routines.php): failed to open stream: No such file or directory in /home/planeteducate/public_html/edupanel/coaching/view_coaching_class.php on line 2
+[04-May-2017 17:50:43 Asia/Calcutta] PHP Warning:  include(): Failed opening 'include/routines.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/planeteducate/public_html/edupanel/coaching/view_coaching_class.php on line 2
+[04-May-2017 17:50:43 Asia/Calcutta] PHP Fatal error:  Call to undefined function checkuser() in /home/planeteducate/public_html/edupanel/coaching/view_coaching_class.php on line 3
+[04-May-2017 17:51:04 Asia/Calcutta] PHP Warning:  include(include/routines.php): failed to open stream: No such file or directory in /home/planeteducate/public_html/edupanel/coaching/view_coaching_class.php on line 2
+[04-May-2017 17:51:04 Asia/Calcutta] PHP Warning:  include(): Failed opening 'include/routines.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/planeteducate/public_html/edupanel/coaching/view_coaching_class.php on line 2
+[04-May-2017 17:51:04 Asia/Calcutta] PHP Fatal error:  Call to undefined function checkuser() in /home/planeteducate/public_html/edupanel/coaching/view_coaching_class.php on line 3
