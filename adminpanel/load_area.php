@@ -6,74 +6,50 @@ $obj = json_decode($json);
 $uid				= $_SESSION['panel_user']['id'];
 $utype				= $_SESSION['panel_user']['utype'];
 
-function insertArea($area_name,$area_direction,$area_pincode,$area_status,$response_array)
-{
-	global $obj;
-	global $db_con, $datetime;
-	global $uid;
-	$sql_check_area 	 = " select * from tbl_area where area_name = '".$area_name."' "; 
-	$result_check_area 	 = mysqli_query($db_con,$sql_check_area) or die(mysqli_error($db_con));
-	$num_rows_check_area = mysqli_num_rows($result_check_area);
-	
-	$sql_last_rec      = "Select * from tbl_area order by area_id desc LIMIT 0,1";
-	$result_last_rec   = mysqli_query($db_con,$sql_last_rec) or die(mysqli_error($db_con));
-	$num_rows_last_rec = mysqli_num_rows($result_last_rec);
-	
-	if($num_rows_last_rec == 0)
-	{
-		$area_id 		= 1;				
-	}
-	else
-	{
-		$row_last_rec = mysqli_fetch_array($result_last_rec);				
-		$area_id 	  = $row_last_rec['area_id']+1;
-	}
-	$sql_insert_area    = " INSERT INTO `tbl_area`(`area_id`, `area_name`, `area_direction`, `area_pincode`, `area_created`, `area_created_by`,`area_status`) ";
-	$sql_insert_area   .= "VALUES ('".$area_id."', '".$area_name."', '".$area_direction."', '".$area_pincode."', '".$datetime."', '".$uid."', '".$area_status."')";			
-	$result_insert_area = mysqli_query($db_con,$sql_insert_area) or die(mysqli_error($db_con));
-	if($result_insert_area)
-	{
-		$response_array = array("Success"=>"Success","resp"=>"Data Inserted Successfully");					
-	}
-	else
-	{
-		$response_array = array("Success"=>"fail","resp"=>"Record Not Inserted.");					
-	}			
-	return $response_array;
-}
 
 //------------------this is used for inserting records---------------------
-if((isset($obj->insert_area)) == "1" && isset($obj->insert_area))
+if((isset($_POST['insert_area'])) == "1" && isset($_POST['insert_area']))
 {
-	$area_name			= mysqli_real_escape_string($db_con,$obj->area_name);
-	$area_direction		= mysqli_real_escape_string($db_con,$obj->area_direction);
-
-	$area_pincode		= mysqli_real_escape_string($db_con,$obj->area_pincode);
-	$area_status		= $obj->area_status;
-	$response_array     = array();
-	if($area_name != "" && $area_direction != "" && $area_pincode != "" && $area_status != "")
+	$data['area_country']    = mysqli_real_escape_string($db_con,$_POST['country_code']);
+	$data['area_state']      = mysqli_real_escape_string($db_con,$_POST['state_code']);
+	$data['area_city']       = mysqli_real_escape_string($db_con,$_POST['city']);
+	$data['area_name']       = mysqli_real_escape_string($db_con,$_POST['area_name']);
+	$data['area_pincode']    = mysqli_real_escape_string($db_con,$_POST['area_pincode']);
+	$data['area_status']     = mysqli_real_escape_string($db_con,$_POST['area_status']);
+	$data['area_created_by'] = $uid;
+	if($data['area_country']!="" && $data['area_state']!="" && $data['area_city']!="" && $data['area_name']!="" && $data['area_pincode']!="")
 	{
-		if($area_direction=="not available")
-		{
-			$area_direction="";
-		}
-		$sql_check_area 	 = " select * from tbl_area where area_name like '".$area_name."' and area_direction like '".$area_direction."' and area_id != '".$area_id."' "; 
-		$result_check_area 	 = mysqli_query($db_con,$sql_check_area) or die(mysqli_error($db_con));
-		$num_rows_check_area = mysqli_num_rows($result_check_area);
-		if($num_rows_check_area == 0)
-		{
-			$response_array = insertArea($area_name,$area_direction,$area_pincode,$area_status,$response_array);
-		}
-		else
-		{
-			$response_array = array("Success"=>"fail","resp"=>"Area <b>".ucwords($area_name)."-".ucwords($area_direction)."</b> already Exist");	
-		}
+		insert('tbl_area',$data);
+		quit('Area added successfully..!',1);
 	}
 	else
 	{
-		$response_array = array("Success"=>"fail","resp"=>"Empty Data.");	
-	}	
-	echo json_encode($response_array);		
+		quit('All fields are required...!');
+	}
+}
+
+
+if((isset($_POST['update_area'])) == "1" && isset($_POST['update_area']))
+{
+	$data['area_country']      = mysqli_real_escape_string($db_con,$_POST['country_code']);
+	$data['area_state']        = mysqli_real_escape_string($db_con,$_POST['state_code']);
+	$data['area_city']         = mysqli_real_escape_string($db_con,$_POST['city']);
+	$data['area_name']         = mysqli_real_escape_string($db_con,$_POST['area_name']);
+	$data['area_pincode']      = mysqli_real_escape_string($db_con,$_POST['area_pincode']);
+	$data['area_status']       = mysqli_real_escape_string($db_con,$_POST['area_status']);
+	$data['area_modified_by']  = $uid;
+	$area_id                   = mysqli_real_escape_string($db_con,$_POST['area_id']);
+	
+	if($data['area_country']!="" && $data['area_state']!="" && $data['area_city']!="" && $data['area_name']!="" && $data['area_pincode']!="")
+	{
+		
+		update('tbl_area',$data,array('area_id'=>$area_id));
+		quit('Area Updated successfully..!',1);
+	}
+	else
+	{
+		quit('All fields are required...!');
+	}
 }
 
 //------------------this is used for update records---------------------
@@ -306,12 +282,122 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 		$data = '';
 		if($area_id != "" && $req_type == "edit")
 		{
-			$data .= '<input type="hidden" id="area_id" value="'.$row_area_data['area_id'].'">';
-		}                                                         		
+			$data .= '<input type="hidden" name="area_id" id="area_id" value="'.$row_area_data['area_id'].'">';
+			$data .= '<input type="hidden" name="update_area" id="update_area" value="1">';
+		}        
+		
+		
+		if($req_type=='add')
+		{
+				$data .= '<input type="hidden" name="insert_area" id="insert_area" value="1">';
+		}
+		
+		
+		
+		//////=============================================Start : Country======================================
+		$data .= '<div class="control-group">';
+		$data .= '<label for="tasktitel" class="control-label">Country<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<div class="controls">';
+		
+			$data .= '<select onchange="getState(this.value)" name="country_code" id="country_code" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
+			$data .= '<option value="">Select Country</option>';
+			$sql   =' SELECT * FROM tbl_country WHERE status =1';
+			$res   =  mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
+			while($row = mysqli_fetch_array($res))
+			{
+				$data .='<option value="'.$row['country_id'].'" ';
+				if($req_type !='add')
+				{
+					if($row['country_id']==$row_area_data['area_country'])
+					{
+						$data .=' selected ';
+					}
+				}
+				$data .='>'.$row['country_name'].'</option> ';
+			}
+			$data .= '</select>';
+		$data .= '</div>';
+		$data .= '</div> <!-- Country -->';
+		$data .= '<script type="text/javascript">';
+		$data .= '$("#country_code").select2();';
+		$data .= '</script>';
+		
+		//////=============================================Start : State======================================
+		$data .= '<div class="control-group">';
+		$data .= '<label for="tasktitel" class="control-label">State<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<div class="controls">';
+		$data .= '<select name="state_code" onchange="getCityList(this.value,\'city\')" id="state_code" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
+		$data .= '<option value="">Select State</option>';
+		if($req_type !='add')
+		{
+			$sql   =' SELECT * FROM tbl_state WHERE status =1';
+			if($req_type !='add')
+			{
+				$sql .=" AND country_id ='".$row_area_data['area_country']."' ";
+			}
+			$res   =  mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
+			while($row = mysqli_fetch_array($res))
+			{
+				$data .='<option value="'.$row['state'].'" ';
+				if($req_type !='add')
+				{
+					if($row['state']==$row_area_data['area_state'])
+					{
+						$data .=' selected ';
+					}
+				}
+				$data .='>'.$row['state_name'].'</option> ';
+			}
+			
+		}
+		$data .= '</select>';
+		$data .= '</div>';
+		$data .= '</div> <!-- Country -->';
+		$data .= '<script type="text/javascript">';
+		$data .= '$("#state_code").select2();';
+		$data .= '</script>';
+		
+		
+		//////=============================================Start : City======================================
+		$data .= '<div class="control-group">';
+		$data .= '<label for="tasktitel" class="control-label">City<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<div class="controls">';
+		$data .= '<select name="city"  id="city" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
+		$data .= '<option value="">Select City</option>';
+		if($req_type !='add')
+		{
+			$sql   =' SELECT * FROM tbl_city WHERE status =1';
+			if($req_type !='add')
+			{
+				$sql .=" AND state_id ='".$row_area_data['area_state']."' ";
+			}
+			$res   =  mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
+			while($row = mysqli_fetch_array($res))
+			{
+				$data .='<option value="'.$row['city_id'].'" ';
+				if($req_type !='add')
+				{
+					if($row['city_id']==$row_area_data['area_city'])
+					{
+						$data .=' selected ';
+					}
+				}
+				$data .='>'.$row['city_name'].'</option> ';
+			}
+		}
+		$data .= '</select>';
+		$data .= '</div>';
+		$data .= '</div> <!-- Country -->';
+		$data .= '<script type="text/javascript">';
+		$data .= '$("#city").select2();';
+		$data .= '</script>';
+		
+		
+		                                                 		
 		$data .= '<div class="control-group">';
 		$data .= '<label for="tasktitel" class="control-label">Area Name<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
-		$data .= '<input type="text" id="area_name" name="area_name" class="input-large keyup-char" data-rule-required="true" ';
+		$data .= '<input type="text" id="area_name" name="area_name" class="input-large keyup-char" placeholder="Area Name" data-rule-required="true" ';
 		if($area_id != "" && $req_type == "edit")
 		{
 			$data .= ' value="'.$row_area_data['area_name'].'"'; 
@@ -321,65 +407,13 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 			$data .= ' value="'.$row_area_data['area_name'].'" disabled'; 				
 		}
 		$data .= '/><br>';
-		
-		if($area_id != "" && $req_type == "view")
-		{
-			if($row_area_data['area_direction'] == 'not available')
-			{
-				$data .= '<label class="control-label">Not Avilable</label>';
-			}
-			if($row_area_data['area_direction'] == 'east')
-			{
-				$data .= '<label class="control-label">East</label>';
-			}
-			if($row_area_data['area_direction'] == 'west')
-			{
-				$data .= '<label class="control-label">West</label>';
-			}
-		}
-		else
-		{  
-          if($area_id != "" && $req_type == "edit")
-		  {
-				$data  .= '<input type="radio" name="area_direction" value="not available" class="css-radio" data-rule-required="true" ';
-				if($row_area_data['area_direction'] == 'not available')
-				{
-					$data .= 'checked ';
-				}
-				$data .= '>Not Available&nbsp;&nbsp;';
-				$data .= '<input type="radio" name="area_direction" value="east" class="css-radio" data-rule-required="true"';
-				if($row_area_data['area_direction'] == 'east')
-				{
-					$data .= 'checked ';
-				}
-				$data .= '>East&nbsp;&nbsp;';
-				$data .= '<input type="radio" name="area_direction" value="west" class="css-radio" data-rule-required="true"';
-				if($row_area_data['area_direction'] == 'west')
-				{
-					$data .= 'checked ';
-				}
-				$data .= '>West';
-			} 
-			else  
-			{
-				$data .= '<input type="radio" name="area_direction" value="not available" class="css-radio" data-rule-required="true" ';
-				$data .= '>Not Available&nbsp;&nbsp;';
-				$data .= '<input type="radio" name="area_direction" value="east" class="css-radio" data-rule-required="true"';
-				$data .= '>East&nbsp;&nbsp;';
-				$data .= '<input type="radio" name="area_direction" value="west" class="css-radio" data-rule-required="true"';
-				$data .= '>West';
-			}
-		}				
-		$data .= '<label for="radiotest" class="css-label"></label>';
-		$data .= '<label name = "radiotest" ></label>';
-		
 		$data .= '</div>';
 		$data .= '</div> <!-- Area Name -->';
 		
 		$data .= '<div class="control-group">';
 		$data .= '<label for="tasktitel" class="control-label">Pin Code<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
-		$data .= '<input type="text" id="area_pincode" name="area_pincode" maxlength="6" minlength="6" onKeyPress="return isNumberKey(event)" class="input-large keyup-char" data-rule-required="true" ';
+		$data .= '<input type="text" id="area_pincode" placeholder="Pincode" name="area_pincode" maxlength="6" minlength="6" onKeyPress="return isNumberKey(event)" class="input-large keyup-char" data-rule-required="true" ';
 		if($area_id != "" && $req_type == "edit")
 		{
 			$data .= ' value="'.$row_area_data['area_pincode'].'"'; 
@@ -421,8 +455,8 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 				{
 					$data .= 'checked ';
 				}
-				$data .= '>Active';
-				$data .= '<input type="radio" name="area_status" value="0" class="css-radio" data-rule-required="true"';
+				$data .= '> Active ';
+				$data .= ' <input type="radio" name="area_status" value="0" class="css-radio" data-rule-required="true"';
 				if(!$dis)
 				{
 				//$data .= ' disabled="disabled" ';
@@ -431,15 +465,15 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 				{
 					$data .= 'checked ';
 				}
-				$data .= '>Inactive';
+				$data .= '> Inactive';
 			} 
 			else  
 			{
-				$data .= '<input type="radio" name="area_status" value="1" class="css-radio" data-rule-required="true" ';
-				$data .= '>Active';
-				$data .= '<input type="radio" name="area_status" value="0" class="css-radio" data-rule-required="true"';
+				$data .= ' <input type="radio" name="area_status" value="1" class="css-radio" data-rule-required="true" ';
+				$data .= '> Active ';
+				$data .= ' <input type="radio" name="area_status" value="0" class="css-radio" data-rule-required="true"';
 			
-		 		$data .= '>Inactive';
+		 		$data .= '> Inactive';
 			}
 		}					
 		$data .= '<label for="radiotest" class="css-label"></label>';
@@ -450,7 +484,7 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 		$data .= '<div class="form-actions">';
 		if($area_id == "" && $req_type == "add")
 		{
-			$data .= '<button type="submit" name="reg_submit_add" class="btn-success">Create Area</button>';			
+			$data .= '<button type="submit" name="reg_submit_add" class="btn-success">Add Area</button>';			
 		}
 		elseif($area_id != "" && $req_type == "edit")
 		{
@@ -515,5 +549,32 @@ if((isset($obj->delete_area)) == "1" && isset($obj->delete_area))
 }
 
 // ==========================================================================
-
+// =====================Get City===================================================
+if((isset($obj->getState)) == "1" && isset($obj->getState))
+{
+	$response_array   = array();		
+	$state_id 	  = $obj->state_id;
+	
+	if($state_id=="")
+	{
+		quit('Please Select Country...!');
+	}
+	
+	$data ='<option value="">Select City</option>';
+	
+	$sql =" SELECT * FROM tbl_city WHERE status =1 AND state_id='".$state_id."'";
+	$res = mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
+	if(mysqli_num_rows($res)==0)
+	{
+	}
+	else
+	{
+		while($row = mysqli_fetch_array($res))
+		{
+			$data .='<option value="'.$row['city_id'].'">'.$row['city_name'].'</option>';
+		}
+		quit($data,1);
+	}
+	
+}
 ?>

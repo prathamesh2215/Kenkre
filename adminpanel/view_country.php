@@ -4,7 +4,7 @@ checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
 
 // This is for dynamic title, bread crum, etc.
-$title = "View Category";
+$title = "View Country";
 $path_parts   		= pathinfo(__FILE__);
 $filename 	  		= $path_parts['filename'].".php";
 $sql_feature 		= "select * from tbl_admin_features where af_page_url = '".$filename."'";
@@ -39,7 +39,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_view_area">                
 					<?php 
                     /* this function used to add navigation menu to the page*/ 
-                    breadcrumbs($home_url,$home_name,'View Category',$filename,$feature_name); 
+                    breadcrumbs($home_url,$home_name,'View Country',$filename,$feature_name); 
                     /* this function used to add navigation menu to the page*/ 
                     ?>          
                         <div class="row-fluid">
@@ -55,14 +55,15 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 
                                     <div class="box-content nopadding">
                                     <?php
-									$add = checkFunctionalityRight($filename,0);
-									if($add)
-									{
-									?>
-										<button type="button" class="btn-info" onClick="addMoreArea('','add')" ><i class="icon-plus"></i>&nbspAdd Category</button>
-									<?php		
-									}
-									?>                                       
+					$add = checkFunctionalityRight($filename,0);
+					$add = 1;
+					if($add)
+					{
+					?>
+                                            <button type="button" class="btn-info" onClick="addMoreArea('','add')" ><i class="icon-plus"></i>&nbspAdd Country</button>
+  					<?php		
+					}
+					?>                                       
                                     <div style="padding:10px 15px 10px 15px !important">
                                     	<input type="hidden" name="hid_page" id="hid_page" value="1">
                                     	<input type="hidden" name="ind_parent" id="ind_parent" value="Parent">
@@ -72,7 +73,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Category Name, Cat Id,Cat Fee can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Country Name, Country Code can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -92,7 +93,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_add_area" style="display:none">                
 					<?php 
 						/* this function used to add navigation menu to the page*/ 
-						breadcrumbs($home_url,$home_name,'Add Category',$filename,$feature_name); 
+						breadcrumbs($home_url,$home_name,'Add Country',$filename,$feature_name); 
 						/* this function used to add navigation menu to the page*/ 
 					?>           
                     <div class="row-fluid">
@@ -101,9 +102,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Add Category
+                                            Add Country
                                         </h3>
-                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_add_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">                                     
                                     	<form id="frm_area_add" class="form-horizontal form-bordered form-validate" >
@@ -118,7 +119,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_edit_area" style="display:none">   
                     <?php 
                         /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'Edit Category',$filename,$feature_name); 
+                        breadcrumbs($home_url,$home_name,'Edit Country',$filename,$feature_name); 
                         /* this function used to add navigation menu to the page*/ 
                     ?>                                    
                     <div class="row-fluid">
@@ -127,9 +128,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Edit Category
+                                            Edit Country
                                         </h3>
-                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_edit_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
                                         <form id="frm_area_edit" class="form-horizontal form-bordered form-validate" >
@@ -145,7 +146,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_view_area_details" style="display:none">                
                     <?php 
                         /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'View Category Details',$filename,$feature_name); 
+                        breadcrumbs($home_url,$home_name,'View Country Details',$filename,$feature_name); 
                         /* this function used to add navigation menu to the page*/ 
                     ?>        
                     <div class="row-fluid">
@@ -154,9 +155,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Category Details
+                                            Country Details
                                         </h3>
-                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_area_details','div_view_area');loadData();"  ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
                                         <form id="frm_view_area_details" class="form-horizontal form-bordered form-validate" >
@@ -189,11 +190,11 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 			else
 			{
-				delete_category 	= 1;
-				var sendInfo 	= {"batch":batch, "delete_category":1};
+				delete_area 	= 1;
+				var sendInfo 	= {"batch":batch, "delete_area":1};
 				var del_cat 	= JSON.stringify(sendInfo);								
 				$.ajax({
-					url: "load_category.php?",
+					url: "load_country.php?",
 					type: "POST",
 					data: del_cat,
 					contentType: "application/json; charset=utf-8",						
@@ -244,7 +245,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				var sendInfo = {"row_limit":row_limit, "search_text":search_text, "load_country":1, "page":page};
 				var ind_load = JSON.stringify(sendInfo);				
 				$.ajax({
-					url: "load_category.php?",
+					url: "load_country.php?",
 					type: "POST",
 					data: ind_load,
 					contentType: "application/json; charset=utf-8",						
@@ -295,7 +296,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			var sendInfo = {"area_id":area_id,"req_type":req_type,"load_area_parts":1};
 			var cat_load = JSON.stringify(sendInfo);
 			$.ajax({
-					url: "load_category.php?",
+					url: "load_country.php?",
 					type: "POST",
 					data: cat_load,
 					contentType: "application/json; charset=utf-8",						
@@ -304,9 +305,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 						data = JSON.parse(response);
 						if(data.Success == "Success") 
 						{
-							$("#div_add_area_part").html('');
-							$("#div_edit_area_part").html('');	
-							$("#div_view_area_details_part").html('');			
 							if(req_type == "add")
 							{
 								$("#div_add_area_part").html(data.resp);
@@ -342,10 +340,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				});
 		}		/*Add more area*/
 		
-		function changeStatus(cat_id,curr_status)
+		function changeStatus(area_id,curr_status)
 		{
 			loading_show();
-			if(cat_id == "" && curr_status == "")
+			if(area_id == "" && curr_status == "")
 			{
 				$("#model_body").html('<span style="style="color:#F00;">User id or Status to change not available</span>');
 				$('#error_model').modal('toggle');				
@@ -353,10 +351,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 			else
 			{
-				var sendInfo 	= {"cat_id":cat_id, "curr_status":curr_status, "change_status":1};
+				var sendInfo 	= {"area_id":area_id, "curr_status":curr_status, "change_status":1};
 				var area_status = JSON.stringify(sendInfo);								
 				$.ajax({
-					url: "load_category.php?",
+					url: "load_country.php?",
 					type: "POST",
 					data: area_status,
 					contentType: "application/json; charset=utf-8",						
@@ -446,7 +444,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			{
 				
 				$.ajax({
-						url: "load_category.php",
+						url: "load_country.php",
 						type: "POST",
 						data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
 						contentType: false,       // The content type used when sending data to the server.
@@ -459,7 +457,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							if(data.Success == "Success") 
 							{
 								alert(data.resp);
-								window.location.assign("view_category.php?pag=Masters");
+								window.location.assign("view_country.php?pag=Masters");
 								
 							} 
 							else 
@@ -489,7 +487,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			{
 				
 				$.ajax({
-						url: "load_category.php",
+						url: "load_country.php",
 						type: "POST",
 						data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
 						contentType: false,       // The content type used when sending data to the server.
@@ -502,7 +500,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							if(data.Success == "Success") 
 							{
 								alert(data.resp);
-								window.location.assign("view_category.php?pag=Masters");
+								window.location.assign("view_country.php?pag=Masters");
 								
 							} 
 							else 
@@ -537,55 +535,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				  return false //disable key press
               }
 		}
-		
-		function backToMain(close_div,show_div)
-		{
-			$('#'+close_div).css('display','none');
-			$('#'+show_div).css('display','block');
-		}
-		
-		function getState(country_id)
-		{
-			if(country_id=="")
-			{
-				alert('Please select country...!');
-				return false;
-			}
-			var sendInfo 	= {"country_id":country_id,"getState":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_category.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					if(data.Success == "Success") 
-					{							
-						$('#state_code').html(data.resp);
-					} 
-					else 
-					{
-						$('#state_code').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		}
-		
 		</script>     
 		
     </body>

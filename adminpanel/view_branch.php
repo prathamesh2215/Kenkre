@@ -1,23 +1,23 @@
 <?php
-include("include/routines.php");
-checkuser();
-chkRights(basename($_SERVER['PHP_SELF']));
+    include("include/routines.php");
+    checkuser();
+    chkRights(basename($_SERVER['PHP_SELF']));
 
-// This is for dynamic title, bread crum, etc.
-if(isset($_GET['pag']))
-{
-	$title = $_GET['pag'];
-}
-$path_parts   		= pathinfo(__FILE__);
-$filename 	  		= $path_parts['filename'].".php";
-$sql_feature 		= "select * from tbl_admin_features where af_page_url = '".$filename."'";
-$result_feature 	= mysqli_query($db_con,$sql_feature) or die(mysqli_error($db_con));
-$row_feature  		= mysqli_fetch_row($result_feature);
-$feature_name 		= $row_feature[1];
-$home_name    		= "Home";
-$home_url 	  		= "view_dashboard.php?pag=Dashboard";
-$utype				= $_SESSION['panel_user']['utype'];
-$tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
+    // This is for dynamic title, bread crum, etc.
+    if(isset($_GET['pag']))
+    {
+    	$title = $_GET['pag'];
+    }
+    $path_parts   		= pathinfo(__FILE__);
+    $filename 	  		= $path_parts['filename'].".php";
+    $sql_feature 		= "select * from tbl_admin_features where af_page_url = '".$filename."'";
+    $result_feature 	= mysqli_query($db_con,$sql_feature) or die(mysqli_error($db_con));
+    $row_feature  		= mysqli_fetch_row($result_feature);
+    $feature_name 		= $row_feature[1];
+    $home_name    		= "Home";
+    $home_url 	  		= "view_dashboard.php?pag=Dashboard";
+    $utype				= $_SESSION['panel_user']['utype'];
+    $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 ?>
 <!doctype html>
 <html>
@@ -38,244 +38,243 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 	/* this function used to add navigation menu to the page*/  
 	?> <!-- Navigation Bar --> 
     <div class="container-fluid" id="content">
-            <div id="main" style="margin-left:0px !important">
-                <div class="container-fluid" id="div_view_branch">                
-	<?php 
-	/* this function used to add navigation menu to the page*/ 
-	breadcrumbs($home_url,$home_name,'View Branch',$filename,$feature_name);  
-	/* this function used to add navigation menu to the page*/ 
-	?>          
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            <?php echo $feature_name; ?>
-                                        </h3>
-                                       
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding">
-                                    <div style="padding:10px 15px 10px 15px !important">
-                                    <?php
-										$add = checkFunctionalityRight($filename,0);
-										if($add)
-										{
-											?>
-                                            <button type="button" class="btn-info" onClick="addMoreBranch('','add')" ><i class="icon-plus"></i>&nbspAdd Branch</button>
-  											<?php		
-										}
-									?>                                         
-										<br>
-                                    	<input type="hidden" name="hid_page" id="hid_page" value="1">
-                                        <select name="rowlimit" id="rowlimit" onChange="loadData();"  class = "select2-me">
-                                            <option value="10" selected>10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search here..."  style="float:right;margin-right:10px;margin-top:10px;" >
-                                    </div>
-                                    <div class="profileGallery">
-                                        <div style="width:99%;" align="center">
-                                            <div id="loading"></div>                                            
-                                            <div id="container1" class="data_container">
-                                                <div class="data"></div>
-                                            </div>
-                                        </div>
+        <div id="main" style="margin-left:0px !important">
+            <div class="container-fluid" id="div_view_branch">                
+            	<?php 
+            	/* this function used to add navigation menu to the page*/ 
+            	breadcrumbs($home_url,$home_name,'View Branch',$filename,$feature_name);  
+            	/* this function used to add navigation menu to the page*/ 
+            	?>          
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="box box-color box-bordered">
+                            <div class="box-title">
+                                <h3>
+                                    <i class="icon-table"></i>
+                                    <?php echo $feature_name; ?>
+                                </h3>
+                               
+                            </div> <!-- header title-->
+                            <div class="box-content nopadding">
+                            <div style="padding:10px 15px 10px 15px !important">
+                            <?php
+								$add = checkFunctionalityRight($filename,0);
+								if($add)
+								{
+									?>
+                                    <button type="button" class="btn-info" onClick="addMoreBranch('','add')" ><i class="icon-plus"></i>&nbspAdd Branch</button>
+										<?php		
+								}
+							?>                                         
+								<br>
+                            	<input type="hidden" name="hid_page" id="hid_page" value="1">
+                                <select name="rowlimit" id="rowlimit" onChange="loadData();"  class = "select2-me">
+                                    <option value="10" selected>10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> entries per page
+                                <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search here..."  style="float:right;margin-right:10px;margin-top:10px;" >
+                            </div>
+                            <div class="profileGallery">
+                                <div style="width:99%;" align="center">
+                                    <div id="loading"></div>                                            
+                                    <div id="container1" class="data_container">
+                                        <div class="data"></div>
                                     </div>
                                 </div>
-                                </div>
-                                <?php
-										$add = checkFunctionalityRight($filename,0);
-										$edit = checkFunctionalityRight($filename,1);
-										if(($add) || ($edit))
-										{
-											?>                                  
-            				                    <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            Excel Bulk Upload For Branch
-                                        </h3>
-                                       
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding">
-                                        <div class="profileGallery">
-                                            <div style="width:50%;" align="center">
-                                                <div id="loading"></div>                                            
-                                                <div id="container2">
-                                                    <div class="data">
-                                                        <form method="post" class="form-horizontal form-bordered form-validate" enctype="multipart/form-data" id="frm_branch_excel">
-                                                            <div class="control-group">
-                                                                <label for="tasktitel" class="control-label">Select file </label>
-                                                                <div class="controls">
-                                                                    <input type="file" name="file" id="file" data-rule-required="true" data-rule-extension="xlsx"/>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-actions">
-                                                                <button type="submit" name="reg_submit_excel" class="btn-success">Submit</button>
-                                                            </div>
-                                                        </form>
+                            </div>
+                        </div>
+                        </div>
+                        <?php
+								$add = checkFunctionalityRight($filename,0);
+								$edit = checkFunctionalityRight($filename,1);
+								if(($add) || ($edit))
+								{
+									?>                                  
+    				                    <div class="box box-color box-bordered">
+                            <div class="box-title">
+                                <h3>
+                                    <i class="icon-table"></i>
+                                    Excel Bulk Upload For Branch
+                                </h3>
+                               
+                            </div> <!-- header title-->
+                            <div class="box-content nopadding">
+                                <div class="profileGallery">
+                                    <div style="width:50%;" align="center">
+                                        <div id="loading"></div>                                            
+                                        <div id="container2">
+                                            <div class="data">
+                                                <form method="post" class="form-horizontal form-bordered form-validate" enctype="multipart/form-data" id="frm_branch_excel">
+                                                    <div class="control-group">
+                                                        <label for="tasktitel" class="control-label">Select file </label>
+                                                        <div class="controls">
+                                                            <input type="file" name="file" id="file" data-rule-required="true" data-rule-extension="xlsx"/>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" name="reg_submit_excel" class="btn-success">Submit</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
-			                	                <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            Wrong Entries For Branch
-                                        </h3>
-                                       
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding">
-                                    	<div style="padding:10px 15px 10px 15px !important">
-                                            <input type="hidden" name="hid_page1" id="hid_page1" value="1">
-                                            <input type="hidden" name="branch_parent1" id="branch_parent1" value="Parent">
-                                            <select name="rowlimit1" id="rowlimit1" onChange="loadData1();"  class = "select2-me">
-                                                <option value="10" selected>10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select> entries per page
-                                            <input type="text" class="input-medium" id="srch1" name="srch1" placeholder="Search here..."  style="float:right;margin-right:10px;margin-top:10px;" >
-                                        </div>
-                                        <div id="req_resp1"></div>
-                                        <div class="profileGallery">
-                                            <div style="width:99%;" align="center">
-                                                <div id="loading"></div>                                            
-                                                <div id="container3" class="data_container">
-                                                    <div class="data"></div>
-                                                </div>
-                                            </div>
+                            </div>
+                        </div>
+                        
+	                	<div class="box box-color box-bordered">
+                            <div class="box-title">
+                                <h3>
+                                    <i class="icon-table"></i>
+                                    Wrong Entries For Branch
+                                </h3>
+                               
+                            </div> <!-- header title-->
+                            <div class="box-content nopadding">
+                            	<div style="padding:10px 15px 10px 15px !important">
+                                    <input type="hidden" name="hid_page1" id="hid_page1" value="1">
+                                    <input type="hidden" name="branch_parent1" id="branch_parent1" value="Parent">
+                                    <select name="rowlimit1" id="rowlimit1" onChange="loadData1();"  class = "select2-me">
+                                        <option value="10" selected>10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select> entries per page
+                                    <input type="text" class="input-medium" id="srch1" name="srch1" placeholder="Search here..."  style="float:right;margin-right:10px;margin-top:10px;" >
+                                </div>
+                                <div id="req_resp1"></div>
+                                <div class="profileGallery">
+                                    <div style="width:99%;" align="center">
+                                        <div id="loading"></div>                                            
+                                        <div id="container3" class="data_container">
+                                            <div class="data"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <?php 	}	?>
                             </div>
                         </div>
-                    </div> <!-- View Branch -->
-				<div id="div_add_branch" style="display:none;">
-                	<div class="container-fluid"> 
-                        <?php 
-                        /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'Add Branch',$filename,$feature_name); 
-                        /* this function used to add navigation menu to the page*/ 
-                        ?>          
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            Add Branch
-                                        </h3>
-                                    <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                       
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding" >
-                                    	<form id="frm_add_branch" class="form-horizontal form-bordered form-validate" >
-                                        <div id="div_add_branch_part">
-                                        </div>                                    
-                                        </form>
-                                    </div>	<!-- Main Body -->
-                                </div>
+                        <?php 	}	?>
+                    </div>
+                </div>
+            </div> <!-- View Branch -->
+			<div id="div_add_branch" style="display:none;">
+            	<div class="container-fluid"> 
+                    <?php 
+                    /* this function used to add navigation menu to the page*/ 
+                    breadcrumbs($home_url,$home_name,'Add Branch',$filename,$feature_name); 
+                    /* this function used to add navigation menu to the page*/ 
+                    ?>          
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <i class="icon-table"></i>
+                                        Add Branch
+                                    </h3>
+                                <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                       
+                                </div> <!-- header title-->
+                                <div class="box-content nopadding" >
+                                	<form id="frm_add_branch" class="form-horizontal form-bordered form-validate" >
+                                    <div id="div_add_branch_part">
+                                    </div>                                    
+                                    </form>
+                                </div>	<!-- Main Body -->
                             </div>
                         </div>
                     </div>
-                </div> <!-- Add Branch -->
-				<div id="div_edit_branch" style="display:none;">
-                	<div class="container-fluid"> 
-                        <?php 
-                        /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'Edit Branch',$filename,$feature_name); 
-                        /* this function used to add navigation menu to the page*/ 
-                        ?>          
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            Edit Branch
-                                        </h3>
-                                            <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                                                                                                          
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding" >
-                                    	<form id="frm_edit_branch" class="form-horizontal form-bordered form-validate" >
-                                        <div id="div_edit_branch_part">
-                                        </div>                                    
-                                        </form>
-                                    </div>	<!-- Main Body -->
-                                </div>
+                </div>
+            </div> <!-- Add Branch -->
+			<div id="div_edit_branch" style="display:none;">
+            	<div class="container-fluid"> 
+                    <?php 
+                    /* this function used to add navigation menu to the page*/ 
+                    breadcrumbs($home_url,$home_name,'Edit Branch',$filename,$feature_name); 
+                    /* this function used to add navigation menu to the page*/ 
+                    ?>          
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <i class="icon-table"></i>
+                                        Edit Branch
+                                    </h3>
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                                                                                                          
+                                </div> <!-- header title-->
+                                <div class="box-content nopadding" >
+                                	<form id="frm_edit_branch" class="form-horizontal form-bordered form-validate" >
+                                    <div id="div_edit_branch_part">
+                                    </div>                                    
+                                    </form>
+                                </div>	<!-- Main Body -->
                             </div>
                         </div>
                     </div>
-                </div> <!-- edit Branch -->
-				<div id="div_error_branch" style="display:none;">
-                	<div class="container-fluid"> 
-                        <?php 
-                        /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'Update Error Branch',$filename,$feature_name); 
-                        /* this function used to add navigation menu to the page*/ 
-                        ?>          
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            Update Error Branch
-                                        </h3>
-                                            <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                                                                   
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding" >
-                                    	<form id="frm_branch_error" class="form-horizontal form-bordered form-validate" >
-                                        <div id="div_error_branch_part">
-                                        </div>                                    
-                                        </form>
-                                    </div>	<!-- Main Body -->
-                                </div>
+                </div>
+            </div> <!-- edit Branch -->
+			<div id="div_error_branch" style="display:none;">
+            	<div class="container-fluid"> 
+                    <?php 
+                    /* this function used to add navigation menu to the page*/ 
+                    breadcrumbs($home_url,$home_name,'Update Error Branch',$filename,$feature_name); 
+                    /* this function used to add navigation menu to the page*/ 
+                    ?>          
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <i class="icon-table"></i>
+                                        Update Error Branch
+                                    </h3>
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                                                                   
+                                </div> <!-- header title-->
+                                <div class="box-content nopadding" >
+                                	<form id="frm_branch_error" class="form-horizontal form-bordered form-validate" >
+                                    <div id="div_error_branch_part">
+                                    </div>                                    
+                                    </form>
+                                </div>	<!-- Main Body -->
                             </div>
                         </div>
                     </div>
-                </div> <!-- error Branch -->   
-            	<div id="div_view_branch_details" style="display:none;">
-                	<div class="container-fluid"> 
-                        <?php 
-                        /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'Branch Details',$filename,$feature_name); 
-                        /* this function used to add navigation menu to the page*/ 
-                        ?>          
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            Branch Details
-                                        </h3>
-                                            <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                                                                   
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding" >
-                                    	<form id="frm_view_branch_details" class="form-horizontal form-bordered form-validate" >
-                                        <div id="div_view_branch_part">
-                                        </div>                                    
-                                        </form>
-                                    </div>	<!-- Main Body -->
-                                </div>
+                </div>
+            </div> <!-- error Branch -->   
+        	<div id="div_view_branch_details" style="display:none;">
+            	<div class="container-fluid"> 
+                    <?php 
+                    /* this function used to add navigation menu to the page*/ 
+                    breadcrumbs($home_url,$home_name,'Branch Details',$filename,$feature_name); 
+                    /* this function used to add navigation menu to the page*/ 
+                    ?>          
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <i class="icon-table"></i>
+                                        Branch Details
+                                    </h3>
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="location.reload();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                                                                   
+                                </div> <!-- header title-->
+                                <div class="box-content nopadding" >
+                                	<form id="frm_view_branch_details" class="form-horizontal form-bordered form-validate" >
+                                    <div id="div_view_branch_part">
+                                    </div>                                    
+                                    </form>
+                                </div>	<!-- Main Body -->
                             </div>
                         </div>
                     </div>
-                </div> <!-- view Branch -->                    
-            </div>
+                </div>
+            </div> <!-- view Branch -->                    
         </div>
-		<?php getloder();?>
-        <?php ?>
-        <script type="text/javascript">
+    </div>
+	<?php getloder();?>
+    <script type="text/javascript">
 		function multipleDelete()
 		{			
 			loading_show();		
@@ -918,6 +917,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		// ******************************************************************************************
 		// scripts for excel bulk upload [ for showing the error logs ] ends here 
 		// ******************************************************************************************   
-		</script>
-    </body>
+	</script>
+</body>
 </html>

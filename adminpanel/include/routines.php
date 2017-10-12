@@ -1,5 +1,6 @@
 <?php
 include("../includes/sess.php");
+
 error_reporting(1);
 ini_set('display_errors','on');
 ini_set('memory_limit','-1');
@@ -94,6 +95,7 @@ else
 	$email = "";
 	$password = "";	
 }
+
 /* function to get new id i.e last+1 while inserting records */
 function getNewId($new_id,$table_name)
 {
@@ -342,6 +344,7 @@ function chkRights($filename)
 //	echo $sql_check_auth;die;
         $result_chk_auth 	= mysqli_query($db_con,$sql_check_auth) or die(mysqli_error($db_con));
 	$num_rows_check_auth= mysqli_num_rows($result_chk_auth);
+	//echo $sql_check_auth;die;
 	if($num_rows_check_auth == 1)
 	{
 		//$row_check_auth = mysqli_fetch_array($result_chk_auth);
@@ -387,8 +390,7 @@ function checkuser()
 	global $db_con;
 	$sql_logout = "SELECT `status` from tbl_cadmin_users WHERE email = '".$_SESSION['panel_user']['email']."' and password = '".$_SESSION['panel_user']['password']."' AND `status`='1'";
 	$result_logout = mysqli_query($db_con,$sql_logout) or die(mysqli_error($db_con));
-        
-	$num_rows_logout = mysqli_num_rows($result_logout);
+        	$num_rows_logout = mysqli_num_rows($result_logout);
 	if ((!isset($_SESSION['panel_user']['email']) || strlen($_SESSION['panel_user']['email']) < 1 || !isset($_SESSION['panel_user']['password']) || strlen($_SESSION['panel_user']['password']) < 1)) 
 	{
 		echo "1";
@@ -400,6 +402,7 @@ function checkuser()
 		echo "2";
 		logoutUser();
 	}
+	  
 }
 function errorDataDelete($error_id)
 {
@@ -601,6 +604,7 @@ function headerdata($feature_name)
 		<link rel="stylesheet" href="css/themes.css">		
 	    <!-- this will include main css file -->
 	    <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/plugins/datepicker/datepicker.css">
 	    <!-- this will include main css file -->      
 		<script src="js/jquery-1.8.3.js"></script>
 	 	<!-- jQuery -->
@@ -1826,4 +1830,62 @@ function getSubCatValue($cat_id, $userType)	// Parameters : Parent ID and userTy
 // ===============================================================================================================
 // END : function for getting the sub categories for dropdown list [Dn By Prathamesh on 11 Sept 2017]
 // ===============================================================================================================
+
+
+function getList($table,$option_val,$option_name,$selected_id='',$where_arr=array(),$not_where=array())
+{
+	global $db_con;
+	if(!isset($table))
+	{
+		return 'Please provide table name';
+	}
+	$sql=" SELECT * FROM ".$table." WHERE 1=1 "; 
+	//==Check Where Condtions=====//
+	if(!empty($where_arr))
+	{
+		foreach($where_arr as $field => $value )
+		{   
+			$sql  .= " AND ".$field ."='".$value."' ";
+		}
+	}
+	if(!empty($not_where))
+	{
+		foreach($not_where as $field1 => $value1 )
+		{   
+			$sql  .= " AND ".$field1 ."!='".$value1."' ";
+		}
+	}
+	$sql  .= " ORDER BY ".$option_name." ASC  ";
+	$res   = mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
+	$num   = mysqli_num_rows($res);
+	if($num !=0)
+	{
+		$data ='';
+		while($row = mysqli_fetch_array($res))
+		{
+			$data .='<option value="'.$row[$option_val].'" ';
+			if($row[$option_val]==$selected_id)
+			{
+				$data .=' selected="selected" ';
+			}
+			$data .='>'.ucwords($row[$option_name]).'</option>';
+		}
+		return $data;
+	}
+	else
+	{
+	return '<option value="">NO item\'s found..! </option>';
+	}
+}
+
+
+function query($sql)
+{
+	global $db_con;
+	return mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
+}
+function fetch($res)
+{
+	return mysqli_fetch_array($res);
+}
 ?>

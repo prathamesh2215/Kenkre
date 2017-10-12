@@ -6,6 +6,6 @@
 </head>
 
 <body>
-	<a href="kfcpanel/index.php">Go To Admin Panel</a>
+	<a href="adminpanel/index.php">Go To Admin Panel</a>
 </body>
 </html>
