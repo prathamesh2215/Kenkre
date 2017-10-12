@@ -56,22 +56,24 @@ elseif(isset($_POST['password']))
 	}
 </style>
 </head>    
-<body class="login theme-orange" data-theme="theme-orange" style="background-color:#fff !important;">
-<div class="wrapper" style="margin-top:15%;">
+<body class="login theme-orange" data-theme="theme-orange" style="background-color:#8bc43f !important;">
+<div class="wrapper" style="margin-top:10%;">
 	<div class="login-body" style="background-color:transparent">    
-            <div align="center" style="padding:20px 0;"><a href="javascript:void(0);"><h1><strong>Kenkre Logo</strong></h1><!--<img src="images/logo.png" height="120" style="height:100px" />--></a></div>
+            <div align="center" style="padding: 0;"><a href="javascript:void(0);"><h1><strong>
+            <img  src="images/logo.png"  width="50%" /></strong></h1><!--<img src="images/logo.png" height="120" style="height:100px" />--></a></div>
 			<form method='post' action="#" class='form-validate' id="frm_login">
 				<div class="control-group">
 					<div class="pw controls">
-						<input type="text" name="userid" id="userid" placeholder="Email" class="input-block-level" data-rule-required="true" data-rule-email="true" style="border-right:inset;border-top:inset;border-color:#E7E7E7;">
+						<input type="text" name="userid" id="userid" placeholder="Email" class="input-block-level" data-rule-required="true" data-rule-email="true" style="border-color:#E7E7E7;">
 					</div>
 				</div>
 				<div class="control-group">
 					<div class="pw controls">
-						<input type="password" name="password" id="password" placeholder="Password" class='input-block-level' data-rule-required="true" style="border-right:inset;border-top:inset;border-color:#E7E7E7;">
+						<input type="password" name="password" id="password" placeholder="Password" class='input-block-level' data-rule-required="true" style="border-color:#E7E7E7;">
 					</div>
 				</div>
 				<div class="submit">
+                	<a type="submit" value="Sign me in" class='' style="">Forgot Password<a>
 					<input type="submit" value="Sign me in" class='btn btn-primary' style="border-bottom:outset;border-color:#208089">
 				</div>
 			</form>

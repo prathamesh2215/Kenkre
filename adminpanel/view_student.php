@@ -4,7 +4,7 @@ checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
 
 // This is for dynamic title, bread crum, etc.
-$title = "View Category";
+$title = "View Students";
 $path_parts   		= pathinfo(__FILE__);
 $filename 	  		= $path_parts['filename'].".php";
 $sql_feature 		= "select * from tbl_admin_features where af_page_url = '".$filename."'";
@@ -24,6 +24,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 	headerdata($feature_name);
 	/* This function used to call all header data like css files and links */	
 ?>
+<link rel="stylesheet" href="css/datepicker.css" />
 </head>
 <body  class="<?php echo $theme_name;?>" data-theme="<?php echo $theme_name;?>" >
 	<?php 
@@ -39,7 +40,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_view_area">                
 					<?php 
                     /* this function used to add navigation menu to the page*/ 
-                    breadcrumbs($home_url,$home_name,'View Category',$filename,$feature_name); 
+                    breadcrumbs($home_url,$home_name,'View Students',$filename,$feature_name); 
                     /* this function used to add navigation menu to the page*/ 
                     ?>          
                         <div class="row-fluid">
@@ -50,16 +51,74 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <i class="icon-table"></i>
                                             <?php echo $feature_name; ?>
                                         </h3>
-                                       
+                                        
+                                        
+                                         <div style="float:right;width:;"> 
+                                <select name="ft_area" id="ft_area"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
+                                        <option value="">Select Area</option>
+                                        <?php   $sql_get_area 			= " SELECT * FROM `tbl_area` WHERE `area_status` = 1 order by area_name";
+												$res_get_area 			= mysqli_query($db_con,$sql_get_area) or die(mysqli_error($db_con));
+												while($area_row =mysqli_fetch_array($res_get_area))
+												{
+										?>
+                                                <option value="<?php echo $area_row['area_id']; ?>"><?php echo ucwords($area_row['area_name']); ?></option>
+                                                
+                                           <?php } ?>
+                                                </select>
+                                        </div>
+                                         
+                                         <div style="float:right;width:;"> 
+                               	 <select name="ft_coach" id="ft_coach"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
+                                        <option value="">Select Coach</option>
+                                        <?php   $sql_get_coach     = " SELECT * FROM `tbl_cadmin_users` WHERE `status` = 1 AND utype=15 order by fullname asc";
+												$res_get_coach = mysqli_query($db_con,$sql_get_coach) or die(mysqli_error($db_con));
+												while($coach_row  = mysqli_fetch_array($res_get_coach))
+												{
+										?>
+                                                <option value="<?php echo $coach_row['id']; ?>"><?php echo ucwords($coach_row['fullname']); ?></option>
+                                                
+                                           <?php } ?>
+                                                </select>
+                                        </div>
+                                        
+                                        <div style="float:right;width:;"> 
+                               			 <select name="ft_batch" id="ft_batch"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
+                                        <option value="">Select Batch</option>
+                                        <?php   $sql_get_batch     = " SELECT * FROM `tbl_batches` WHERE `batch_status` = 1 order by batch_name asc";
+												$res_get_batch = mysqli_query($db_con,$sql_get_batch) or die(mysqli_error($db_con));
+												while($batch_row  = mysqli_fetch_array($res_get_batch))
+												{
+										?>
+                                                <option value="<?php echo $batch_row['batch_id']; ?>"><?php echo ucwords($batch_row['batch_name']); ?></option>
+                                                
+                                           <?php } ?>
+                                                </select>
+                                        </div>
+                                        
+                                        <div style="float:right;width:;"> 
+                                        <select name="ft_competition" id="ft_competition"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
+                                                <option value="">Select Competition</option>
+                                                <?php   $sql_get_status = " SELECT * FROM `tbl_competition` WHERE `competition_status` = 1 order by competition_name asc";
+                                                        $result_get_status 			= mysqli_query($db_con,$sql_get_status) or die(mysqli_error($db_con));
+                                                        while($status_row =mysqli_fetch_array($result_get_status))
+                                                        {
+                                                ?>
+                                                        <option value="<?php echo $status_row['competition_id']; ?>"><?php echo ucwords($status_row['competition_name']); ?></option>
+                                                        
+                                                   <?php } ?>
+                                          </select>
+                                        </div>
+                                        
                                     </div> <!-- header title-->
 
                                     <div class="box-content nopadding">
                                     <?php
 									$add = checkFunctionalityRight($filename,0);
+									$add = 1;
 									if($add)
 									{
 									?>
-										<button type="button" class="btn-info" onClick="addMoreArea('','add')" ><i class="icon-plus"></i>&nbspAdd Category</button>
+															<button type="button" class="btn-info" onClick="addMoreArea('','add')" ><i class="icon-plus"></i>&nbspAdd Student</button>
 									<?php		
 									}
 									?>                                       
@@ -72,7 +131,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Category Name, Cat Id,Cat Fee can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Student Name, Email, Mobile Number can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -92,7 +151,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_add_area" style="display:none">                
 					<?php 
 						/* this function used to add navigation menu to the page*/ 
-						breadcrumbs($home_url,$home_name,'Add Category',$filename,$feature_name); 
+						breadcrumbs($home_url,$home_name,'Add Student',$filename,$feature_name); 
 						/* this function used to add navigation menu to the page*/ 
 					?>           
                     <div class="row-fluid">
@@ -101,12 +160,12 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Add Category
+                                            Add Student
                                         </h3>
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_add_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">                                     
-                                    	<form id="frm_area_add" class="form-horizontal form-bordered form-validate" >
+                                    	<form id="frm_area_add" class="form-horizontal form-bordered form-validate" enctype="multipart/form-data" >
                                         	<div id="div_add_area_part">
                                         	</div>                                    
                                         </form>
@@ -118,7 +177,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_edit_area" style="display:none">   
                     <?php 
                         /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'Edit Category',$filename,$feature_name); 
+                        breadcrumbs($home_url,$home_name,'Edit Student',$filename,$feature_name); 
                         /* this function used to add navigation menu to the page*/ 
                     ?>                                    
                     <div class="row-fluid">
@@ -127,7 +186,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Edit Category
+                                            Edit Student
                                         </h3>
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_edit_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
@@ -145,7 +204,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_view_area_details" style="display:none">                
                     <?php 
                         /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'View Category Details',$filename,$feature_name); 
+                        breadcrumbs($home_url,$home_name,'View Student Details',$filename,$feature_name); 
                         /* this function used to add navigation menu to the page*/ 
                     ?>        
                     <div class="row-fluid">
@@ -154,9 +213,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Category Details
+                                            Student Details
                                         </h3>
-                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_area_details','div_view_area');loadData();"  ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_area_details','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
                                         <form id="frm_view_area_details" class="form-horizontal form-bordered form-validate" >
@@ -189,11 +248,11 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 			else
 			{
-				delete_category 	= 1;
-				var sendInfo 	= {"batch":batch, "delete_category":1};
+				
+				var sendInfo 	= {"batch":batch, "delete_student":1};
 				var del_cat 	= JSON.stringify(sendInfo);								
 				$.ajax({
-					url: "load_category.php?",
+					url: "load_student.php?",
 					type: "POST",
 					data: del_cat,
 					contentType: "application/json; charset=utf-8",						
@@ -232,7 +291,13 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			loading_show();
 			row_limit   = $.trim($('select[name="rowlimit"]').val());
 			search_text = $.trim($('#srch').val());
-			page        = $.trim($("#hid_page").val());								
+			page        = $.trim($("#hid_page").val());	
+			
+			coach_id         = $("#ft_coach").val();	
+			batch_id	     = $("#ft_batch").val();
+			competition_id	 = $("#ft_competition").val();	
+			area_id	         = $("#ft_area").val();			
+								
 			if(row_limit == "" && page == "")
 			{
 				$("#model_body").html('<span style="style="color:#F00;">Can not Get Row Limit and Page number</span>');	
@@ -241,10 +306,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 			else
 			{
-				var sendInfo = {"row_limit":row_limit, "search_text":search_text, "load_country":1, "page":page};
+				var sendInfo = {"coach_id":coach_id,"batch_id":batch_id,"competition_id":competition_id,"area_id":area_id,"row_limit":row_limit, "search_text":search_text, "load_student":1, "page":page};
 				var ind_load = JSON.stringify(sendInfo);				
 				$.ajax({
-					url: "load_category.php?",
+					url: "load_student.php?",
 					type: "POST",
 					data: ind_load,
 					contentType: "application/json; charset=utf-8",						
@@ -277,7 +342,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 		}   /*Load Data*/
 		
-		function addMoreArea(area_id,req_type)
+		function addMoreArea(student_id,req_type)
 		{
 			$('#div_view_area').css("display", "none");
 			if(req_type == "add")
@@ -292,10 +357,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			{
 				$('#div_view_area_details').css("display", "block");				
 			}							
-			var sendInfo = {"area_id":area_id,"req_type":req_type,"load_area_parts":1};
+			var sendInfo = {"student_id":student_id,"req_type":req_type,"load_student_parts":1};
 			var cat_load = JSON.stringify(sendInfo);
 			$.ajax({
-					url: "load_category.php?",
+					url: "load_student.php?",
 					type: "POST",
 					data: cat_load,
 					contentType: "application/json; charset=utf-8",						
@@ -304,9 +369,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 						data = JSON.parse(response);
 						if(data.Success == "Success") 
 						{
-							$("#div_add_area_part").html('');
-							$("#div_edit_area_part").html('');	
-							$("#div_view_area_details_part").html('');			
+							$("#div_add_area_part").html(' ');
+							$("#div_edit_area_part").html(' ');	
+							$("#div_view_area_details_part").html(' ');
+										
 							if(req_type == "add")
 							{
 								$("#div_add_area_part").html(data.resp);
@@ -342,10 +408,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				});
 		}		/*Add more area*/
 		
-		function changeStatus(cat_id,curr_status)
+		function changeStatus(id,curr_status)
 		{
 			loading_show();
-			if(cat_id == "" && curr_status == "")
+			if(id == "" && curr_status == "")
 			{
 				$("#model_body").html('<span style="style="color:#F00;">User id or Status to change not available</span>');
 				$('#error_model').modal('toggle');				
@@ -353,10 +419,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 			else
 			{
-				var sendInfo 	= {"cat_id":cat_id, "curr_status":curr_status, "change_status":1};
+				var sendInfo 	= {"id":id, "curr_status":curr_status, "change_status":1};
 				var area_status = JSON.stringify(sendInfo);								
 				$.ajax({
-					url: "load_category.php?",
+					url: "load_student.php?",
 					type: "POST",
 					data: area_status,
 					contentType: "application/json; charset=utf-8",						
@@ -414,7 +480,19 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
        			   	loadData1();	
 				}
 			});	
+			<?php
+			if(isset($_REQUEST['student_id']) && $_REQUEST['student_id']!='')
+			{?>
+			    addMoreArea(<?php echo $_REQUEST['student_id']; ?>,'view')
+			<?php 
+			}
+			else
+			{
+			?>
 			loadData();
+			<?php 
+			} 
+			?>
 			<?php
 			$add = checkFunctionalityRight($filename,0);
 			$edit = checkFunctionalityRight($filename,1);
@@ -444,9 +522,8 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			e.preventDefault();
 			if ($('#frm_area_add').valid())
 			{
-				
 				$.ajax({
-						url: "load_category.php",
+						url: "load_student.php",
 						type: "POST",
 						data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
 						contentType: false,       // The content type used when sending data to the server.
@@ -459,8 +536,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							if(data.Success == "Success") 
 							{
 								alert(data.resp);
-								window.location.assign("view_category.php?pag=Masters");
-								
+								location.reload();
 							} 
 							else 
 							{
@@ -489,7 +565,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			{
 				
 				$.ajax({
-						url: "load_category.php",
+						url: "load_student.php",
 						type: "POST",
 						data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
 						contentType: false,       // The content type used when sending data to the server.
@@ -502,7 +578,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							if(data.Success == "Success") 
 							{
 								alert(data.resp);
-								window.location.assign("view_category.php?pag=Masters");
+								location.reload();
 								
 							} 
 							else 
@@ -527,7 +603,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		}); /* Edit Area*/
 				
 				
-		 function charsonly(e)
+		function charsonly(e)
 		 {
   			  var unicode=e.charCode? e.charCode : e.keyCode
 			 
@@ -554,7 +630,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			var sendInfo 	= {"country_id":country_id,"getState":1};
 			var area_status = JSON.stringify(sendInfo);								
 			$.ajax({
-				url: "load_category.php?",
+				url: "load_city.php?",
 				type: "POST",
 				data: area_status,
 				contentType: "application/json; charset=utf-8",						
@@ -586,7 +662,221 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			});		
 		}
 		
+		function getCityList(state_id,city_select_id)
+		{
+			if(state_id=="")
+			{
+				alert('Please select State...!');
+				return false;
+			}
+			var sendInfo 	= {"state_id":state_id,"getCity":1};
+			var area_status = JSON.stringify(sendInfo);								
+			$.ajax({
+				url: "load_student.php?",
+				type: "POST",
+				data: area_status,
+				contentType: "application/json; charset=utf-8",						
+				success: function(response) 
+				{			
+					data = JSON.parse(response);
+					$('#city').prop('disabled',false);
+					if(data.Success == "Success") 
+					{						
+						$('#city').html(data.resp);
+					} 
+					else 
+					{
+						$('#state_code').select2();
+						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+						$('#error_model').modal('toggle');
+						loading_hide();					
+					}
+				},
+				error: function (request, status, error) 
+				{
+					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+					$('#error_model').modal('toggle');
+					loading_hide();
+				},
+				complete: function()
+				{
+					loading_hide();	
+				}
+			});		
+		}
+		
+		 function charsonly(e)
+		 {
+  			  var unicode=e.charCode? e.charCode : e.keyCode
+			 
+			  if (unicode !=8 && unicode !=32)
+			  {  // unicode<48||unicode>57 &&
+				  if (unicode<65||unicode>90 && unicode<97||unicode>122  )  //if not a number
+				  return false //disable key press
+              }
+		}
+		
+		
+		function numsonly(e)
+		 {
+  			  var unicode=e.charCode? e.charCode : e.keyCode
+			 
+			  if (unicode !=8 && unicode !=32)
+			  {  // unicode<48||unicode>57 &&
+				  if (unicode<48||unicode>57)  //if not a number
+				  return false //disable key press
+              }
+		}
+		
+		function getState(country_id)
+		{
+			if(country_id=="")
+			{
+				alert('Please select country...!');
+				return false;
+			}
+			var sendInfo 	= {"country_id":country_id,"getState":1};
+			var area_status = JSON.stringify(sendInfo);								
+			$.ajax({
+				url: "load_city.php?",
+				type: "POST",
+				data: area_status,
+				contentType: "application/json; charset=utf-8",						
+				success: function(response) 
+				{			
+					data = JSON.parse(response);
+					if(data.Success == "Success") 
+					{							
+						$('#state_code').html(data.resp);
+					} 
+					else 
+					{
+						$('#state_code').select2();
+						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+						$('#error_model').modal('toggle');
+						loading_hide();					
+					}
+				},
+				error: function (request, status, error) 
+				{
+					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+					$('#error_model').modal('toggle');
+					loading_hide();
+				},
+				complete: function()
+				{
+					loading_hide();	
+				}
+			});		
+		}
+		
+		function getArea(city_id)
+		{
+			if(city_id=="")
+			{
+				alert('Please select country...!');
+				return false;
+			}
+			var sendInfo 	= {"city_id":city_id,"getArea":1};
+			var area_status = JSON.stringify(sendInfo);								
+			$.ajax({
+				url: "load_student.php?",
+				type: "POST",
+				data: area_status,
+				contentType: "application/json; charset=utf-8",						
+				success: function(response) 
+				{			
+					data = JSON.parse(response);
+					if(data.Success == "Success") 
+					{							
+						$('#area').html(data.resp);
+					} 
+					else 
+					{
+						$('#area').select2();
+						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+						$('#error_model').modal('toggle');
+						loading_hide();					
+					}
+				},
+				error: function (request, status, error) 
+				{
+					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+					$('#error_model').modal('toggle');
+					loading_hide();
+				},
+				complete: function()
+				{
+					loading_hide();	
+				}
+			});		
+		
+		}
+		
+		
+		 $( ".datepicker" ).datepicker({
+		changeMonth	: true,
+		changeYear	: true,
+		dateFormat	: 'mm-dd-yy',
+		yearRange 	: 'c:c',//replaced "c+0" with c (for showing years till current year)
+		maxDate		: new Date(),
+			
+	   });
+	   
+	   //===========================Start Check parent child========================//
+	   
+	   function checkbatch(competition_id)
+		{
+			if($("#comp"+competition_id).attr("checked")) 
+			{
+				$(".batch"+competition_id).prop("checked",true);
+			} 
+			else 
+			{
+				$(".batch"+competition_id).prop("checked",false);
+			}
+		}
+		
+		function checkcompetition(competition_id,batch_id)
+		{
+			batch =[];
+			$(".batch"+competition_id+":checked").each(function ()
+			{
+				batch.push(parseInt($(this).val()));
+			});
+			
+			if($("#cbatch"+batch_id).attr("checked")) 
+			{
+				$("#comp"+competition_id).prop("checked",true);
+			} 
+			else 
+			{
+				if(batch.length < 1)
+				{
+					$("#comp"+competition_id).prop("checked",false);
+				}
+				
+			}
+		}
+		
+		//===========================End Check parent child========================//
+	   function readURL(input)
+	    {
+
+			if (input.files && input.files[0])
+			 {
+				var reader = new FileReader();
+				reader.onload = function (e) 
+				{
+					$('#blah').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+      }
+
+	
 		</script>     
+		<script src="js/bootstrap-datepicker.js"></script>   
 		
     </body>
 </html>

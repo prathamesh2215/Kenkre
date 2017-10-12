@@ -2596,7 +2596,7 @@ background:#f6f6f6
 	border:1px dotted #666;
 	margin:10px
 }
-#ui-datepicker-div {
+/*#ui-datepicker-div {
 	-webkit-border-radius:0;
 	-moz-border-radius:0;
 	border-radius:0;
@@ -2746,7 +2746,7 @@ background:#f6f6f6
 	border:0;
 	background:0 0;
 	text-align:center
-}
+}*/
 .userlist>li {
 	border-top:1px dotted #bbb;
 	padding:5px 0
