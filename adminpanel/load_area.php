@@ -169,19 +169,19 @@ if((isset($obj->load_area)) == "1" && isset($obj->load_area))
 			$area_data .= '<th style="text-align:center">Modified Date</th>';
 			$area_data .= '<th style="text-align:center">Modified By</th>';
 			$dis = checkFunctionalityRight("view_area.php",3);
-			$dis = 1;
+			
 			if($dis)
 			{			
 				$area_data .= '<th style="text-align:center">Status</th>';						
 			}
 			$edit = checkFunctionalityRight("view_area.php",1);
-			$edit = 1;
+			
 			if($edit)
 			{			
 				$area_data .= '<th style="text-align:center">Edit</th>';			
 			}
 			$delete = checkFunctionalityRight("view_area.php",2);
-			$delete = 1;
+			
 			if($delete)
 			{			
 				$area_data .= '<th style="text-align:center"><div style="text-align:center">';
@@ -211,7 +211,7 @@ if((isset($obj->load_area)) == "1" && isset($obj->load_area))
 				$area_data .= '<td style="text-align:center">'.$row_load_data['area_modified'].'</td>';
 				$area_data .= '<td style="text-align:center">'.$row_load_data['name_midified_by'].'</td>';
 				$dis = checkFunctionalityRight("view_area.php",3);
-				$dis = 1;
+				
 				if($dis)
 				{					
 					$area_data .= '<td style="text-align:center">';					
@@ -226,14 +226,14 @@ if((isset($obj->load_area)) == "1" && isset($obj->load_area))
 					$area_data .= '</td>';
 				}
 				$edit = checkFunctionalityRight("view_area.php",1);
-				$edit = 1;
+				
 				if($edit)
 				{				
 					$area_data .= '<td style="text-align:center">';
 					$area_data .= '<input type="button" value="Edit" id="'.$row_load_data['area_id'].'" class="btn-warning" onclick="addMoreArea(this.id,\'edit\');"></td>';												
 				}
 				$delete = checkFunctionalityRight("view_area.php",2);
-				$delete = 1;
+				
 				if($delete)
 				{					
 					$area_data .= '<td><div class="controls" align="center">';

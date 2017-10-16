@@ -56,7 +56,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-content nopadding">
                                     <?php
 					$add = checkFunctionalityRight($filename,0);
-					$add = 1;
+				
 					if($add)
 					{
 					?>

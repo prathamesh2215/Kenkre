@@ -42,7 +42,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_view_area">                
 					<?php 
                     /* this function used to add navigation menu to the page*/ 
-                    breadcrumbs($home_url,$home_name,'View Batch',$filename,$feature_name); 
+                    breadcrumbs($home_url,$home_name,'View Batches',$filename,$feature_name); 
                     /* this function used to add navigation menu to the page*/ 
                     ?>          
                         <div class="row-fluid">
@@ -75,7 +75,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Batch Name, Date, Limit can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search by Batch Name, Date,Student Limit"  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -170,7 +170,61 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                 </div>    
                             </div>
                         </div>
-                    </div> <!-- View Details Area -->                      
+                    </div> <!-- View Details Area -->   
+                    
+                <div class="container-fluid" id="div_view_coach" style="display:none">                
+                    <?php 
+                        /* this function used to add navigation menu to the page*/ 
+                        breadcrumbs($home_url,$home_name,'View Team Details',$filename,$feature_name); 
+                        /* this function used to add navigation menu to the page*/ 
+                    ?>        
+                    <div class="row-fluid">
+                            <div class="span12">
+                                <div class="box box-color box-bordered">
+                                    <div class="box-title">
+                                        <h3>
+                                            <i class="icon-table"></i>
+                                            Batch Coach <span id="batch_name" style="text-align:center;color:#333"></span>
+                                        </h3>
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_coach','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
+                                    </div> <!-- header title-->
+                                    <div class="box-content nopadding">
+                                        <form id="frm_add_coach" class="form-horizontal form-bordered form-validate" >
+                                            <div id="div_view_coach_part">
+                                            </div>                                    
+                                        </form>  
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div> <!-- View Coach -->    
+                   
+                <div class="container-fluid" id="div_view_student" style="display:none">                
+                    <?php 
+                        /* this function used to add navigation menu to the page*/ 
+                        breadcrumbs($home_url,$home_name,'View Student Details',$filename,$feature_name); 
+                        /* this function used to add navigation menu to the page*/ 
+                    ?>        
+                    <div class="row-fluid">
+                            <div class="span12">
+                                <div class="box box-color box-bordered">
+                                    <div class="box-title">
+                                        <h3>
+                                            <i class="icon-table"></i>
+                                            Batch Students <span id="batch_name1" style="text-align:center;color:#333"></span>
+                                        </h3>
+                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_student','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
+                                    </div> <!-- header title-->
+                                    <div class="box-content nopadding">
+                                        <form id="frm_add_student" class="form-horizontal form-bordered form-validate" >
+                                            <div id="div_view_student_part">
+                                            </div>                                    
+                                        </form>  
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div> <!-- View Student -->                       
                 </div>
             </div>
         </div>
@@ -230,6 +284,114 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 		}    /*Delete Area*/
 		
+		
+		function multipleCoachDelete(batch_id)
+		{			
+			loading_show();		
+			var coach_batch = [];
+			$(".coach_batch:checked").each(function ()
+			{
+				coach_batch.push(parseInt($(this).val()));
+			});
+			if (typeof coach_batch.length == 0)
+			{
+				$("#model_body").html('<span style="style="color:#F00;">Please select checkbox to delete Area</span>');
+				$('#error_model').modal('toggle');
+				loading_hide();						
+			}
+			else
+			{
+				var sendInfo 	= {"coach_batch":coach_batch, "remove_coach":1};
+				var del_cat 	= JSON.stringify(sendInfo);								
+				$.ajax({
+					url: "load_batch.php?",
+					type: "POST",
+					data: del_cat,
+					contentType: "application/json; charset=utf-8",						
+					success: function(response) 
+					{	
+						data = JSON.parse(response);
+						if(data.Success == "Success") 
+						{						
+							viewCoach(batch_id);							
+						} 
+						else
+						{
+							$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+							$('#error_model').modal('toggle');
+							loading_hide();											
+						}
+					},
+					error: function (request, status, error) 
+					{
+						$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+						$('#error_model').modal('toggle');
+						loading_hide();
+					},
+					complete: function()
+					{
+						loading_hide();
+						//alert("complete");
+                	}
+			    });					
+			}
+		} 
+		
+		
+		function multipleStudentDelete(batch_id)
+		{			
+			loading_show();		
+			var student_batch = [];
+			$(".student_batch:checked").each(function ()
+			{
+				student_batch.push(parseInt($(this).val()));
+			});
+			if (typeof student_batch.length == 0)
+			{
+				$("#model_body").html('<span style="style="color:#F00;">Please select checkbox to delete Area</span>');
+				$('#error_model').modal('toggle');
+				loading_hide();						
+			}
+			else
+			{
+				var sendInfo 	= {"student_batch":student_batch, "remove_student":1};
+				var del_cat 	= JSON.stringify(sendInfo);								
+				$.ajax({
+					url: "load_batch.php?",
+					type: "POST",
+					data: del_cat,
+					contentType: "application/json; charset=utf-8",						
+					success: function(response) 
+					{	
+						data = JSON.parse(response);
+						if(data.Success == "Success") 
+						{						
+							viewStudent(batch_id);							
+						} 
+						else
+						{
+							$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+							$('#error_model').modal('toggle');
+							loading_hide();											
+						}
+					},
+					error: function (request, status, error) 
+					{
+						$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+						$('#error_model').modal('toggle');
+						loading_hide();
+					},
+					complete: function()
+					{
+						loading_hide();
+						//alert("complete");
+                	}
+			    });					
+			}
+		} 
+		//======================================================================================//
+		//=======================End : Delete Dn By Satish======================================//
+		//======================================================================================//
 		function loadData()
 		{
 			loading_show();
@@ -561,7 +723,95 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 		}); /* Edit Area*/
 				
-				
+		$('#frm_add_coach').on('submit', function(e) {
+			e.preventDefault();
+			if ($('#frm_add_coach').valid())
+			{
+				loading_show();
+				$.ajax({
+						url: "load_batch.php",
+						type: "POST",
+						data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+						contentType: false,       // The content type used when sending data to the server.
+						cache: false,             // To unable request pages to be cached
+						processData:false,        // To send DOMDocument or non processed data file it is set to false
+						async:true,
+						success: function(response)
+						{
+							data = JSON.parse(response);
+							if(data.Success == "Success") 
+							{
+							
+								viewCoach(data.resp);
+								loading_hide();
+							} 
+							else 
+							{
+								$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+								$('#error_model').modal('toggle');
+								loading_hide();					
+							}
+						},
+						error: function (request, status, error) 
+						{
+							$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+							$('#error_model').modal('toggle');
+							loading_hide();
+						},
+						complete: function()
+						{
+							loading_hide();
+                		}
+				    });		
+			}
+		});	/* Add Area*/	
+		
+		$('#frm_add_student').on('submit', function(e) {
+			e.preventDefault();
+			if ($('#frm_add_student').valid())
+			{
+				loading_show();
+				$.ajax({
+						url: "load_batch.php",
+						type: "POST",
+						data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+						contentType: false,       // The content type used when sending data to the server.
+						cache: false,             // To unable request pages to be cached
+						processData:false,        // To send DOMDocument or non processed data file it is set to false
+						async:true,
+						success: function(response)
+						{
+							data = JSON.parse(response);
+							if(data.Success == "Success") 
+							{
+							
+								viewStudent(data.resp);
+								loading_hide();
+							} 
+							else 
+							{
+								$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+								$('#error_model').modal('toggle');
+								loading_hide();					
+							}
+						},
+						error: function (request, status, error) 
+						{
+							$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+							$('#error_model').modal('toggle');
+							loading_hide();
+						},
+						complete: function()
+						{
+							loading_hide();
+                		}
+				    });		
+			}
+		});	/* Add Area*/	
+		
+		//======================================================================================//
+		//=======================Start : Form Dn By Satish====================================//
+		//======================================================================================//		
 		function charsonly(e)
 		 {
   			  var unicode=e.charCode? e.charCode : e.keyCode
@@ -807,6 +1057,92 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		maxDate		: new Date(),
 			
 	   });
+	   
+	   
+	    
+	   function viewCoach(batch_id)
+	   {
+		    var sendInfo 	= {"batch_id":batch_id,"getCoach":1};
+			var area_status = JSON.stringify(sendInfo);								
+			$.ajax({
+				url: "load_batch.php?",
+				type: "POST",
+				data: area_status,
+				contentType: "application/json; charset=utf-8",						
+				success: function(response) 
+				{			
+					data = JSON.parse(response);
+					if(data.Success == "Success") 
+					{	 
+						$('#div_view_area').css('display','none');	
+						$('#div_view_coach').css('display','block');			
+						$('#div_view_coach_part').html(data.resp[0]);
+						$('#batch_name').html(data.resp[1]);
+					} 
+					else 
+					{
+						$('#state_code').select2();
+						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+						$('#error_model').modal('toggle');
+						loading_hide();					
+					}
+				},
+				error: function (request, status, error) 
+				{
+					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+					$('#error_model').modal('toggle');
+					loading_hide();
+				},
+				complete: function()
+				{
+					loading_hide();	
+				}
+			});		
+		
+	   }
+
+
+        function viewStudent(batch_id)
+	   {
+		   
+			var sendInfo 	= {"batch_id":batch_id,"getStudent":1};
+			var area_status = JSON.stringify(sendInfo);								
+			$.ajax({
+				url: "load_batch.php?",
+				type: "POST",
+				data: area_status,
+				contentType: "application/json; charset=utf-8",						
+				success: function(response) 
+				{			
+					data = JSON.parse(response);
+					if(data.Success == "Success") 
+					{	 
+						$('#div_view_area').css('display','none');	
+						$('#div_view_student').css('display','block');			
+						$('#div_view_student_part').html(data.resp[0]);
+						$('#batch_name1').html(data.resp[1]);
+					} 
+					else 
+					{
+						$('#state_code').select2();
+						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+						$('#error_model').modal('toggle');
+						loading_hide();					
+					}
+				},
+				error: function (request, status, error) 
+				{
+					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+					$('#error_model').modal('toggle');
+					loading_hide();
+				},
+				complete: function()
+				{
+					loading_hide();	
+				}
+			});		
+		
+	   }
 		</script>     
 		<script src="js/bootstrap-datepicker.js"></script> 
 		<script src="js/bootstrap-timepicker.min.js"></script> 

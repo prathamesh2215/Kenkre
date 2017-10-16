@@ -19,6 +19,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 <!doctype html>
 <html>
 <head>	
+
 <?php 
 	/* This function used to call all header data like css files and links */
 	headerdata($feature_name);
@@ -57,7 +58,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-content nopadding">
                                     <?php
 									$add = checkFunctionalityRight($filename,0);
-									$add = 1;
+									
 									if($add)
 									{
 									?>
@@ -74,7 +75,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Coach Name, Email, Mobile Number can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search by Coach Name, Email, Mobile"  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -479,8 +480,12 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							if(data.Success == "Success") 
 							{
 								alert(data.resp);
-								window.location.assign("view_coach.php?pag=Coach");
 								
+								$('#div_view_area').css("display", "block");
+								$('#div_add_area').css("display", "none");				
+								$('#div_edit_area').css("display", "none");				
+								$('#div_view_area_details').css("display", "none");		
+								loadData();		
 							} 
 							else 
 							{
@@ -522,8 +527,13 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							if(data.Success == "Success") 
 							{
 								alert(data.resp);
-								window.location.assign("view_coach.php?pag=Coach");
 								
+								$('#div_view_area').css("display", "block");
+								$('#div_add_area').css("display", "none");				
+								$('#div_edit_area').css("display", "none");				
+								$('#div_view_area_details').css("display", "none");	
+									
+								loadData();
 							} 
 							else 
 							{
@@ -791,7 +801,24 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 		}
 		
-		</script>     
 		
+		
+		//==================== Start : For Image Preview======================//
+		
+		 function readURL(input)
+	     {
+			if (input.files && input.files[0])
+			 {
+				var reader = new FileReader();
+				reader.onload = function (e) 
+				{
+					$('#coach_img_p').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+        }
+
+		</script>     
+			<script src="js/bootstrap-datepicker.js"></script>   
     </body>
 </html>

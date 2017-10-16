@@ -627,13 +627,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		}		/*Add more area*/
 		
 		
-		
-		
-		
-		
-		
-		
-		
 		function isNumberKey(evt)
 		{
 			var charCode = (evt.which) ? evt.which : event.keyCode

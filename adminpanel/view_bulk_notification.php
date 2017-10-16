@@ -78,49 +78,30 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                                 <div class="control-group">
                                                     <label for="textarea" class="control-label">Whom</label>
                                                     <div class="controls">
-                                                        <select name="competition_id" id="ft_competition"  class="select2-me input-medium" data-rule-required="true" onChange="getBatch(this.value);loadData();">
-                                                            <option value="">Select Competition</option>
-                                                            <?php   $sql_get_status = " SELECT * FROM `tbl_competition` WHERE `competition_status` = 1 ";
-																	if($utype!=1)
-																	{
-																		$sql_get_status .= "AND created_by='".$uid."'";
-																	}
-															        $sql_get_status .= " order by competition_name asc";
-                                                                    $result_get_status 			= mysqli_query($db_con,$sql_get_status) or die(mysqli_error($db_con));
-                                                                    while($status_row =mysqli_fetch_array($result_get_status))
-                                                                    {
-                                                            ?>
-                                                                    <option value="<?php echo $status_row['competition_id']; ?>"><?php echo ucwords($status_row['competition_name']); ?></option>
-                                                                    
-                                           <?php } ?>
+                                                        <select name="type" id="type"  class="select2-me input-medium" data-rule-required="true" onChange="getType(this.value)">
+                                                            <option value="all">All</option>
+                                                            <option value="competition">Competitions</option>
+                                                            <option value="team">Teams</option>
+                                                            <option value="batch">Trainig Batches</option>
+                                                           
                                                 </select>
                                                 
-                                                 <select name="batch_id" id="ft_batch"  class="select2-me input-medium"  onChange="loadData();">
-                                                    <option value="">Select Batch</option>
-                                                    <?php   $sql_get_batch     = " SELECT * FROM `tbl_batches` WHERE `batch_status` = 1 ";
-													        if($utype!=1)
-															{
-																$sql_get_status .= "AND batch_created_by='".$uid."'";
-															}
-													        $sql_get_batch    .= "  order by batch_name asc";
-                                                            $res_get_batch = mysqli_query($db_con,$sql_get_batch) or die(mysqli_error($db_con));
-                                                            while($batch_row  = mysqli_fetch_array($res_get_batch))
-                                                            {
-                                                    ?>
-                                                            <option value="<?php echo $batch_row['batch_id']; ?>"><?php echo ucwords($batch_row['batch_name']); ?></option>
-                                                            
-                                                       <?php } ?>
-                                                </select>
+                                                <div>
                                                 
-                                                  
-                                                 &nbsp;&nbsp;<span id="student_count">
+                                                <div id="competition"></div>
+                                                <div id="team"></div>
+		 										<div id="batch"></div>
+		
+                                                </div>
+                                                
+                                                <!-- &nbsp;&nbsp;<span id="student_count">
                                                  <?php
 												 $sql_get_count ='SELECT * FROM tbl_students WHERE student_status =1';
 												 $res_get_count = mysqli_query($db_con,$sql_get_count) or die(mysqli_error($db_con));
 												 $num_get_count = mysqli_num_rows($res_get_count);
 												 echo $num_get_count;
 												 ?>
-                                                 </span> Student's
+                                                 </span> Student's-->
                                                     </div>
                                                 </div>	<!-- Whom -->
                                                 
@@ -251,46 +232,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				  return false //disable key press
               }
 		}
-		
-		function loadData()
-		{
-			batch_id	     = $("#ft_batch").val();
-			competition_id	 = $("#ft_competition").val();	
-				
-			var sendInfo = {"batch_id":batch_id,"competition_id":competition_id,"getCount":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_bulk_notification.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{	
-				     data = JSON.parse(response);
-					if(data.Success == "Success") 
-					{							
-						$('#student_count').html(data.resp);
-						loading_hide();			
-					} 
-					else 
-					{
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});	
-		}
+	
 		
 		function getBatch(competion_id)
 		{
@@ -330,10 +272,16 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			});	
 		}
 		
-		function getArea(city_id)
+	
+		
+		function getType(type)
 		{
-			loading_show();	
-			var sendInfo 	= {"city_id":city_id,"getArea":1};
+			$('#competition').html(' ');
+			$('#batch').html(' ');
+			$('#team').html(' ');
+			
+			loading_show();
+			var sendInfo 	= {"type":type,"getType":1};
 			var area_status = JSON.stringify(sendInfo);								
 			$.ajax({
 				url: "load_bulk_notification.php?",
@@ -345,12 +293,11 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				     data = JSON.parse(response);
 					if(data.Success == "Success") 
 					{							
-						$('#ft_area').html(data.resp);
+						$('#'+type).html(data.resp);
 						loading_hide();			
 					} 
 					else 
 					{
-						
 						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
 						$('#error_model').modal('toggle');
 						loading_hide();					
@@ -369,6 +316,76 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			});	
 		}
 		
+		
+		function getData(type)
+		{
+			loading_show();
+			var comp = [];
+			$(".acomp:checked").each(function ()
+			{
+				comp.push(parseInt($(this).val()));
+			});
+			
+			if(comp.length==0)
+			{
+				$('#'+type).html('');
+				$("#acomp").prop("checked",false);
+				return false;
+			}
+			
+			var sendInfo 	= {"comp":comp,"type":type,"getData":1};
+			var area_status = JSON.stringify(sendInfo);								
+			$.ajax({
+				url: "load_bulk_notification.php?",
+				type: "POST",
+				data: area_status,
+				contentType: "application/json; charset=utf-8",						
+				success: function(response) 
+				{	
+				     data = JSON.parse(response);
+					if(data.Success == "Success") 
+					{							
+						$('#'+type).html(data.resp);
+						loading_hide();			
+					} 
+					else 
+					{
+						$('#'+type).html('');
+						loading_hide();					
+					}
+				},
+				error: function (request, status, error) 
+				{
+					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+					$('#error_model').modal('toggle');
+					loading_hide();
+				},
+				complete: function()
+				{
+					loading_hide();	
+				}
+			});	
+		}
+		
+		function checkCheckBoxes(id)
+		{
+			if($("#"+id).attr("checked")) 
+			{
+				$("."+id).prop("checked",true);
+			} 
+			else 
+			{
+				$("."+id).prop("checked",false);
+			}
+		}
+		
+		function unCheck(id,uncheckid)
+		{
+			if(!$("#"+id).attr("checked")) 
+			{
+				$("#"+uncheckid).prop("checked",false);
+			} 
+		}
 		</script>     
 		
     </body>

@@ -12,7 +12,7 @@ if((isset($obj->searchStudent)) == "1" && isset($obj->searchStudent))
   $search_key  = mysqli_real_escape_string($db_con,$obj->search_key);
   
   $sql_get_student  = "SELECT * FROM tbl_students WHERE student_status=1 ";
-  $sql_get_student .= " and (student_name like '%".$search_key."%' or student_email = '".$search_key."' ";
+  $sql_get_student .= " and (student_mname like '%".$search_key."%' or student_lname like '%".$search_key."%' or student_fname like '%".$search_key."%' or student_email = '".$search_key."' ";
   $sql_get_student .= " or student_mobile = '".$search_key."'  or student_gender = '".$search_key."') ";	
   $res_get_student  = mysqli_query($db_con,$sql_get_student) or die(mysqli_error($db_con));
   if(mysqli_num_rows($res_get_student)==0)
@@ -24,7 +24,7 @@ if((isset($obj->searchStudent)) == "1" && isset($obj->searchStudent))
   {
 	 $data.= '<div style="float:left;width:33.33%;">';
 		$data.= '<input type="radio" id="chk'.$row['student_id'].'" name="studentid" class="chkuserid" value="'.$row['student_id'].'" onClick="chkbox(this.value);" data-rule-required-"true">';
-				$data.= '<b> '.ucwords(strtolower($row['student_name'])).'</b><br>';
+				$data.= '<b> '.ucwords(strtolower($row['student_fname'])).' '.ucwords(strtolower($row['student_mname'])).' '.ucwords(strtolower($row['student_lname'])).'</b><br>';
 				$data.= '<div style="font-size:12px;padding-left:15px;">';
 				$data.= $row['student_mobile'];
 					$data.= '<br>';
