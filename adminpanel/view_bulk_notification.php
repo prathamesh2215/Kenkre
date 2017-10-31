@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -319,7 +320,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		
 		function getData(type)
 		{
-			loading_show();
+			
 			var comp = [];
 			$(".acomp:checked").each(function ()
 			{
@@ -332,7 +333,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				$("#acomp").prop("checked",false);
 				return false;
 			}
-			
+			loading_show();
 			var sendInfo 	= {"comp":comp,"type":type,"getData":1};
 			var area_status = JSON.stringify(sendInfo);								
 			$.ajax({

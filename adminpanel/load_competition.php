@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -10,9 +12,9 @@ $utype				= $_SESSION['panel_user']['utype'];
 //------------------this is used for inserting records---------------------
 if((isset($_POST['insert_competition'])) == "1" && isset($_POST['insert_competition']))
 {
-	$data['competition_name']      = mysqli_real_escape_string($db_con,$_POST['competition_name']);
-	$data['competition_place']         = mysqli_real_escape_string($db_con,$_POST['competition_place']);
-	$data['competition_limit']    = mysqli_real_escape_string($db_con,$_POST['student_limit']);
+	$data['competition_name']      = strtolower(mysqli_real_escape_string($db_con,$_POST['competition_name']));
+	$data['competition_place']     = mysqli_real_escape_string($db_con,$_POST['competition_place']);
+	$data['competition_limit']     = mysqli_real_escape_string($db_con,$_POST['student_limit']);
 	
 	
 	$start_date                    = mysqli_real_escape_string($db_con,$_POST['start_date']);
@@ -57,7 +59,7 @@ if((isset($_POST['insert_competition'])) == "1" && isset($_POST['insert_competit
 
 if((isset($_POST['update_competition'])) == "1" && isset($_POST['update_competition']))
 {
-	$data['competition_name']      = mysqli_real_escape_string($db_con,$_POST['competition_name']);
+	$data['competition_name']      = strtolower(mysqli_real_escape_string($db_con,$_POST['competition_name']));
 	$data['competition_place']     = mysqli_real_escape_string($db_con,$_POST['competition_place']);
 	$data['competition_limit']     = mysqli_real_escape_string($db_con,$_POST['student_limit']);
 	$data['competition_status']    = mysqli_real_escape_string($db_con,$_POST['competition_status']);
@@ -104,13 +106,13 @@ if((isset($_POST['update_competition'])) == "1" && isset($_POST['update_competit
 
 
 
-if((isset($obj->load_coach)) == "1" && isset($obj->load_coach))
+if((isset($obj->load_competition)) == "1" && isset($obj->load_competition))
 {
 	$response_array = array();	
 	$start_offset   = 0;
 	$page 			= $obj->page;	
 	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
+	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);
 	
 	if($page != "" && $per_page != "")	
 	{
@@ -145,7 +147,7 @@ if((isset($obj->load_coach)) == "1" && isset($obj->load_coach))
          	$area_data .= '<th style="text-align:center">Sr No.</th>';
 			$area_data .= '<th style="text-align:center">Competition Name</th>';
 			$area_data .= '<th style="text-align:center">Place</th>';
-			$area_data .= '<th style="text-align:center">Student Limit</th>';
+			$area_data .= '<th style="text-align:center">Team Limit</th>';
 			$area_data .= '<th style="text-align:center">Duration</th>';
 			$area_data .= '<th style="text-align:center">Created Date</th>';
 			$area_data .= '<th style="text-align:center">Created By</th>';
@@ -189,7 +191,7 @@ if((isset($obj->load_coach)) == "1" && isset($obj->load_coach))
 				$area_data .= '<td style="text-align:center">'.$row_load_data['modified_date'].'</td>';
 				$area_data .= '<td style="text-align:center">'.$row_load_data['name_midified_by'].'</td>';
 				$area_data .= '<td style="text-align:center">';
-					$area_data .= '<input type="button" value="Team\'s" id="'.$row_load_data['competition_id'].'" class="btn-warning" onclick="viewTeams(this.id);"></td>';	
+					$area_data .= '<input type="button" value="Teams" id="'.$row_load_data['competition_id'].'" class="btn-warning" onclick="viewTeams(this.id);"></td>';	
 				$dis = checkFunctionalityRight("view_competition.php",3);
 				
 				if($dis)
@@ -242,7 +244,7 @@ if((isset($obj->load_coach)) == "1" && isset($obj->load_coach))
 
 if((isset($obj->load_competition_parts)) == "1" && isset($obj->load_competition_parts))
 {
-	$competition_id        = $obj->competition_id;
+	$competition_id = $obj->competition_id;
 	$req_type       = $obj->req_type;
 	$response_array = array();
 	if($req_type != "")
@@ -267,172 +269,285 @@ if((isset($obj->load_competition_parts)) == "1" && isset($obj->load_competition_
 				$data .= '<input type="hidden" name="insert_competition" id="insert_batch" value="1">';
 		}
 		
-		//////=============================================Start : Competition Name======================================
-		$data .= '<div class="control-group">';
-		$data .= '<label for="tasktitel" class="control-label">Competition Name<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
-		$data .= '<div class="controls">';
-		$data .= '<input type="text" id="competition_name" name="competition_name" class="input-large keyup-char" placeholder="Competition Name" data-rule-required="true" ';
-		if($competition_id != "" && $req_type == "edit")
+		if($req_type !="view")
 		{
-			$data .= ' value="'.$row_comp_data['competition_name'].'"'; 
-		}
-		elseif($competition_id != "" && $req_type == "view")
-		{
-			$data .= ' value="'.$row_comp_data['competition_name'].'" disabled'; 				
-		}
-		$data .= '/><br>';
-		$data .= '</div>';
-		$data .= '</div> <!-- Competition Name -->';
-		
-		//////=============================================Start : Place Name======================================
-		$data .= '<div class="control-group">';
-		$data .= '<label for="tasktitel" class="control-label">Place<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
-		$data .= '<div class="controls">';
-		$data .= '<input onkeypress="return charsonly(event);" type="text" id="competition_place" name="competition_place" class="input-large keyup-char" placeholder="Competition Place" data-rule-required="true" ';
-		if($competition_id != "" && $req_type == "edit")
-		{
-			$data .= ' value="'.$row_comp_data['competition_place'].'"'; 
-		}
-		elseif($competition_id != "" && $req_type == "view")
-		{
-			$data .= ' value="'.$row_comp_data['competition_place'].'" disabled'; 				
-		}
-		$data .= '/><br>';
-		$data .= '</div>';
-		$data .= '</div> <!-- Competition Place -->';
-		
-		
-		//////=============================================Start :Student Limit======================================
-		$data .= '<div class="control-group">';
-		$data .= '<label for="tasktitel" class="control-label">Student Limit<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
-		$data .= '<div class="controls">';
-		$data .= '<input data-rule-number="true"  type="text" id="student_limit" name="student_limit" class="input-large" placeholder="Student Limit" data-rule-required="true" ';
-		if($competition_id != "" && $req_type == "edit")
-		{
-			$data .= ' value="'.$row_comp_data['competition_limit'].'"'; 
-		}
-		elseif($competition_id != "" && $req_type == "view")
-		{
-			$data .= ' value="'.$row_comp_data['competition_limit'].'" disabled'; 				
-		}
-		$data .= '/><br>';
-		$data .= '</div>';
-		$data .= '</div> <!-- Student Limit -->';
-		
-		
-		//////=============================================Start : Duration======================================
-		$data .= '<div class="control-group">';
-		$data .= '<label for="tasktitel" class="control-label">Duration<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
-		$data .= '<div class="controls">';
-		$data .= 'Start Date : <input  type="text" id="start_date" readonly="readonly" name="start_date" class="input-large datepicker" placeholder="Start Date" data-rule-required="true" ';
-		
-		if($competition_id != "" && $req_type == "edit")
-		{
-			$sdate = explode('-',$row_comp_data['start_date']);
-			$sdate = $sdate[2].'-'.$sdate[1].'-'.$sdate[0];
-			$data .= ' value="'.$sdate.'"'; 
-		}
-		elseif($competition_id != "" && $req_type == "view")
-		{
-			$sdate = explode('-',$row_comp_data['start_date']);
-			$sdate = $sdate[2].'-'.$sdate[1].'-'.$sdate[0];
-			$data .= ' value="'.$sdate.'" disabled'; 				
-		}
-		$data .= '/><br><br>';
-		
-		$data .= 'End Date : &nbsp;&nbsp;<input readonly="readonly"  type="text" id="end_date" name="end_date" class="input-large datepicker" placeholder="End Date" data-rule-required="true" ';
-		if($competition_id != "" && $req_type == "edit")
-		{
-			$edate = explode('-',$row_comp_data['end_date']);
-			$edate = $edate[2].'-'.$edate[1].'-'.$edate[0];
-			$data .= ' value="'.$edate.'"'; 
-		}
-		elseif($competition_id != "" && $req_type == "view")
-		{
-			$edate = explode('-',$row_comp_data['end_date']);
-			$edate = $edate[2].'-'.$edate[1].'-'.$edate[0];
-			$data .= ' value="'.$edate.'" disabled'; 				
-		}
-		$data .= '/><br>';
-		$data .= '</div>';
-		$data .= '</div> <!-- Coach Name -->';
-        $data .="<script type=\"text/javascript\">	 $( '.datepicker' ).datepicker({
-		changeMonth	: true,
-		changeYear	: true,
-		format: 'dd-mm-yyyy',
-		yearRange 	: 'c:c',//replaced 'c+0' with c (for showing years till current year)
-		startDate: '+d',
 			
-	   });</script>";
-		
-		
-		$data .= '<div class="control-group">';
-		$data .= '<label for="radio" class="control-label">Status<span style="color:#F00;font-size:20px;">*</span></label>';
-		$data .= '<div class="controls">';
-		
-		if($competition_id != "" && $req_type == "view")
-		{
-			if($row_comp_data['competition_status'] == 1)
+			//////=============================================Start : Competition Name======================================
+			$data .= '<div class="control-group">';
+			$data .= '<label for="tasktitel" class="control-label">Competition Name<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<div class="controls">';
+			$data .= '<input type="text" id="competition_name" name="competition_name" class="input-large keyup-char" placeholder="Competition Name" data-rule-required="true" ';
+			if($competition_id != "" && $req_type == "edit")
 			{
-				$data .= ' <label class="control-label" style="color:#30DD00"> Active </label>';
+				$data .= ' value="'.$row_comp_data['competition_name'].'"'; 
 			}
-			if($row_comp_data['competition_status'] == 0)
+			elseif($competition_id != "" && $req_type == "view")
 			{
-				$data .= ' <label class="control-label" style="color:#E63A3A"> Inactive </label>';
+				$data .= ' value="'.$row_comp_data['competition_name'].'" disabled'; 				
 			}
-		}
-		else
-		{  
-          if($competition_id != "" && $req_type == "edit")
-		  {
-				$data  .= '<input type="radio" name="competition_status" value="1" class="css-radio" data-rule-required="true" ';
-				$dis	= checkFunctionalityRight("view_competition.php",3);
-				if(!$dis)
-				{
-				//$data .= ' disabled="disabled" ';
-				}
+			$data .= '/><br>';
+			$data .= '</div>';
+			$data .= '</div> <!-- Competition Name -->';
+			
+			//////=============================================Start : Place Name======================================
+			$data .= '<div class="control-group">';
+			$data .= '<label for="tasktitel" class="control-label">Place<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<div class="controls">';
+			$data .= '<input onkeypress="return charsonly(event);" type="text" id="competition_place" name="competition_place" class="input-large keyup-char" placeholder="Competition Place" data-rule-required="true" ';
+			if($competition_id != "" && $req_type == "edit")
+			{
+				$data .= ' value="'.$row_comp_data['competition_place'].'"'; 
+			}
+			elseif($competition_id != "" && $req_type == "view")
+			{
+				$data .= ' value="'.$row_comp_data['competition_place'].'" disabled'; 				
+			}
+			$data .= '/><br>';
+			$data .= '</div>';
+			$data .= '</div> <!-- Competition Place -->';
+			
+			
+			//////=============================================Start :Student Limit======================================
+			$data .= '<div class="control-group">';
+			$data .= '<label for="tasktitel" class="control-label">Team Limit<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<div class="controls">';
+			$data .= '<input data-rule-number="true"  type="text" id="student_limit" name="student_limit" class="input-large" placeholder="Team Limit" data-rule-required="true" ';
+			if($competition_id != "" && $req_type == "edit")
+			{
+				$data .= ' value="'.$row_comp_data['competition_limit'].'"'; 
+			}
+			elseif($competition_id != "" && $req_type == "view")
+			{
+				$data .= ' value="'.$row_comp_data['competition_limit'].'" disabled'; 				
+			}
+			$data .= '/><br>';
+			$data .= '</div>';
+			$data .= '</div> <!-- Student Limit -->';
+			
+			
+			//////=============================================Start : Duration======================================
+			$data .= '<div class="control-group">';
+			$data .= '<label for="tasktitel" class="control-label">Duration<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<div class="controls">';
+			$data .= 'Start Date : <input  type="text" id="start_date" readonly="readonly" name="start_date" class="input-large datepicker" placeholder="Start Date" data-rule-required="true" ';
+			
+			if($competition_id != "" && $req_type == "edit")
+			{
+				$sdate = explode('-',$row_comp_data['start_date']);
+				$sdate = $sdate[2].'-'.$sdate[1].'-'.$sdate[0];
+				$data .= ' value="'.$sdate.'"'; 
+			}
+			elseif($competition_id != "" && $req_type == "view")
+			{
+				$sdate = explode('-',$row_comp_data['start_date']);
+				$sdate = $sdate[2].'-'.$sdate[1].'-'.$sdate[0];
+				$data .= ' value="'.$sdate.'" disabled'; 				
+			}
+			$data .= '/><br><br>';
+			
+			$data .= 'End Date : &nbsp;&nbsp;<input readonly="readonly"  type="text" id="end_date" name="end_date" class="input-large datepicker" placeholder="End Date" data-rule-required="true" ';
+			if($competition_id != "" && $req_type == "edit")
+			{
+				$edate = explode('-',$row_comp_data['end_date']);
+				$edate = $edate[2].'-'.$edate[1].'-'.$edate[0];
+				$data .= ' value="'.$edate.'"'; 
+			}
+			elseif($competition_id != "" && $req_type == "view")
+			{
+				$edate = explode('-',$row_comp_data['end_date']);
+				$edate = $edate[2].'-'.$edate[1].'-'.$edate[0];
+				$data .= ' value="'.$edate.'" disabled'; 				
+			}
+			$data .= '/><br>';
+			$data .= '</div>';
+			$data .= '</div> <!-- Coach Name -->';
+			$data .="<script type=\"text/javascript\">	 $( '.datepicker' ).datepicker({
+			changeMonth	: true,
+			changeYear	: true,
+			format: 'dd-mm-yyyy',
+			yearRange 	: 'c:c',//replaced 'c+0' with c (for showing years till current year)
+			startDate: '+d',
+				
+		   });</script>";
+			
+			
+			$data .= '<div class="control-group">';
+			$data .= '<label for="radio" class="control-label">Status<span style="color:#F00;font-size:20px;">*</span></label>';
+			$data .= '<div class="controls">';
+			
+			if($competition_id != "" && $req_type == "view")
+			{
 				if($row_comp_data['competition_status'] == 1)
 				{
-					$data .= 'checked ';
+					$data .= ' <label class="control-label" style="color:#30DD00"> Active </label>';
 				}
-				$data .= '> Active ';
-				$data .= '<input type="radio" name="competition_status" value="0" class="css-radio" data-rule-required="true"';
-				if(!$dis)
+				if($row_comp_data['competition_status'] == 0)
 				{
-				//$data .= ' disabled="disabled" ';
+					$data .= ' <label class="control-label" style="color:#E63A3A"> Inactive </label>';
 				}
-				if($row_comp_data['competition_status'] == 0  )
-				{
-					$data .= 'checked ';
-				}
-				$data .= '> Inactive';
-			} 
-			else  
-			{
-				$data .= ' <input type="radio" name="competition_status" value="1" class="css-radio" data-rule-required="true" ';
-				$data .= '> Active ';
-				$data .= ' <input type="radio" name="competition_status" value="0" class="css-radio" data-rule-required="true"';
-			
-		 		$data .= '> Inactive ';
 			}
-		}
-					
-		$data .= '<label for="radiotest" class="css-label"></label>';
-		$data .= '<label name = "radiotest" ></label>';
-		$data .= '</div>';
-		$data .= '</div><!--Status-->';
-		
-		$data .= '<div class="form-actions">';
-		if($competition_id == "" && $req_type == "add")
-		{
-			$data .= '<button type="submit" name="reg_submit_add" class="btn-success">Add Competition</button>';			
-		}
-		elseif($competition_id != "" && $req_type == "edit")
-		{
-			$data .= '<button type="submit" name="reg_submit_edit" class="btn-success">Update Competition</button>';			
-		}			
-		$data .= '</div> <!-- Save and cancel -->';	
+			else
+			{  
+			  if($competition_id != "" && $req_type == "edit")
+			  {
+					$data  .= '<input type="radio" name="competition_status" value="1" class="css-radio" data-rule-required="true" ';
+					$dis	= checkFunctionalityRight("view_competition.php",3);
+					if(!$dis)
+					{
+					//$data .= ' disabled="disabled" ';
+					}
+					if($row_comp_data['competition_status'] == 1)
+					{
+						$data .= 'checked ';
+					}
+					$data .= '> Active ';
+					$data .= '<input type="radio" name="competition_status" value="0" class="css-radio" data-rule-required="true"';
+					if(!$dis)
+					{
+					//$data .= ' disabled="disabled" ';
+					}
+					if($row_comp_data['competition_status'] == 0  )
+					{
+						$data .= 'checked ';
+					}
+					$data .= '> Inactive';
+				} 
+				else  
+				{
+					$data .= ' <input type="radio" name="competition_status" value="1" class="css-radio" data-rule-required="true" ';
+					$data .= '> Active ';
+					$data .= ' <input type="radio" name="competition_status" value="0" class="css-radio" data-rule-required="true"';
+				
+					$data .= '> Inactive ';
+				}
+			}
+						
+			$data .= '<label for="radiotest" class="css-label"></label>';
+			$data .= '<label name = "radiotest" ></label>';
+			$data .= '</div>';
+			$data .= '</div><!--Status-->';
 			
+			$data .= '<div class="form-actions">';
+			if($competition_id == "" && $req_type == "add")
+			{
+				$data .= '<button type="submit" name="reg_submit_add" class="btn-success">Add Competition</button>';			
+			}
+			elseif($competition_id != "" && $req_type == "edit")
+			{
+				$data .= '<button type="submit" name="reg_submit_edit" class="btn-success">Update Competition</button>';			
+			}			
+			$data .= '</div> <!-- Save and cancel -->';	
+			
+		}
+		else
+		{
+			if($row_comp_data['competition_status']==1)
+			{
+				$bgcolor = '#18BB7C';
+				$color   = 'white';
+			}
+			else
+			{
+				$bgcolor = '#da4f49';
+				$color    ='';
+			}
+			//==================Start :  Heading  ===========================================//
+			$data .='<div class="control-group" style="background-color:'.$bgcolor.'">';
+			
+			$data .='<div class="span2">';
+				
+			$data .='</div>';
+			
+			$data .='<div class="span8">';
+			    $data .='<div style="padding-bottom:20px;">';
+					$data .='<h3 class=""  style="color:White">'.ucwords($row_comp_data['competition_name']).'</h3>';
+					
+					$data .='<div class="control-group" style="background-color:'.$bgcolor.'">';
+					    $start_date    = explode('-',$row_comp_data['start_date']);
+						$data .='<div class="span6">
+						<span class="head2" style="color:White"> Place: '.ucwords($row_comp_data['competition_place']).'</span><br>
+						<span class="head2" style="color:White">Strat Date: '.@$start_date[2].' / '.@$start_date[1].' / '.@$start_date[0].'</span><br>
+						
+						';
+						$data .='</div>';
+						
+						$end_date    = explode('-',$row_comp_data['end_date']);
+						$data .='<div class="span6">
+						<span class="head2" style="color:White">Team Limit :'.ucwords($row_comp_data['competition_limit']).'</span><br>
+						<span class="head2" style="color:White">End Date: '.@$end_date[2].' / '.@$end_date[1].' / '.@$end_date[0].'</span><br>
+						';
+						$data .='</div>';
+						
+					$data .='</div>';
+				$data .='</div>';
+			$data .='</div>';
+			
+			$data .='<div class="span2">';
+				
+			$data .='</div>';
+			
+			$data .='</div>';// control-group end
+			
+			//==================End : Heading  ===========================================//
+			
+			
+			
+			//==================Start : Coaches  ===========================================//
+			$sql_get_stud  = "SELECT * FROM tbl_competition_team  as tct ";
+			$sql_get_stud .= " INNER JOIN tbl_team as  tm ON tct.team_id =tm.team_id ";
+			$sql_get_stud .= " WHERE competition_id='".$competition_id."'";
+			$res_get_stud  = mysqli_query($db_con,$sql_get_stud) or die(mysqli_error($db_con));
+			$num_get_stud  = mysqli_num_rows($res_get_stud);
+			$res_array     = array();
+			while($row = mysqli_fetch_array($res_get_stud))
+			{
+				array_push($res_array,$row);
+			}
+			$num_get_stud1 = round(($num_get_stud)/2);
+			$num_get_stud2 = $num_get_stud - $num_get_stud1;
+			if(!empty($res_array))
+			{
+				$data .='<div class="control-group">';
+		
+				$data .='<div class="span12">';
+					$data .='<div style="padding:20px">';
+						$data .='<h5>Teams : </h5>';
+					$data .='</div>';
+				$data .='</div>';
+				
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px">';
+						$data .='<ul style="list-style:none">';
+						for($i=0;$i<$num_get_stud1;$i++)
+						{
+							$data .='<li class="head2" style="padding:10px"><img src="images/team/small/'.$res_array[$i]['team_logo'].'" style="width:100px; height:100px"  alt="">
+							&nbsp;&nbsp;<a href="view_team.php?pag=Teams&team_id='.$res_array[$i]['team_id'].'" target="_blank" >'.ucwords($res_array[$i]['team_name']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
+				$data .='</div>';
+				
+				
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px;">';
+						$data .='<ul style="list-style:none">';
+						for($i=$i;$i<$num_get_stud;$i++)
+						{
+							$data .='<li class="head2">
+							<img src="images/team/small/'.$res_array[$i]['team_logo'].'"  style="width:100px; height:100px" > 
+							&nbsp;&nbsp;<a href="view_team.php?pag=Teams&team_id='.$res_array[$i]['team_id'].'" target="_blank" > '.ucwords($res_array[$i]['team_name']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
+				$data .='</div>';
+				
+				$data .='</div>';// control-group
+				//==================End : Coaches  ===========================================//
+			}
+			
+		}
 		$response_array = array("Success"=>"Success","resp"=>$data);				
 	}
 	else
@@ -483,10 +598,13 @@ if((isset($obj->delete_competition)) == "1" && isset($obj->delete_competition))
 	$del_flag 		  = 0; 
 	foreach($ids as $id)	
 	{
-		$sql_delete_area	= " DELETE FROM `tbl_competition` WHERE `competition_id` = '".$id."' ";
-		$result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));			
-		if($result_delete_area)
+		$sql_delete_comp	= " DELETE FROM `tbl_competition` WHERE `competition_id` = '".$id."' ";
+		$res_delete_comp	= mysqli_query($db_con,$sql_delete_comp) or die(mysqli_error($db_con));			
+		if($res_delete_comp)
 		{
+			$sql_delete_team	= " DELETE FROM `tbl_competition_team` WHERE `competition_id` = '".$id."' ";
+		    $res_delete_team	= mysqli_query($db_con,$sql_delete_team) or die(mysqli_error($db_con));			
+			
 			$del_flag = 1;
 		}			
 	}	
@@ -522,7 +640,7 @@ if((isset($obj->getTeam)) == "1" && isset($obj->getTeam))
 
 	foreach($res_get_student as $row)
 	{
-		$data .='<option value="'.$row['team_id'].'">'.$row['team_name'].'</option>';
+		$data .='<option value="'.$row['team_id'].'">'.ucwords($row['team_name']).'</option>';
 	}
 	$data .= '</select> ';
 	
@@ -587,12 +705,23 @@ if((isset($obj->getTeam)) == "1" && isset($obj->getTeam))
 
 if((isset($_POST['addTeam'])) == "1" && isset($_POST['addTeam']))
 {
-	$data['competition_id']  =  $_POST['competition_id'];  
+	$competition_id       =  $_POST['competition_id'];  
 	$team_ids             =  $_POST['team_id'];
 	$add_flag             =  0;
+	
+	$row       = checkExist('tbl_competition',array('competition_id'=>$competition_id));
+	
+	
+	
 	foreach($team_ids as $team_id)
 	{
-		$data['team_id']          = $team_id;
+		$teamCount = isExist('tbl_competition_team',array('competition_id'=>$competition_id));
+		if($row['competition_limit'] <= $teamCount)
+		{
+			quit(array('Team limit exceed...!',$competition_id),1);
+		}
+		$data['competition_id']          = $competition_id;
+		$data['team_id']                 = $team_id;
 		$data['competition_created']     = $datetime;
 		$data['competition_created_by']  = $uid;
 		insert('tbl_competition_team',$data);
@@ -601,7 +730,7 @@ if((isset($_POST['addTeam'])) == "1" && isset($_POST['addTeam']))
 	
 	if($add_flag == 1)
 	{
-		quit($data['competition_id'],1);
+		quit(array('Team added successfully',$competition_id),1);
 	}
 	else
 	{

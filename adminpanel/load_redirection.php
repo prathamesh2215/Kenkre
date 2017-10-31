@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);

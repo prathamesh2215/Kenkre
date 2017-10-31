@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -60,7 +61,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <div style="width:99%;" align="">
                                             <div id="loading"></div>                                            
                                             <div id="container1" class="data_container">
-                                                <form method="post" id="frm_notification" class="form-horizontal form-bordered form-validate" novalidate="novalidate">
+                                                <form method="post" id="frm_notification" class="form-horizontal form-bordered form-validate" novalidate>
                                                 <div class="control-group">
                                                     <label for="textarea" class="control-label">Notification Type</label>
                                                     <div class="controls">
@@ -77,7 +78,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                                 <div class="control-group">
                                                     <label for="textarea" class="control-label">Whom</label>
                                                     <div class="controls">
-                                                        <input id="searchuser_n" name="searchuser_n" style="width:250px;height:28px;" onblur="SortUser(this.value)" placeholder=" Name or User id or Email or Mobile No " type="text">
+                                                        <input id="searchuser_n" name="searchuser_n" style="width:250px;height:28px;" onblur="SortUser(this.value)" placeholder="Search by Name,Email or Mobile No " type="text">
                                                     </div>
                                                 </div>	<!-- Whom -->
                                                 
@@ -211,7 +212,12 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		
 		function SortUser(search_key)
 		{
+			if(search_key.length < 3)
+			{
+				return false;
+			}
 			loading_show();	
+			
 			var sendInfo 	= {"search_key":search_key,"searchStudent":1};
 			var area_status = JSON.stringify(sendInfo);								
 			$.ajax({

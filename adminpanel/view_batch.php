@@ -1,10 +1,12 @@
 <?php
+
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
 
 // This is for dynamic title, bread crum, etc.
-$title = "View Batch";
+$title = "View Batches";
 $path_parts   		= pathinfo(__FILE__);
 $filename 	  		= $path_parts['filename'].".php";
 $sql_feature 		= "select * from tbl_admin_features where af_page_url = '".$filename."'";
@@ -19,6 +21,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 <!doctype html>
 <html>
 <head>	
+
 <?php 
 	/* This function used to call all header data like css files and links */
 	headerdata($feature_name);
@@ -27,6 +30,12 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 <link rel="stylesheet" href="css/datepicker.css" />
 <link href="css/bootstrap-timepicker.min.css" rel="stylesheet" media="screen">
 <link href="css/bootstrap-timepicker.css" rel="stylesheet" type="text/css" />
+<style>
+.head2
+{
+	font-size:17px;
+}
+</style>
 </head>
 <body  class="<?php echo $theme_name;?>" data-theme="<?php echo $theme_name;?>" >
 	<?php 
@@ -75,7 +84,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search by Batch Name, Date,Student Limit"  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search by Batch Name "  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -109,7 +118,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_add_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">                                     
-                                    	<form id="frm_area_add" class="form-horizontal form-bordered form-validate" >
+                                    	<form id="frm_batch_add" class="form-horizontal form-bordered form-validate" >
                                         	<div id="div_add_area_part">
                                         	</div>                                    
                                         </form>
@@ -135,7 +144,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_edit_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
-                                        <form id="frm_area_edit" class="form-horizontal form-bordered form-validate" >
+                                        <form id="frm_batch_edit" class="form-horizontal form-bordered form-validate" >
                                             <div id="div_edit_area_part">
                                             </div>                                    
                                         </form>                                    
@@ -155,10 +164,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                             <div class="span12">
                                 <div class="box box-color box-bordered">
                                     <div class="box-title">
-                                        <h3>
+                                       <!-- <h3>
                                             <i class="icon-table"></i>
                                             Batch Details
-                                        </h3>
+                                        </h3>-->
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_area_details','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
@@ -246,8 +255,8 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 			else
 			{
-				delete_area 	= 1;
-				var sendInfo 	= {"batch":batch, "delete_area":1};
+				delete_batch 	= 1;
+				var sendInfo 	= {"batch":batch, "delete_batch":1};
 				var del_cat 	= JSON.stringify(sendInfo);								
 				$.ajax({
 					url: "load_batch.php?",
@@ -582,6 +591,12 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			});	
 			loadData();
 			<?php
+			if(isset($_REQUEST['batch_id']) && $_REQUEST['batch_id']!="")
+			{?>
+				addMoreArea(<?php echo  $_REQUEST['batch_id']; ?>,'view');
+			<?php
+			}
+			
 			$add = checkFunctionalityRight($filename,0);
 			$edit = checkFunctionalityRight($filename,1);
 			if($add || $edit)
@@ -606,9 +621,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		});  /*Search Area*/
 		
 		
-		$('#frm_area_add').on('submit', function(e) {
+		$('#frm_batch_add').on('submit', function(e) {
 			e.preventDefault();
-			if ($('#frm_area_add').valid())
+			if ($('#frm_batch_add').valid())
 			{
 				
 				start_date = $('#start_date').val();
@@ -665,9 +680,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 		});	/* Add Area*/
 		
-		$('#frm_area_edit').on('submit', function(e) {
+		$('#frm_batch_edit').on('submit', function(e) {
 			e.preventDefault();
-			if ($('#frm_area_edit').valid())
+			if ($('#frm_batch_edit').valid())
 			{
 				start_date = $('#start_date').val();
 				start_date = start_date.split('-');
@@ -785,7 +800,8 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							if(data.Success == "Success") 
 							{
 							
-								viewStudent(data.resp);
+								alert(data.resp[0]);
+								viewStudent(data.resp[1]);
 								loading_hide();
 							} 
 							else 
@@ -829,101 +845,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			$('#'+show_div).css('display','block');
 		}
 		
-		function getState(country_id)
-		{
-			if(country_id=="")
-			{
-				alert('Please select country...!');
-				return false;
-			}
-			var sendInfo 	= {"country_id":country_id,"getState":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_city.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					if(data.Success == "Success") 
-					{							
-						$('#state_code').html(data.resp);
-					} 
-					else 
-					{
-						$('#state_code').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		}
-		
-		function getCityList(state_id,city_select_id)
-		{
-			if(state_id=="")
-			{
-				alert('Please select State...!');
-				return false;
-			}
-			var sendInfo 	= {"state_id":state_id,"getCity":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_batch.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					$('#city').prop('disabled',false);
-					if(data.Success == "Success") 
-					{						
-						$('#city').html(data.resp);
-					} 
-					else 
-					{
-						$('#state_code').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		}
-		
-		 function charsonly(e)
-		 {
-  			  var unicode=e.charCode? e.charCode : e.keyCode
-			 
-			  if (unicode !=8 && unicode !=32)
-			  {  // unicode<48||unicode>57 &&
-				  if (unicode<65||unicode>90 && unicode<97||unicode>122  )  //if not a number
-				  return false //disable key press
-              }
-		}
 		
 		
 		function numsonly(e)
@@ -935,91 +856,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				  if (unicode<48||unicode>57)  //if not a number
 				  return false //disable key press
               }
-		}
-		
-		function getState(country_id)
-		{
-			if(country_id=="")
-			{
-				alert('Please select country...!');
-				return false;
-			}
-			var sendInfo 	= {"country_id":country_id,"getState":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_city.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					if(data.Success == "Success") 
-					{							
-						$('#state_code').html(data.resp);
-					} 
-					else 
-					{
-						$('#state_code').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		}
-		
-		function getArea(city_id)
-		{
-			if(city_id=="")
-			{
-				alert('Please select country...!');
-				return false;
-			}
-			var sendInfo 	= {"city_id":city_id,"getArea":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_batch.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					if(data.Success == "Success") 
-					{							
-						$('#area').html(data.resp);
-					} 
-					else 
-					{
-						$('#area').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		
 		}
 		
 		function allDays()
@@ -1049,7 +885,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		}
 		
 		
-	     $( ".datepicker" ).datepicker({
+	  $( ".datepicker" ).datepicker({
 		changeMonth	: true,
 		changeYear	: true,
 		dateFormat	: 'mm-dd-yy',
@@ -1062,6 +898,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 	    
 	   function viewCoach(batch_id)
 	   {
+		   loading_show();
 		    var sendInfo 	= {"batch_id":batch_id,"getCoach":1};
 			var area_status = JSON.stringify(sendInfo);								
 			$.ajax({
@@ -1104,7 +941,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 
         function viewStudent(batch_id)
 	   {
-		   
+		   	loading_show();
 			var sendInfo 	= {"batch_id":batch_id,"getStudent":1};
 			var area_status = JSON.stringify(sendInfo);								
 			$.ajax({
@@ -1146,8 +983,8 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		</script>     
 		<script src="js/bootstrap-datepicker.js"></script> 
 		<script src="js/bootstrap-timepicker.min.js"></script> 
-		 <script type="text/javascript" src="js/bootstrap-timepicker.min.js"></script>   
-         <script type="text/javascript" src="js/bootstrap-timepicker.js"></script>  
+		<script type="text/javascript" src="js/bootstrap-timepicker.min.js"></script>   
+        <script type="text/javascript" src="js/bootstrap-timepicker.js"></script>  
 		
     </body>
 </html>

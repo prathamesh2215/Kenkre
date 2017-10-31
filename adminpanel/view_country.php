@@ -1,5 +1,8 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
+
+
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
 
@@ -73,7 +76,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Country Name, Country Code can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Serach by Country Name, Country Code..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">

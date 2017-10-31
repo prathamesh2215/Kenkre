@@ -1,5 +1,6 @@
 <?php
 include("include/routines.php");
+include("include/db_con.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
 

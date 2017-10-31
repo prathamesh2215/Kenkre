@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -10,10 +12,6 @@ if((isset($obj->load_competition)) == "1" && isset($obj->load_competition))
 {
 	$response_array = array();	
 	$start_offset   = 0;
-	$page 			= $obj->page;	
-	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
-	
 	
 	$coach_id 		= $obj->coach_id;	
 	$end_date	    = $obj->end_date;	
@@ -21,16 +19,7 @@ if((isset($obj->load_competition)) == "1" && isset($obj->load_competition))
 	
 	
 		
-	if($page != "" && $per_page != "")	
-	{
-		$cur_page 		= $page;
-		$page 	   	   	= $page - 1;
-		$start_offset  += $page * $per_page;
-		$start 			= $page * $per_page;
-		
-		
-			
-		$sql_load_data  = " SELECT * FROM `tbl_batches` AS tb ";
+	    $sql_load_data  = " SELECT * FROM `tbl_batches` AS tb ";
 		$sql_load_data .=" WHERE 1=1 " ;	
 		//===========Filter By area====================================//
 		
@@ -41,7 +30,7 @@ if((isset($obj->load_competition)) == "1" && isset($obj->load_competition))
 		
 		if($coach_id !="")
 		{
-			$sql_load_data .=" AND tb.batch_id IN(SELECT DISTINCT(batch_id) FROM tbl_coach_batches WHERE coach_id='".$coach_id."') ";
+			$sql_load_data .=" AND tb.batch_id IN(SELECT DISTINCT(batch_id) FROM tbl_batch_coach WHERE coach_id='".$coach_id."') ";
 		}
 		
 		if(strcmp($utype,'1') !== 0)
@@ -64,13 +53,13 @@ if((isset($obj->load_competition)) == "1" && isset($obj->load_competition))
 			$sql_load_data  .= " AND end_date <='".$end_date."' ";
 		}
 		
-		if($search_text != "")
+		/*if($search_text != "")
 		{
 			$sql_load_data .= " and (batch_name like '%".$search_text."%' or start_date = '".$search_text."' ";
 			$sql_load_data .= " or end_date = '".$search_text."') ";	
-		}
-		$data_count		  = dataPagination($sql_load_data,$per_page,$start,$cur_page);		
-		$sql_load_data   .= " ORDER BY batch_id DESC LIMIT $start, $per_page ";
+		}*/
+		//$data_count		  = dataPagination($sql_load_data,$per_page,$start,$cur_page);		
+		$sql_load_data   .= " ORDER BY batch_id DESC  ";
 		$result_load_data = mysqli_query($db_con,$sql_load_data) or die(mysqli_error($db_con));	
 				
 		if(strcmp($data_count,"0") !== 0)
@@ -81,7 +70,8 @@ if((isset($obj->load_competition)) == "1" && isset($obj->load_competition))
     	  	$competition_data .= '<tr>';
          	$competition_data .= '<th style="text-align:center">Sr No.</th>';
 			$competition_data .= '<th style="text-align:center">Batch Name</th>';
-			$competition_data .= '<th style="text-align:center">Strat Date</th>';
+			$competition_data .= '<th style="text-align:center">Coach</th>';
+			$competition_data .= '<th style="text-align:center">Start Date</th>';
 			$competition_data .= '<th style="text-align:center">End Date</th>';
 			$competition_data .= '</tr>';
       		$competition_data .= '</thead>';
@@ -92,8 +82,25 @@ if((isset($obj->load_competition)) == "1" && isset($obj->load_competition))
 				$competition_data .= '<td style="text-align:center">'.++$start_offset.'</td>';				
 			
 				$competition_data .= '<td style="text-align:center"><input type="button" value="'.ucwords($row_load_data['batch_name']).'" class="btn-link" id="'.$row_load_data['batch_id'].'" onclick="viewStudent(this.id,\'view\');"></td>';
-					$competition_data .= '<td style="text-align:center">'.$row_load_data['start_date'].'</td>';
-				$competition_data .= '<td style="text-align:center">'.$row_load_data['end_date'].'</td>';			
+				
+				$coach_arr      = array();
+				$sql_get_coach  =" SELECT fullname FROM tbl_cadmin_users WHERE id IN ";
+				$sql_get_coach .="( SELECT DISTINCT coach_id FROM tbl_batch_coach WHERE batch_id='".$row_load_data['batch_id']."') ";
+				if($coach_id !="")
+				{
+					$sql_get_coach .=" AND  id='".$coach_id."'";
+				}
+				
+				$res_get_coach  = mysqli_query($db_con,$sql_get_coach) or die(mysqli_error($db_con));
+				while($crow  = mysqli_fetch_array($res_get_coach))
+				{
+					array_push($coach_arr,ucwords($crow['fullname']));
+				}
+				 $competition_data .= '<td style="text-align:center">'.implode(', ',$coach_arr).'</td>';
+				$start_date        = explode('-',$row_load_data['start_date']);
+			    $competition_data .= '<td style="text-align:center">'.@$start_date[2].'-'.@$start_date[1].'-'.@$start_date[0].'</td>';
+				$end_date        = explode('-',$row_load_data['end_date']);
+			    $competition_data .= '<td style="text-align:center">'.@$end_date[2].'-'.@$end_date[1].'-'.@$end_date[0].'</td>';		
 				$competition_data .= '</tr>';															
 			}	
       		$competition_data .= '</tbody>';
@@ -105,11 +112,8 @@ if((isset($obj->load_competition)) == "1" && isset($obj->load_competition))
 		{
 			$response_array = array("Success"=>"fail","resp"=>"No Data Available");
 		}
-	}
-	else
-	{
-		$response_array = array("Success"=>"fail","resp"=>"No Row Limit and Page Number Specified");
-	}
+	
+	
 	echo json_encode($response_array);	
 }
 if((isset($obj->load_student)) == "1" && isset($obj->load_student))
@@ -148,7 +152,7 @@ if((isset($obj->load_student)) == "1" && isset($obj->load_student))
 			$student_data .= '<tr>';				
 			$student_data .= '<td style="text-align:center">'.++$start_offset.'</td>';				
 		
-			$student_data .= '<td style="text-align:center">'.ucwords($row_load_data['student_name']).'</td>';
+			$student_data .= '<td style="text-align:center">'.ucwords($row_load_data['student_fname']).' '.ucwords($row_load_data['student_mname']).' '.ucwords($row_load_data['student_lname']).'</td>';
 				$student_data .= '<td style="text-align:center">'.$row_load_data['student_gender'].'</td>';
 			
 			$student_data .= '<td style="text-align:center">'.$row_load_data['student_email'].'</td>';	

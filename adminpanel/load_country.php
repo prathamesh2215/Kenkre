@@ -1,46 +1,14 @@
 <?php
 include("include/routines.php");
+include("include/db_con.php");
+include("include/query-helper.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
 //var_dump($obj = json_decode($json));
 $uid				= $_SESSION['panel_user']['id'];
 $utype				= $_SESSION['panel_user']['utype'];
 
-function insertArea($area_name,$area_direction,$area_pincode,$area_status,$response_array)
-{
-	global $obj;
-	global $db_con, $datetime;
-	global $uid;
-	$sql_check_area 	 = " select * from tbl_area where area_name = '".$area_name."' "; 
-	$result_check_area 	 = mysqli_query($db_con,$sql_check_area) or die(mysqli_error($db_con));
-	$num_rows_check_area = mysqli_num_rows($result_check_area);
-	
-	$sql_last_rec      = "Select * from tbl_area order by area_id desc LIMIT 0,1";
-	$result_last_rec   = mysqli_query($db_con,$sql_last_rec) or die(mysqli_error($db_con));
-	$num_rows_last_rec = mysqli_num_rows($result_last_rec);
-	
-	if($num_rows_last_rec == 0)
-	{
-		$area_id 		= 1;				
-	}
-	else
-	{
-		$row_last_rec = mysqli_fetch_array($result_last_rec);				
-		$area_id 	  = $row_last_rec['area_id']+1;
-	}
-	$sql_insert_area    = " INSERT INTO `tbl_area`(`area_id`, `area_name`, `area_direction`, `area_pincode`, `area_created`, `area_created_by`,`area_status`) ";
-	$sql_insert_area   .= "VALUES ('".$area_id."', '".$area_name."', '".$area_direction."', '".$area_pincode."', '".$datetime."', '".$uid."', '".$area_status."')";			
-	$result_insert_area = mysqli_query($db_con,$sql_insert_area) or die(mysqli_error($db_con));
-	if($result_insert_area)
-	{
-		$response_array = array("Success"=>"Success","resp"=>"Data Inserted Successfully");					
-	}
-	else
-	{
-		$response_array = array("Success"=>"fail","resp"=>"Record Not Inserted.");					
-	}			
-	return $response_array;
-}
+
 
 //------------------this is used for inserting records---------------------
 if((isset($_POST['insert_country'])) == "1" && isset($_POST['insert_country']))
@@ -111,7 +79,7 @@ if((isset($obj->load_country)) == "1" && isset($obj->load_country))
 	$start_offset   = 0;
 	$page 			= $obj->page;	
 	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
+	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);	
 	
 	if($page != "" && $per_page != "")	
 	{

@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -60,7 +61,7 @@ if(isset($_POST['jsubmit']) && $_POST['jsubmit'] == "loadusers" )
 	$start_offset += $page * $per_page;
 	$start 			= $page * $per_page;
 	$mainquery =  "select id,fullname, userid, email, password, mobile_num, (select clientname from tbl_users_owner where id = tbl_users_owner ) ";
-	$mainquery .= "  as user_owner, ( SELECT city_name  FROM `city` where city_id = city ) as city_name, ";
+	$mainquery .= "  as user_owner, ( SELECT city_name  FROM `tbl_city` where city_id = city ) as city_name, ";
 	$mainquery .= " (select at_name from tbl_admin_type where  at_id = utype) as user_type from tbl_cadmin_users where `utype` != '5' ";
 	
 	if((strcmp($user_type,"All") !== 0))
@@ -91,15 +92,15 @@ if(isset($_POST['jsubmit']) && $_POST['jsubmit'] == "loadusers" )
     	 <thead>
     	  <tr>
          <th>Sr. No.</th>
-              <th>User Type</th>
-                  <th>Full Name</th>
-                  <th>Userid</th>
-                  <th>Email</th>
-                  <th>Mobile</th>
-                  <th>City</th>
-                  <th>User Owner</th>
-                  <th>Edit</th>
-                  <th>
+              <th style="text-align:center">User Type</th>
+                  <th style="text-align:center">Full Name</th>
+                  <th style="text-align:center">Userid</th>
+                  <th style="text-align:center">Email</th>
+                  <th style="text-align:center">Mobile</th>
+                  <th style="text-align:center">City</th>
+                  <th style="text-align:center">User Owner</th>
+                  <th style="text-align:center">Edit</th>
+                  <th style="text-align:center">
                   <!--<input type="checkbox" id="selectall" />Select all<br>-->
                   <input type="submit"  value="Delete" class="btn-danger" onClick="delete_user();"/>
               </th>
@@ -110,20 +111,22 @@ if(isset($_POST['jsubmit']) && $_POST['jsubmit'] == "loadusers" )
 			{  
 				$start_offset++; ?>
       			<tr>
-          			<td><?php print $start_offset; ?>			</td>
-                    <td><?php echo $vals['user_type']; ?>			</td>
-                    <td><a href="edit_user.php?id=<?php echo $vals['id'] ?>" title="Edit"><?php echo $vals['fullname']; ?></a></td>
-                    <td><?php echo $vals['userid']; ?>			</td>
-                    <td><?php echo $vals['email']; ?>			</td>
-                    <td><?php	if(strcmp($vals['mobile_num'],"") !== 0) {echo $vals['mobile_num'];}else{ echo '<span style="color:#E63A3A">Not Available.<span>'; } ?>		</td>
-                    <td><?php	if(strcmp($vals['city_name'],"") !== 0) {echo $vals['city_name'];}else{ echo '<span style="color:#E63A3A">Not Available.<span>'; } ?>		</td>
+          			<td  style="text-align:center"><?php print $start_offset; ?>			</td>
+                    <td  style="text-align:center"><?php echo ucwords($vals['user_type']); ?>			</td>
+                    <td  style="text-align:center"><a href="edit_user.php?id=<?php echo $vals['id'] ?>" title="Edit">
+					<?php echo ucwords
+					($vals['fullname']); ?></a></td>
+                    <td  style="text-align:center"><?php echo $vals['userid']; ?>			</td>
+                    <td style="text-align:center"><?php echo $vals['email']; ?>			</td>
+                    <td style="text-align:center"><?php	if(strcmp($vals['mobile_num'],"") !== 0) {echo $vals['mobile_num'];}else{ echo '<span style="color:#E63A3A">Not Available.<span>'; } ?>		</td>
+                    <td style="text-align:center"><?php	if(strcmp($vals['city_name'],"") !== 0) {echo $vals['city_name'];}else{ echo '<span style="color:#E63A3A">Not Available.<span>'; } ?>		</td>
                     <td style="text-align:center"><?php echo $vals['user_owner']; ?></td>
                     <!--
                     <td><?php //echo $vals['created']; ?></td>
                     <td style="text-align:center"><?php //echo $vals['modified']; ?></td>
                     -->
-                    <td><div align="center" style="margin-right:5px"><a href="edit_user.php?id=<?php echo $vals['id'] ?>" title="Edit"  class="icon-edit">Edit</a></div></td>
-                    <td>                                                        
+                    <td style="text-align:center"><div align="center" style="margin-right:5px"><a href="edit_user.php?id=<?php echo $vals['id'] ?>" title="Edit"  class="icon-edit">Edit</a></div></td>
+                    <td style="text-align:center">                                                        
 		           	 	<div class="controls" align="center">
     		        	    <input type="checkbox" value = "<?php print $vals['id']; ?>" id="batch<?php print $vals['id']; ?>" name="batch<?php print $vals['id']; ?>"  class="css-checkbox batch">
         		    	    <label for="batch<?php print $vals['id']; ?>" class="css-label"></label>
@@ -405,7 +408,7 @@ function delete_user()
                                         $result_city_id_data = mysqli_query($db_con,$sql_get_city) or die(mysqli_error($db_con));
                                         while($row_city_id_data = mysqli_fetch_array($result_city_id_data))
                                         {
-                                            $sql_city_list = "SELECT city_id,city_name FROM `city` where city_id = '".$row_city_id_data['city']."' ";
+                                            $sql_city_list = "SELECT city_id,city_name FROM `tbl_city` where city_id = '".$row_city_id_data['city']."' ";
                                             $result_city_list = mysqli_query($db_con,$sql_city_list) or die(mysqli_error($db_con));
                                             while($row_city_list = mysqli_fetch_array($result_city_list))
                                             {

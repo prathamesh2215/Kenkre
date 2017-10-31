@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -225,7 +227,7 @@ if(isset($obj->getType) && $obj->getType==1)
 			
 			while($row_comp = mysqli_fetch_array($res_get_comp))
 			{
-				$data .='	  <input value="'.$row_comp['competition_id'].'" id="comp'.$row_comp['competition_id'].'" onclick="getData(\'team\');unCheck(\'team'.$row_comp['competition_id'].'\',\'acomp\')" name="comp[]" class="css-checkbox acomp"   type="checkbox">'.$row_comp['competition_name'].'
+				$data .='	  <input value="'.$row_comp['competition_id'].'" id="comp'.$row_comp['competition_id'].'" onclick="getData(\'team\');unCheck(\'team'.$row_comp['competition_id'].'\',\'acomp\')" name="comp[]" class="css-checkbox acomp"   type="checkbox">'.ucwords($row_comp['competition_name']).'
 			<label for="comp'.$row_comp['competition_id'].'" class="css-label"></label>';
 			}
 			
@@ -255,7 +257,7 @@ if(isset($obj->getType) && $obj->getType==1)
 			
 			while($row_comp = mysqli_fetch_array($res_get_comp))
 			{
-				$data .='	  <input value="'.$row_comp['team_id'].'" id="team'.$row_comp['team_id'].'" onclick="unCheck(\'team'.$row_comp['team_id'].'\',\'ateam\')"  name="team[]" class="css-checkbox ateam"  type="checkbox">'.$row_comp['team_name'].'
+				$data .='	  <input value="'.$row_comp['team_id'].'" id="team'.$row_comp['team_id'].'" onclick="unCheck(\'team'.$row_comp['team_id'].'\',\'ateam\')"  name="team[]" class="css-checkbox ateam"  type="checkbox">'.ucwords($row_comp['team_name']).'
 			<label for="team'.$row_comp['team_id'].'" class="css-label"></label>';
 			}
 			
@@ -284,7 +286,7 @@ if(isset($obj->getType) && $obj->getType==1)
 			
 			while($row_comp = mysqli_fetch_array($res_get_comp))
 			{
-				$data .='	  <input value="'.$row_comp['batch_id'].'" onclick="unCheck(\'team'.$row_comp['batch_id'].'\',\'abatch\')"  id="batch'.$row_comp['batch_id'].'"  name="batch[]" class="css-checkbox abatch"  type="checkbox">'.$row_comp['batch_name'].'
+				$data .='	  <input value="'.$row_comp['batch_id'].'" onclick="unCheck(\'team'.$row_comp['batch_id'].'\',\'abatch\')"  id="batch'.$row_comp['batch_id'].'"  name="batch[]" class="css-checkbox abatch"  type="checkbox">'.ucwords($row_comp['batch_name']).'
 			<label for="batch'.$row_comp['batch_id'].'" class="css-label"></label>';
 			}
 			
@@ -328,7 +330,7 @@ if(isset($obj->getData) && $obj->getData==1)
 			
 			while($row_comp = mysqli_fetch_array($res_get_comp))
 			{
-				$data .='	  <input value="'.$row_comp['team_id'].'" onclick="unCheck(\'team'.$row_comp['team_id'].'\',\'ateam\')" id="team'.$row_comp['team_id'].'"  name="team[]" class="css-checkbox ateam"  type="checkbox">'.$row_comp['team_name'].'
+				$data .='	  <input value="'.$row_comp['team_id'].'" onclick="unCheck(\'team'.$row_comp['team_id'].'\',\'ateam\')" id="team'.$row_comp['team_id'].'"  name="team[]" class="css-checkbox ateam"  type="checkbox">'.ucwords($row_comp['team_name']).'
 			<label for="team'.$row_comp['team_id'].'" class="css-label"></label>';
 			}
 			

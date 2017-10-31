@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -17,14 +19,21 @@ if((isset($_POST['insert_area'])) == "1" && isset($_POST['insert_area']))
 	$data['area_pincode']    = mysqli_real_escape_string($db_con,$_POST['area_pincode']);
 	$data['area_status']     = mysqli_real_escape_string($db_con,$_POST['area_status']);
 	$data['area_created_by'] = $uid;
-	if($data['area_country']!="" && $data['area_state']!="" && $data['area_city']!="" && $data['area_name']!="" && $data['area_pincode']!="")
+	if(!isExist('tbl_area' ,array('area_name'=>$data['area_name'],'area_state'=>$data['area_state'],'area_city'=>$data['area_city'])))
 	{
-		insert('tbl_area',$data);
-		quit('Area added successfully..!',1);
+		if($data['area_country']!="" && $data['area_state']!="" && $data['area_city']!="" && $data['area_name']!="" && $data['area_pincode']!="")
+		{
+			insert('tbl_area',$data);
+			quit('Area added successfully..!',1);
+		}
+		else
+		{
+			quit('All fields are required...!');
+		}
 	}
 	else
 	{
-		quit('All fields are required...!');
+		quit('Area name already exist..!');
 	}
 }
 
@@ -40,16 +49,23 @@ if((isset($_POST['update_area'])) == "1" && isset($_POST['update_area']))
 	$data['area_modified_by']  = $uid;
 	$area_id                   = mysqli_real_escape_string($db_con,$_POST['area_id']);
 	
-	if($data['area_country']!="" && $data['area_state']!="" && $data['area_city']!="" && $data['area_name']!="" && $data['area_pincode']!="")
+	if(!isExist('tbl_area' ,array('area_name'=>$data['area_name'],'area_state'=>$data['area_state'],'area_city'=>$data['area_city']),array('area_id'=>$area_id)))
 	{
-		
-		update('tbl_area',$data,array('area_id'=>$area_id));
-		quit('Area Updated successfully..!',1);
+		if($data['area_country']!="" && $data['area_state']!="" && $data['area_city']!="" && $data['area_name']!="" && $data['area_pincode']!="")
+		{
+			update('tbl_area',$data,array('area_id'=>$area_id));
+			quit('Area Updated successfully..!',1);
+		}
+		else
+		{
+			quit('All fields are required...!');
+		}
 	}
 	else
 	{
-		quit('All fields are required...!');
+		quit('Area name already taken...!');
 	}
+	
 }
 
 //------------------this is used for update records---------------------
@@ -128,7 +144,7 @@ if((isset($obj->load_area)) == "1" && isset($obj->load_area))
 	$start_offset   = 0;
 	$page 			= $obj->page;	
 	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
+	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);	
 	
 	if($page != "" && $per_page != "")	
 	{
@@ -143,11 +159,11 @@ if((isset($obj->load_area)) == "1" && isset($obj->load_area))
 							FROM `tbl_area` AS ti WHERE 1=1";
 		if(strcmp($utype,'1') !== 0)
 		{
-			$sql_load_data  .= " AND area_created_by='".$uid."' ";
+			//$sql_load_data  .= " AND area_created_by='".$uid."' ";
 		}
 		if($search_text != "")
 		{
-			$sql_load_data .= " and (area_name like '%".$search_text."%' or area_pincode = '".$search_text."' ";
+			$sql_load_data .= " and (area_name like '%".$search_text."%' or area_pincode like '%".$search_text."%' ";
 			$sql_load_data .= " or area_id = '".$search_text."') ";	
 		}
 		$data_count		  = dataPagination($sql_load_data,$per_page,$start,$cur_page);		
@@ -205,10 +221,14 @@ if((isset($obj->load_area)) == "1" && isset($obj->load_area))
 					$area_data .= '<td style="text-align:center"><input type="button" value="'.ucwords($row_load_data['area_name']).'-'.ucwords($row_load_data['area_direction']).'" class="btn-link" id="'.$row_load_data['area_id'].'" onclick="addMoreArea(this.id,\'view\');"></td>';
 				}
 				
-				$area_data .= '<td style="text-align:center">'.$row_load_data['area_pincode'].'</td>';			
-				$area_data .= '<td style="text-align:center">'.$row_load_data['area_created'].'</td>';
+				$area_data .= '<td style="text-align:center">'.$row_load_data['area_pincode'].'</td>';
+				$area_created = strtotime($row_load_data['area_created']);
+	            $area_data .= '<td style="text-align:center">'.date(' j M, Y, g : i a',$area_created).'</td>';			
+				//$area_data .= '<td style="text-align:center">'.$row_load_data['area_created'].'</td>';
 				$area_data .= '<td style="text-align:center">'.$row_load_data['name_created_by'].'</td>';
-				$area_data .= '<td style="text-align:center">'.$row_load_data['area_modified'].'</td>';
+				//$area_data .= '<td style="text-align:center">'.$row_load_data['area_modified'].'</td>';
+				$area_modified = strtotime($row_load_data['area_modified']);
+	            $area_data .= '<td style="text-align:center">'.date(' j M, Y, g : i a',$area_modified).'</td>';	
 				$area_data .= '<td style="text-align:center">'.$row_load_data['name_midified_by'].'</td>';
 				$dis = checkFunctionalityRight("view_area.php",3);
 				
@@ -530,12 +550,15 @@ if((isset($obj->delete_area)) == "1" && isset($obj->delete_area))
 	$del_flag 		  = 0; 
 	foreach($ar_area_id as $area_id)	
 	{
-		$sql_delete_area	= " DELETE FROM `tbl_area` WHERE `area_id` = '".$area_id."' ";
-		$result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));			
-		if($result_delete_area)
+		$sql_update_status 		= " UPDATE `tbl_area` SET `area_status`= '0' ,`area_modified` = '".$datetime."' ";
+		$sql_update_status 	   .= " ,`area_modified_by` = '".$uid."' WHERE `area_id`='".$area_id."' ";
+		$result_update_status 	= mysqli_query($db_con,$sql_update_status) or die(mysqli_error($db_con));
+		/*$sql_delete_area	= " DELETE FROM `tbl_area` WHERE `area_id` = '".$area_id."' ";
+		$result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));		*/		
+		if($result_update_status)
 		{
 			$del_flag = 1;	
-		}			
+		}		
 	}	
 	if($del_flag == 1)
 	{
@@ -550,10 +573,11 @@ if((isset($obj->delete_area)) == "1" && isset($obj->delete_area))
 
 // ==========================================================================
 // =====================Get City===================================================
-if((isset($obj->getState)) == "1" && isset($obj->getState))
+
+if((isset($_POST['change_city'])) == "1" && isset($_POST['change_city']))
 {
 	$response_array   = array();		
-	$state_id 	  = $obj->state_id;
+	$state_id 	  = $_POST['state_id'];
 	
 	if($state_id=="")
 	{
@@ -566,6 +590,7 @@ if((isset($obj->getState)) == "1" && isset($obj->getState))
 	$res = mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
 	if(mysqli_num_rows($res)==0)
 	{
+		quit($sql);
 	}
 	else
 	{
@@ -573,6 +598,7 @@ if((isset($obj->getState)) == "1" && isset($obj->getState))
 		{
 			$data .='<option value="'.$row['city_id'].'">'.$row['city_name'].'</option>';
 		}
+		
 		quit($data,1);
 	}
 	

@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 
 $title  		= "Child Feature";

@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -10,17 +12,12 @@ if((isset($obj->load_notification)) == "1" && isset($obj->load_notification))
 {
 	$response_array = array();	
 	$start_offset   = 0;
-	$page 			= $obj->page;	
-	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
 	
 	$type 		    = $obj->type;	
 	$start_date 	= $obj->start_date;	
 	$end_date 		= $obj->end_date;	
 	
-	if($page != "" && $per_page != "")	
-	{
-		$cur_page 		= $page;
+	$cur_page 		= $page;
 		$page 	   	   	= $page - 1;
 		$start_offset  += $page * $per_page;
 		$start 			= $page * $per_page;
@@ -61,8 +58,8 @@ if((isset($obj->load_notification)) == "1" && isset($obj->load_notification))
 			$sql_load_data .= " or message like '%".$search_text."%' student_name like '%".$search_text."%' ) ";	
 		}
 		//quit($sql_load_data);
-		$data_count		  = dataPagination($sql_load_data,$per_page,$start,$cur_page);		
-		$sql_load_data   .= " ORDER BY id DESC LIMIT $start, $per_page ";
+	//	$data_count		  = dataPagination($sql_load_data,$per_page,$start,$cur_page);		
+		$sql_load_data   .= " ORDER BY id DESC  ";
 		$result_load_data = mysqli_query($db_con,$sql_load_data) or die(mysqli_error($db_con));	
 				
 		if(strcmp($data_count,"0") !== 0)
@@ -75,6 +72,8 @@ if((isset($obj->load_notification)) == "1" && isset($obj->load_notification))
 			$notification_data .= '<th style="text-align:center">Student Name</th>';
 			$notification_data .= '<th style="text-align:center">Mobile Number</th>';
 			$notification_data .= '<th style="text-align:center">Message</th>';
+			$notification_data .= '<th style="text-align:center">Type</th>';
+			
 			$notification_data .= '<th style="text-align:center">Date</th>';
 			$notification_data .= '</tr>';
       		$notification_data .= '</thead>';
@@ -84,9 +83,22 @@ if((isset($obj->load_notification)) == "1" && isset($obj->load_notification))
 	    	  	$notification_data .= '<tr>';				
 				$notification_data .= '<td style="text-align:center">'.++$start_offset.'</td>';				
 			
-				$notification_data .= '<td style="text-align:center">'.ucwords($row_load_data['student_name']).'</td>';
+				$notification_data .= '<td style="text-align:center">'.ucwords($row_load_data['student_fname']).' '.ucwords($row_load_data['student_mname']).' '.ucwords($row_load_data['student_lname']).'</td>';
 					$notification_data .= '<td style="text-align:center">'.$row_load_data['student_mobile'].'</td>';
 				$notification_data .= '<td style="text-align:center">'.$row_load_data['message'].'</td>';		
+				if($type !="")
+				{
+					$notification_data .= '<td style="text-align:center">'.$type.'</td>';		
+				}
+				elseif($row_load_data['type']=='SMS Notification' || $row_load_data['type']=='SMS Bulk Notification')
+				{
+					$notification_data .= '<td style="text-align:center">SMS</td>';		
+				}
+				else
+				{
+					$notification_data .= '<td style="text-align:center">Email</td>';		
+				}
+				
 				$notification_data .= '<td style="text-align:center">'.$row_load_data['created_date'].'</td>';		
 				$notification_data .= '</tr>';															
 			}	
@@ -99,11 +111,7 @@ if((isset($obj->load_notification)) == "1" && isset($obj->load_notification))
 		{
 			$response_array = array("Success"=>"fail","resp"=>"No Data Available");
 		}
-	}
-	else
-	{
-		$response_array = array("Success"=>"fail","resp"=>"No Row Limit and Page Number Specified");
-	}
+	
 	echo json_encode($response_array);	
 }
 if((isset($obj->load_student)) == "1" && isset($obj->load_student))

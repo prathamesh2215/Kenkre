@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -26,6 +27,12 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 	/* This function used to call all header data like css files and links */	
 ?>
 <link rel="stylesheet" href="css/datepicker.css" />
+<style>
+.head2
+{
+	font-size:17px;
+}
+</style>
 </head>
 <body  class="<?php echo $theme_name;?>" data-theme="<?php echo $theme_name;?>" >
 	<?php 
@@ -109,7 +116,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_add_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">                                     
-                                    	<form id="frm_area_add" class="form-horizontal form-bordered form-validate" >
+                                    	<form id="frm_coach_add" class="form-horizontal form-bordered form-validate" >
                                         	<div id="div_add_area_part">
                                         	</div>                                    
                                         </form>
@@ -135,7 +142,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_edit_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
-                                        <form id="frm_area_edit" class="form-horizontal form-bordered form-validate" >
+                                        <form id="frm_coach_edit" class="form-horizontal form-bordered form-validate" >
                                             <div id="div_edit_area_part">
                                             </div>                                    
                                         </form>                                    
@@ -155,10 +162,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                             <div class="span12">
                                 <div class="box box-color box-bordered">
                                     <div class="box-title">
-                                        <h3>
+                                      <!--  <h3>
                                             <i class="icon-table"></i>
                                             Coach Details
-                                        </h3>
+                                        </h3>-->
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_area_details','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
@@ -218,7 +225,17 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			//loadData1();
 			<?php
 			}
+			
+			
+			if(isset($_REQUEST['coach_id']) && $_REQUEST['coach_id']!='')
+			{?>
+			
+			addMoreArea(<?php echo $_REQUEST['coach_id']; ?>,'view');
+			
+			<?php
+			}
 			?>
+			
 			$('#container1 .pagination li.active').live('click',function()
 			{
 				var page = $(this).attr('p');
@@ -250,8 +267,8 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 			else
 			{
-				delete_area 	= 1;
-				var sendInfo 	= {"batch":batch, "delete_area":1};
+				delete_coach 	= 1;
+				var sendInfo 	= {"batch":batch, "delete_coach":1};
 				var del_cat 	= JSON.stringify(sendInfo);								
 				$.ajax({
 					url: "load_coach.php?",
@@ -353,7 +370,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			{
 				$('#div_view_area_details').css("display", "block");				
 			}							
-			var sendInfo = {"area_id":area_id,"req_type":req_type,"load_area_parts":1};
+			var sendInfo = {"area_id":area_id,"req_type":req_type,"load_coach_parts":1};
 			var cat_load = JSON.stringify(sendInfo);
 			$.ajax({
 					url: "load_coach.php?",
@@ -462,10 +479,26 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		
 		
 		
-		$('#frm_area_add').on('submit', function(e) {
+		$('#frm_coach_add').on('submit', function(e) {
 			e.preventDefault();
-			if ($('#frm_area_add').valid())
+			if ($('#frm_coach_add').valid())
 			{
+				start_date = $('#contract_start_date').val();
+				start_date = start_date.split('-');
+				start_date = start_date[2]+'-'+start_date[1]+'-'+start_date[0];
+				
+				end_date   = $('#contract_end_date').val();
+				end_date = end_date.split('-');
+				end_date = end_date[2]+'-'+end_date[1]+'-'+end_date[0];
+				var x = new Date(start_date);
+                var y = new Date(end_date);
+				
+				if(y < x)
+				{
+					alert('Contract End date should be greater than Contract start date...!');
+					return false;
+				}
+				
 				$.ajax({
 						url: "load_coach.php",
 						type: "POST",
@@ -508,10 +541,30 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 		});	/* Add Area*/
 		
-		$('#frm_area_edit').on('submit', function(e) {
+		$('#frm_coach_edit').on('submit', function(e) {
 			e.preventDefault();
-			if ($('#frm_area_edit').valid())
+			if ($('#frm_coach_edit').valid())
 			{
+				start_date = $('#contract_start_date').val();
+				end_date   = $('#contract_end_date').val();
+				if(start_date !="" && end_date!="")
+				{
+					start_date = start_date.split('-');
+					start_date = start_date[2]+'-'+start_date[1]+'-'+start_date[0];
+					
+					
+					end_date = end_date.split('-');
+					end_date = end_date[2]+'-'+end_date[1]+'-'+end_date[0];
+					var x = new Date(start_date);
+					var y = new Date(end_date);
+					
+					if(y < x)
+					{
+						alert('Contract End date should be greater than Contract start date...!');
+						return false;
+					}
+				}
+				
 				
 				$.ajax({
 						url: "load_coach.php",
@@ -558,7 +611,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				
 				
 		function charsonly(e)
-		 {
+		{
   			  var unicode=e.charCode? e.charCode : e.keyCode
 			 
 			  if (unicode !=8 && unicode !=32)
@@ -766,42 +819,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			});		
 		
 		}
-		
-		function checkbatch(competition_id)
-		{
-			if($("#comp"+competition_id).attr("checked")) 
-			{
-				$(".batch"+competition_id).prop("checked",true);
-			} 
-			else 
-			{
-				$(".batch"+competition_id).prop("checked",false);
-			}
-		}
-		
-		function checkcompetition(competition_id,batch_id)
-		{
-			batch =[];
-			$(".batch"+competition_id+":checked").each(function ()
-			{
-				batch.push(parseInt($(this).val()));
-			});
-			
-			if($("#cbatch"+batch_id).attr("checked")) 
-			{
-				$("#comp"+competition_id).prop("checked",true);
-			} 
-			else 
-			{
-				if(batch.length < 1)
-				{
-					$("#comp"+competition_id).prop("checked",false);
-				}
-				
-			}
-		}
-		
-		
 		
 		//==================== Start : For Image Preview======================//
 		

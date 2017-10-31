@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -39,7 +40,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_view_area">                
 					<?php 
                     /* this function used to add navigation menu to the page*/ 
-                    breadcrumbs($home_url,$home_name,'View Competition',$filename,$feature_name); 
+                    breadcrumbs($home_url,$home_name,'View Batches',$filename,$feature_name); 
                     /* this function used to add navigation menu to the page*/ 
                     ?>          
                         <div class="row-fluid">
@@ -51,11 +52,13 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <?php echo $feature_name; ?>
                                         </h3>
                                         
-                                      
-                                        <div style="float:right;width:;"> 
+                                      &nbsp;&nbsp;&nbsp;
+                                        <div style="float:left;width:;"> &nbsp;&nbsp;&nbsp;
                                 <select name="ft_coach" id="ft_coach"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
                                         <option value="">Select Coach</option>
-                                        <?php   $sql_get_coach     = " SELECT * FROM `tbl_cadmin_users` WHERE `status` = 1 AND utype=15 order by fullname asc";
+                                        <?php   $sql_get_coach     = " SELECT * FROM `tbl_cadmin_users` WHERE `status` = 1 AND utype=15";
+												$sql_get_coach    .= " AND id IN (SELECT DISTINCT coach_id FROM tbl_batch_coach)";
+										 	    $sql_get_coach    .= " order by fullname asc";
 												$res_get_coach = mysqli_query($db_con,$sql_get_coach) or die(mysqli_error($db_con));
 												while($coach_row  = mysqli_fetch_array($res_get_coach))
 												{
@@ -84,13 +87,13 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div style="padding:10px 15px 10px 15px !important">
                                     	<input type="hidden" name="hid_page" id="hid_page" value="1">
                                     	<input type="hidden" name="ind_parent" id="ind_parent" value="Parent">
-                                        <select name="rowlimit" id="rowlimit" onChange="loadData();"  class = "select2-me">
+                                       <!-- <select name="rowlimit" id="rowlimit" onChange="loadData();"  class = "select2-me">
                                             <option value="10" selected>10</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Fullname, Email, Mobile Number can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Fullname, Email, Mobile Number can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >-->
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -248,9 +251,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		function loadData()
 		{
 			loading_show();
-			row_limit   = $.trim($('select[name="rowlimit"]').val());
-			search_text = $.trim($('#srch').val());
-			page        = $.trim($("#hid_page").val());	
+			
 			
 			coach_id         = $("#ft_coach").val();	
 			batch_id	     = $("#ft_batch").val();
@@ -258,15 +259,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			end_date	     = $("#end_date").val();
 					
 								
-			if(row_limit == "" && page == "")
-			{
-				$("#model_body").html('<span style="style="color:#F00;">Can not Get Row Limit and Page number</span>');	
-				$('#error_model').modal('toggle');
-				loading_hide();							
-			}
-			else
-			{
-				var sendInfo = {"coach_id":coach_id,"batch_id":batch_id,"end_date":end_date,"start_date":start_date,"row_limit":row_limit, "search_text":search_text, "load_competition":1, "page":page};
+			var sendInfo = {"coach_id":coach_id,"batch_id":batch_id,"end_date":end_date,"start_date":start_date,"load_competition":1};
 				var ind_load = JSON.stringify(sendInfo);				
 				$.ajax({
 					url: "load_batch_report.php?",
@@ -299,7 +292,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 						//alert("complete");
 					}
 			    });
-			}
+			
 		}   /*Load Data*/
 		
 		function viewStudent(batch_id,req_type)

@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -53,10 +54,11 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         </h3>
                                         
                                       
-                                        <div style="float:right;width:;"> 
+                                       <!-- <div style="float:right;width:;"> 
                                 <select name="ft_coach" id="ft_coach"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
                                         <option value="">Select Coach</option>
-                                        <?php   $sql_get_coach     = " SELECT * FROM `tbl_cadmin_users` WHERE `status` = 1 AND utype=15 order by fullname asc";
+                                        <?php   $sql_get_coach     = " SELECT * FROM `tbl_cadmin_users` 
+																	WHERE `status` = 1 AND utype=15 order by fullname asc";
 												$res_get_coach = mysqli_query($db_con,$sql_get_coach) or die(mysqli_error($db_con));
 												while($coach_row  = mysqli_fetch_array($res_get_coach))
 												{
@@ -65,22 +67,26 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                                 
                                            <?php } ?>
                                                 </select>
-                                        </div>
-                                      <div style="float:right;width:;"> 
-                                         <select name="ft_batch" id="ft_batch"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
-                                        <option value="">Select Batch</option>
-                                        <?php   $sql_get_batch     = " SELECT * FROM `tbl_batches` WHERE `batch_status` = 1 order by batch_name asc";
+                                        </div>-->
+                                      <div style="float:left;"> 
+                                      &nbsp;&nbsp;&nbsp;
+                                         <select name="ft_team" id="ft_team"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
+                                        <option value="">Select Team</option>
+                                        <?php   $sql_get_batch  = " SELECT * FROM `tbl_team` WHERE `team_status` = 1 ";
+												$sql_get_batch .= "	AND team_id IN( SELECT DISTINCT team_id FROM tbl_competition_team)";
+												$sql_get_batch .= "						order by team_name asc";
 												$res_get_batch = mysqli_query($db_con,$sql_get_batch) or die(mysqli_error($db_con));
 												while($batch_row  = mysqli_fetch_array($res_get_batch))
 												{
 										?>
-                                                <option value="<?php echo $batch_row['batch_id']; ?>"><?php echo ucwords($batch_row['batch_name']); ?></option>
+                                                <option value="<?php echo $batch_row['team_id']; ?>"><?php echo ucwords($batch_row['team_name']); ?></option>
                                                 
                                            <?php } ?>
                                               </select>
                                         </div>
                                         
-                                        <div style="float:right;width:;"> 
+                                        <div style="float:left;"> 
+                                         &nbsp;&nbsp;&nbsp;
                                          <select name="ft_competition" id="ft_competition"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
                                         <option value="">Select Competition</option>
                                         <?php   $sql_get_batch     = " SELECT * FROM `tbl_competition` WHERE `competition_status` = 1 ";
@@ -115,17 +121,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 
                                     <div class="box-content nopadding">
                                     
-                                    <!--<div style="padding:10px 15px 10px 15px !important">
-                                    	<input type="hidden" name="hid_page" id="hid_page" value="1">
-                                    	<input type="hidden" name="ind_parent" id="ind_parent" value="Parent">
-                                        <select name="rowlimit" id="rowlimit" onChange="loadData();"  class = "select2-me">
-                                            <option value="10" selected>10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Fullname, Email, Mobile Number can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
-                                    </div>-->
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
                                         <div style="width:99%;" align="center">
@@ -141,58 +136,8 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                             </div>
                         </div>
                     </div>  <!-- view Area -->
-                <div class="container-fluid" id="div_add_area" style="display:none">                
-					<?php 
-						/* this function used to add navigation menu to the page*/ 
-						breadcrumbs($home_url,$home_name,'Add Student',$filename,$feature_name); 
-						/* this function used to add navigation menu to the page*/ 
-					?>           
-                    <div class="row-fluid">
-                            <div class="span12">
-                                <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            Add Student
-                                        </h3>
-                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_add_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding">                                     
-                                    	<form id="frm_area_add" class="form-horizontal form-bordered form-validate" >
-                                        	<div id="div_add_area_part">
-                                        	</div>                                    
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-             	</div> <!-- Add Area -->
-                <div class="container-fluid" id="div_edit_area" style="display:none">   
-                    <?php 
-                        /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'Edit Student',$filename,$feature_name); 
-                        /* this function used to add navigation menu to the page*/ 
-                    ?>                                    
-                    <div class="row-fluid">
-                            <div class="span12">
-                                <div class="box box-color box-bordered">
-                                    <div class="box-title">
-                                        <h3>
-                                            <i class="icon-table"></i>
-                                            Edit Student
-                                        </h3>
-                                        <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_edit_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
-                                    </div> <!-- header title-->
-                                    <div class="box-content nopadding">
-                                        <form id="frm_area_edit" class="form-horizontal form-bordered form-validate" >
-                                            <div id="div_edit_area_part">
-                                            </div>                                    
-                                        </form>                                    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- Edit Area -->                                
+             
+                                       
                        
                 <div class="container-fluid" id="div_view_area_details" style="display:none">                
                     <?php 
@@ -286,14 +231,14 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			search_text = $.trim($('#srch').val());
 			page        = $.trim($("#hid_page").val());	
 			
-			coach_id         = $("#ft_coach").val();	
-			batch_id	     = $("#ft_batch").val();
+			//coach_id         = $("#ft_coach").val();	
+			team_id	     = $("#ft_team").val();
 			start_date       = $("#start_date").val();	
 			end_date	     = $("#end_date").val();
 			competition_id   = $("#ft_competition").val();	
 								
 			
-			var sendInfo = {"competition_id":competition_id,"coach_id":coach_id,"batch_id":batch_id,"start_date":start_date,"end_date":end_date,"row_limit":row_limit, "search_text":search_text, "load_competition":1, "page":page};
+			var sendInfo = {"competition_id":competition_id,"team_id":team_id,"start_date":start_date,"end_date":end_date,"row_limit":row_limit, "search_text":search_text, "load_competition":1, "page":page};
 				var ind_load = JSON.stringify(sendInfo);				
 				$.ajax({
 					url: "load_competition_report.php?",
@@ -329,22 +274,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			
 		}   /*Load Data*/
 		
-		function viewStudent(competition_id,req_type)
+		function viewStudnets(competition_id)
 		{
-			$('#div_view_area').css("display", "none");
-			if(req_type == "add")
-			{
-				$('#div_add_area').css("display", "block");				
-			}
-			else if(req_type == "edit")
-			{
-				$('#div_edit_area').css("display", "block");				
-			}	
-			else if(req_type == "view")
-			{
-				$('#div_view_area_details').css("display", "block");				
-			}							
-			var sendInfo = {"competition_id":competition_id,"load_student":1};
+		    var sendInfo = {"competition_id":competition_id,"load_students":1};
 			var cat_load = JSON.stringify(sendInfo);
 			$.ajax({
 					url: "load_competition_report.php?",
@@ -356,22 +288,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 						data = JSON.parse(response);
 						if(data.Success == "Success") 
 						{
-							$("#div_add_area_part").html(' ');
-							$("#div_edit_area_part").html(' ');	
-							$("#div_view_area_details_part").html(' ');
-										
-							if(req_type == "add")
-							{
-								$("#div_add_area_part").html(data.resp);
-							}
-							else if(req_type == "edit")
-							{
-								$("#div_edit_area_part").html(data.resp);				
-							}	
-							else if(req_type == "view")
-							{
-								$("#div_view_area_details_part").html(data.resp);
-							}
+							$("#div_view_area_details").css('display','block');
+							$("#div_view_area").css('display','none');
+							$("#div_view_area_details_part").html(data.resp);
 							loading_hide();
 						} 
 						else if(data.Success == "fail") 
@@ -393,7 +312,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 						//alert("complete");
 					}
 				});
-		}		/*Add more area*/
+		}
 		
 		
 		
@@ -448,19 +367,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		});  /*Search Area*/
 		
 		
-	
-				
-				
-		function charsonly(e)
-		 {
-  			  var unicode=e.charCode? e.charCode : e.keyCode
-			 
-			  if (unicode !=8 && unicode !=32)
-			  {  // unicode<48||unicode>57 &&
-				  if (unicode<65||unicode>90 && unicode<97||unicode>122  )  //if not a number
-				  return false //disable key press
-              }
-		}
+		
 		
 		function backToMain(close_div,show_div)
 		{
@@ -468,30 +375,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			$('#'+show_div).css('display','block');
 		}
 		
-		
-		
-		 function charsonly(e)
-		 {
-  			  var unicode=e.charCode? e.charCode : e.keyCode
-			 
-			  if (unicode !=8 && unicode !=32)
-			  {  // unicode<48||unicode>57 &&
-				  if (unicode<65||unicode>90 && unicode<97||unicode>122  )  //if not a number
-				  return false //disable key press
-              }
-		}
-		
-		
-		function numsonly(e)
-		 {
-  			  var unicode=e.charCode? e.charCode : e.keyCode
-			 
-			  if (unicode !=8 && unicode !=32)
-			  {  // unicode<48||unicode>57 &&
-				  if (unicode<48||unicode>57)  //if not a number
-				  return false //disable key press
-              }
-		}
 		
 		
 		
@@ -505,43 +388,8 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			
 	   });
 	   
-	   //===========================Start Check parent child========================//
 	   
-	   function checkbatch(competition_id)
-		{
-			if($("#comp"+competition_id).attr("checked")) 
-			{
-				$(".batch"+competition_id).prop("checked",true);
-			} 
-			else 
-			{
-				$(".batch"+competition_id).prop("checked",false);
-			}
-		}
 		
-		function checkcompetition(competition_id,batch_id)
-		{
-			batch =[];
-			$(".batch"+competition_id+":checked").each(function ()
-			{
-				batch.push(parseInt($(this).val()));
-			});
-			
-			if($("#cbatch"+batch_id).attr("checked")) 
-			{
-				$("#comp"+competition_id).prop("checked",true);
-			} 
-			else 
-			{
-				if(batch.length < 1)
-				{
-					$("#comp"+competition_id).prop("checked",false);
-				}
-				
-			}
-		}
-		
-		//===========================End Check parent child========================//
 	  </script>     
 		
 		<script src="js/bootstrap-datepicker.js"></script>   

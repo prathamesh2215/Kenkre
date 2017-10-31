@@ -126,7 +126,7 @@
 </ul>
 <div class="user">
 				<div class="dropdown asdf">
-					<a href="#" class='dropdown-toggle' data-toggle="dropdown"><?php echo $_SESSION['panel_user']['fullname']; ?><span class="caret"></span></a>
+					<a href="#" class='dropdown-toggle' data-toggle="dropdown"><?php echo ucwords($_SESSION['panel_user']['fullname']); ?><span class="caret"></span></a>
 					<ul class="dropdown-menu pull-right">
 						<li>
 							<a href="#">Edit profile</a>

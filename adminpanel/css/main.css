@@ -250,6 +250,12 @@ box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset !important;
 border-color: #468847 !important;
 box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset !important;
         }
+		
+		.head2
+		{
+			font-size:17px;
+		}
+		
 		$.notify.addStyle("bootstrap", {
   html: "<div>\n<span data-notify-text></span>\n</div>",
   classes: {

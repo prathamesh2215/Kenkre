@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -39,7 +40,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_view_area">                
 					<?php 
                     /* this function used to add navigation menu to the page*/ 
-                    breadcrumbs($home_url,$home_name,'View Category',$filename,$feature_name); 
+                    breadcrumbs($home_url,$home_name,'View Fees',$filename,$feature_name); 
                     /* this function used to add navigation menu to the page*/ 
                     ?>          
                         <div class="row-fluid">
@@ -59,7 +60,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 									if($add)
 									{
 									?>
-										<button type="button" class="btn-info" onClick="addMoreArea('','add')" ><i class="icon-plus"></i>&nbspAdd Category</button>
+										<button type="button" class="btn-info" onClick="addMoreArea('','add')" ><i class="icon-plus"></i>&nbspAdd Fee</button>
 									<?php		
 									}
 									?>                                       
@@ -72,7 +73,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Category Name, Cat Id,Cat Fee can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search by Fee, Fee Id"  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -92,7 +93,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_add_area" style="display:none">                
 					<?php 
 						/* this function used to add navigation menu to the page*/ 
-						breadcrumbs($home_url,$home_name,'Add Category',$filename,$feature_name); 
+						breadcrumbs($home_url,$home_name,'Add Fee',$filename,$feature_name); 
 						/* this function used to add navigation menu to the page*/ 
 					?>           
                     <div class="row-fluid">
@@ -101,7 +102,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Add Category
+                                            Add Fee
                                         </h3>
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_add_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
@@ -118,7 +119,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_edit_area" style="display:none">   
                     <?php 
                         /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'Edit Category',$filename,$feature_name); 
+                        breadcrumbs($home_url,$home_name,'Edit Fee',$filename,$feature_name); 
                         /* this function used to add navigation menu to the page*/ 
                     ?>                                    
                     <div class="row-fluid">
@@ -127,7 +128,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Edit Category
+                                            Edit Fee
                                         </h3>
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_edit_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
@@ -145,7 +146,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 <div class="container-fluid" id="div_view_area_details" style="display:none">                
                     <?php 
                         /* this function used to add navigation menu to the page*/ 
-                        breadcrumbs($home_url,$home_name,'View Category Details',$filename,$feature_name); 
+                        breadcrumbs($home_url,$home_name,'View Fee Details',$filename,$feature_name); 
                         /* this function used to add navigation menu to the page*/ 
                     ?>        
                     <div class="row-fluid">
@@ -154,7 +155,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-title">
                                         <h3>
                                             <i class="icon-table"></i>
-                                            Category Details
+                                            Fee Details
                                         </h3>
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_area_details','div_view_area');loadData();"  ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->

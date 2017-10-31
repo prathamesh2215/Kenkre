@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -25,6 +26,13 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 	/* This function used to call all header data like css files and links */	
 ?>
 <link rel="stylesheet" href="css/datepicker.css" />
+<style>
+.head2
+{
+	font-size:17px;
+}
+</style>
+
 </head>
 <body  class="<?php echo $theme_name;?>" data-theme="<?php echo $theme_name;?>" >
 	<?php 
@@ -53,7 +61,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         </h3>
                                         
                                         
-                                         <div style="float:right;width:;"> 
+                                        <!--/* <div style="float:right;width:;"> 
                                 <select name="ft_area" id="ft_area"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
                                         <option value="">Select Area</option>
                                         <?php   $sql_get_area 			= " SELECT * FROM `tbl_area` WHERE `area_status` = 1 order by area_name";
@@ -107,7 +115,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                                         
                                                    <?php } ?>
                                           </select>
-                                        </div>
+                                        </div>*/-->
                                         
                                     </div> <!-- header title-->
 
@@ -165,7 +173,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_add_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">                                     
-                                    	<form id="frm_area_add" class="form-horizontal form-bordered form-validate" enctype="multipart/form-data" >
+                                    	<form id="frm_student_add" class="form-horizontal form-bordered form-validate" enctype="multipart/form-data" >
                                         	<div id="div_add_area_part">
                                         	</div>                                    
                                         </form>
@@ -191,7 +199,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_edit_area','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
-                                        <form id="frm_area_edit" class="form-horizontal form-bordered form-validate" >
+                                        <form id="frm_student_edit" class="form-horizontal form-bordered form-validate" >
                                             <div id="div_edit_area_part">
                                             </div>                                    
                                         </form>                                    
@@ -211,10 +219,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                             <div class="span12">
                                 <div class="box box-color box-bordered">
                                     <div class="box-title">
-                                        <h3>
+                                       <!-- <h3>
                                             <i class="icon-table"></i>
                                             Student Details
-                                        </h3>
+                                        </h3>-->
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_area_details','div_view_area');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
@@ -518,9 +526,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		});  /*Search Area*/
 		
 		
-		$('#frm_area_add').on('submit', function(e) {
+		$('#frm_student_add').on('submit', function(e) {
 			e.preventDefault();
-			if ($('#frm_area_add').valid())
+			if ($('#frm_student_add').valid())
 			{
 				$.ajax({
 						url: "load_student.php",
@@ -559,11 +567,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 		});	/* Add Area*/
 		
-		$('#frm_area_edit').on('submit', function(e) {
+		$('#frm_student_edit').on('submit', function(e) {
 			e.preventDefault();
-			if ($('#frm_area_edit').valid())
+			if ($('#frm_student_edit').valid())
 			{
-				
 				$.ajax({
 						url: "load_student.php",
 						type: "POST",
@@ -579,7 +586,6 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							{
 								alert(data.resp);
 								location.reload();
-								
 							} 
 							else 
 							{
@@ -822,47 +828,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		maxDate		: new Date(),
 			
 	   });
-	   
-	   //===========================Start Check parent child========================//
-	   
-	   function checkbatch(competition_id)
-		{
-			if($("#comp"+competition_id).attr("checked")) 
-			{
-				$(".batch"+competition_id).prop("checked",true);
-			} 
-			else 
-			{
-				$(".batch"+competition_id).prop("checked",false);
-			}
-		}
-		
-		function checkcompetition(competition_id,batch_id)
-		{
-			batch =[];
-			$(".batch"+competition_id+":checked").each(function ()
-			{
-				batch.push(parseInt($(this).val()));
-			});
-			
-			if($("#cbatch"+batch_id).attr("checked")) 
-			{
-				$("#comp"+competition_id).prop("checked",true);
-			} 
-			else 
-			{
-				if(batch.length < 1)
-				{
-					$("#comp"+competition_id).prop("checked",false);
-				}
-				
-			}
-		}
-		
-		//===========================End Check parent child========================//
+	  
 	   function readURL(input)
 	    {
-
 			if (input.files && input.files[0])
 			 {
 				var reader = new FileReader();

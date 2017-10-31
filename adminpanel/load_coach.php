@@ -1,5 +1,9 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
+include("include/email-helper.php");
 include("include/routines.php");
+
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
 //var_dump($obj = json_decode($json));
@@ -10,13 +14,13 @@ $utype				= $_SESSION['panel_user']['utype'];
 //------------------this is used for inserting records---------------------
 if((isset($_POST['insert_coach'])) == "1" && isset($_POST['insert_coach']))
 {
-	$data['fullname']      = mysqli_real_escape_string($db_con,$_POST['coach_name']);
+	$data['fullname']      = strtolower(mysqli_real_escape_string($db_con,$_POST['coach_name']));
 	$data['email']         = mysqli_real_escape_string($db_con,$_POST['coach_email']);
 	$data['mobile_num']    = mysqli_real_escape_string($db_con,$_POST['coach_mobile']);
 	$data['status']        = mysqli_real_escape_string($db_con,$_POST['area_status']);
 	$data['state']         = mysqli_real_escape_string($db_con,$_POST['state_code']);
 	$data['city']          = mysqli_real_escape_string($db_con,$_POST['city']);
-	$data['mobile_num']    = mysqli_real_escape_string($db_con,$_POST['coach_mobile']);
+	
 	$data['status']        = mysqli_real_escape_string($db_con,$_POST['area_status']);
 	
 	$data['created_by']    = $logged_uid;
@@ -32,9 +36,9 @@ if((isset($_POST['insert_coach'])) == "1" && isset($_POST['insert_coach']))
 	if($_FILES['coach_img']['name'] !="" && isset($_FILES['coach_img']['name']))
 	{
 		$imagedata = getimagesize($_FILES['coach_img']['tmp_name']);
-		if($imagedata[0] <200|| $imagedata[0] >300 )
+		if($imagedata[0] <500)
 		{
-			quit('Coach Image size should be 200 to 300');
+			quit('Coach Image width should be greater than 500 Pixel');
 		}
 		$coach_img                  = explode('.',$_FILES['coach_img']['name']);
 		$coach_img                  = date('dhyhis').'.'.$coach_img[1];
@@ -46,10 +50,7 @@ if((isset($_POST['insert_coach'])) == "1" && isset($_POST['insert_coach']))
 			quit('Coach Image not uploaded please try letter...!');
 		}
 	}
-	else
-	{
-		quit('Coach Image is required...!');
-	}
+	
 	
 	$sql_check             = " SELECT * FROM tbl_cadmin_users WHERE email='".$data['email']."' or mobile_num='".$data['mobile_num']."'";
 	$res_check             = mysqli_query($db_con,$sql_check) or die(mysqli_error($db_con));
@@ -101,22 +102,6 @@ if((isset($_POST['insert_coach'])) == "1" && isset($_POST['insert_coach']))
 				$adata['add_created_by'] = $logged_uid;
 				$adata['add_id']         = getNewId('add_id','tbl_address_master');
 				insert('tbl_address_master',$adata);
-				
-				$batches                 = $_POST['batch'];
-				foreach($batches as $batch)
-				{
-					$bdata['batch_id'] = $batch;
-					$bdata['coach_id'] = $insert_id;
-					insert('tbl_coach_batches',$bdata);
-				}
-				
-				$competitions            = $_POST['comp'];
-				foreach($competitions as $competition)
-				{
-					$ccdata['competition_id']    = $competition;
-					$ccdata['coach_id']          = $insert_id;
-					insert('tbl_coach_competition',$ccdata);
-				}
 				
 			}
 			else
@@ -221,7 +206,7 @@ if((isset($_POST['insert_coach'])) == "1" && isset($_POST['insert_coach']))
 //=================Start : Update Coach===================================//
 if((isset($_POST['update_coach'])) == "1" && isset($_POST['update_coach']))
 {
-	$data['fullname']      = mysqli_real_escape_string($db_con,$_POST['coach_name']);
+	$data['fullname']      = strtolower(mysqli_real_escape_string($db_con,$_POST['coach_name']));
 	$data['email']         = mysqli_real_escape_string($db_con,$_POST['coach_email']);
 	$data['mobile_num']    = mysqli_real_escape_string($db_con,$_POST['coach_mobile']);
 	$data['status']        = mysqli_real_escape_string($db_con,$_POST['area_status']);
@@ -232,8 +217,8 @@ if((isset($_POST['update_coach'])) == "1" && isset($_POST['update_coach']))
 	
 	$id                    = mysqli_real_escape_string($db_con,$_POST['id']);
 	
-	$data['modified_by']    = $logged_uid;
-	$data['modified']       = $datetime;
+	$data['modified_by']   = $logged_uid;
+	$data['modified']      = $datetime;
 	$password              = generateRandomString(8);
 	$data['salt_value']    = generateRandomString(6);
 	$data['password']      = md5($password.$data['salt_value']);
@@ -248,9 +233,9 @@ if((isset($_POST['update_coach'])) == "1" && isset($_POST['update_coach']))
 		$row_get_coach     = mysqli_fetch_array($res_get_coach);      
 		  
 		$imagedata = getimagesize($_FILES['coach_img']['tmp_name']);
-		if($imagedata[0] <200 || $imagedata[0] >300 )
+		if($imagedata[0] <500)
 		{
-			quit('Logo size should be 200 to 300');
+			quit('Coach Image width should be greater than 500 Pixel');
 		}
 		$team_logo                  = explode('.',$_FILES['coach_img']['name']);
 		$team_logo                  = date('dhyhis').'.'.$team_logo[1];
@@ -311,71 +296,31 @@ if((isset($_POST['update_coach'])) == "1" && isset($_POST['update_coach']))
 			$adata['add_pincode']    = mysqli_real_escape_string($db_con,$_POST['area_pincode']);
 			$adata['add_status']     = mysqli_real_escape_string($db_con,$_POST['area_status']);
 			$adata['add_user_type']  = 'admin';
-			$adata['add_created']    = $datetime;
-			$adata['add_created_by'] = $logged_uid;
-			$adata['add_id']         = getNewId('add_id','tbl_address_master');
-			update('tbl_address_master',$adata,array('add_user_id'=>$id,'add_user_type'=>'admin'));
-			
-			//====================Start Insertion of batch and competiion for coach=====================//
 			
 			
-			$batches                 = $_POST['batch'];
-			$competitions            = $_POST['comp'];
+			$num = isExist('tbl_address_master' ,array('add_user_id'=>$id,'add_user_type'=>'admin'));
 			
-			if(!empty($batches))
+			if($num!=0)
 			{
-				$sql_delete_batch ="DELETE FROM tbl_coach_batches WHERE batch_id NOT IN (".implode($batches).")";
-				mysqli_query($sql_delete_batch);
+				$adata['add_modified']    = $datetime;
+				$adata['add_modified_by'] = $logged_uid;
+				update('tbl_address_master',$adata,array('add_user_id'=>$id,'add_user_type'=>'admin'));
 			}
-			if(!empty($competitions))
+			else
 			{
-				$sql_delete_batch ="DELETE FROM tbl_coach_competition WHERE competition_id NOT IN (".implode($competitions).")";
-				mysqli_query($sql_delete_batch);
+				$adata['add_id']         = getNewId('add_id','tbl_address_master');
+				$adata['add_created']    = $datetime;
+				$adata['add_created_by'] = $logged_uid;
+				$adata['add_user_id']    = $id;
+				insert('tbl_address_master',$adata);
 			}
 			
-			$batch_arr =  array();
-			$comp_arr  =  array();
-			
-			$sql_get_batch ="SELECT * FROM tbl_coach_batches WHERE coach_id ='".$id."'";
-			$res_get_batch = mysqli_query($db_con,$sql_get_batch) or die(mysqli_error($db_con));
-			while($row_get_batch = mysqli_fetch_array($res_get_batch))
-			{
-				array_push($batch_arr,$row_get_batch['batch_id']);
-			}
-			
-			$sql_get_comp ="SELECT * FROM tbl_coach_competition WHERE coach_id ='".$id."'";
-			$res_get_comp = mysqli_query($db_con,$sql_get_comp) or die(mysqli_error($db_con));
-			while($row_get_comp = mysqli_fetch_array($res_get_comp))
-			{
-				array_push($comp_arr,$row_get_comp['competition_id']);
-			}
-			
-			foreach($batches as $batch)
-			{
-				if(!in_array($batch,$batch_arr))
-				{
-					$cbdata['batch_id']    = $batch;
-					$cbdata['coach_id']    = $id;
-					insert('tbl_coach_batches',$cbdata);
-				}
-			}
-			
-			foreach($competitions as $competition)
-			{
-				if(!in_array($competition,$comp_arr))
-				{
-					$ccdata['competition_id']    = $competition;
-					$ccdata['coach_id']          = $id;
-					insert('tbl_coach_competition',$ccdata);
-				}
-			}
-			
-			//====================End : Insertion of batch and competiion for coach=====================//
 		}
 		else
 		{
 			quit('Please try letter...!');
 		}
+		
 		
 		{
 		// =====================================================================================================
@@ -480,7 +425,7 @@ if((isset($obj->load_coach)) == "1" && isset($obj->load_coach))
 	$start_offset   = 0;
 	$page 			= $obj->page;	
 	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
+	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);	
 	
 	if($page != "" && $per_page != "")	
 	{
@@ -547,13 +492,33 @@ if((isset($obj->load_coach)) == "1" && isset($obj->load_coach))
 			{
 	    	  	$coach_data .= '<tr>';				
 				$coach_data .= '<td style="text-align:center">'.++$start_offset.'</td>';				
-			    $coach_data .= '<td style="text-align:center"><img src="images/coach/'.$row_load_data['image'].'" width="60px" alt="No Image"></td>';			
+			    $coach_data .= '<td style="text-align:center">';
+				if($row_load_data['image']!="")
+				{
+					$coach_data .='<img src="images/coach/'.$row_load_data['image'].'" width="60px" alt="No Image">';
+				}
+				else
+				{
+					$coach_data .='<img style="width:60px" src="img/person.jpg" alt="">';
+				}
+				
+				
+				$coach_data .='</td>';			
 				$coach_data .= '<td style="text-align:center"><input type="button" value="'.ucwords($row_load_data['fullname']).'" class="btn-link" id="'.$row_load_data['id'].'" onclick="addMoreArea(this.id,\'view\');"></td>';
+				
+				if($row_load_data['email']!='')
+				{
 					$coach_data .= '<td style="text-align:center">'.$row_load_data['email'].'</td>';
+				}
+				else
+				{
+					$coach_data .= '<td style="text-align:center;color:red">Not available</td>';
+				}
+				
 				
 				$coach_data .= '<td style="text-align:center">'.$row_load_data['mobile_num'].'</td>';			
 				$coach_data .= '<td style="text-align:center">'.$row_load_data['created'].'</td>';
-				$coach_data .= '<td style="text-align:center">'.$row_load_data['name_created_by'].'</td>';
+				$coach_data .= '<td style="text-align:center">'.ucwords($row_load_data['name_created_by']).'</td>';
 				$coach_data .= '<td style="text-align:center">'.$row_load_data['modified'].'</td>';
 				$coach_data .= '<td style="text-align:center">'.$row_load_data['name_midified_by'].'</td>';
 				$dis = checkFunctionalityRight("view_coach.php",3);
@@ -607,7 +572,7 @@ if((isset($obj->load_coach)) == "1" && isset($obj->load_coach))
 
 
 //=================Start : Load Coach Part===================================//
-if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
+if((isset($obj->load_coach_parts)) == "1" && isset($obj->load_coach_parts))
 {
 	$id             = $obj->area_id;
 	$req_type       = $obj->req_type;
@@ -650,21 +615,29 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 			
 			//////=============================================Start : Coach Image======================================
 			$data .= '<div class="control-group">';
-			$data .= '<label for="tasktitel" class="control-label">Coach Image<sup class="validfield">
-			<span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<label for="tasktitel" class="control-label">Coach Image</label>';
 			$data .= '<div class="controls">';
-			$data .= '<img src="images/coach/'.@$row_coach_data['image'].'" width="200px"  id="coach_img_p" name="coach_img_p" class="" alt="Coach Image"><br>';
+			if(!isset($row_coach_data['image']) || $row_coach_data['image']=="")
+			{
+				$data .= '<img src="images/person.png" width="200px"  id="coach_img_p" name="coach_img_p" class="" alt="Coach Image"><br>';
+			}
+			else
+			{
+				$data .= '<img src="images/coach/'.@$row_coach_data['image'].'" width="200px"  id="coach_img_p" name="coach_img_p" class="" alt="Coach Image"><br>';
+			}
+			
 				
-				$data .='<ul class="css-ul-list">
-						   <li>Only "jpg" , "png" or "jpeg" image will be accepted.</li>
-						   <li>Image size should be  \'400\' to \'500\'  pixel.</li>
-						</ul>';
+				
 			$data .= '<input  type="file" id="coach_img" name="coach_img" class="input-large keyup-char coach_img" ';
 			if($req_type=='add')
 			{
-				$data .=' data-rule-required="true"  ';
+				//$data .=' data-rule-required="true"  ';
 			}
-			$data .= ' value="'.@$row_coach_data['coach_img'].'"/><br>';
+			$data .= '"/><br>';
+			$data .='<ul class="css-ul-list" style="color:red">
+						   <li>Only "jpg" , "png" or "jpeg" image will be accepted.</li>
+						   <li>Image width should be greater than  \'500\'   pixel.</li>
+						</ul>';
 			$data .= '</div>';
 			$data .= '</div> <!-- Coach Name -->';
 			$data .="<script type=\"text/javascript\">	$('.coach_img').change(function(){
@@ -814,11 +787,10 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 				$contract_start_date             = $contract_start_date[2].'-'.$contract_start_date[1].'-'.$contract_start_date[0];
 			}
 			$data .= '<div class="control-group">';
-			$data .= '<label for="tasktitel" class="control-label">Contract Start Date<sup class="validfield">
-			<span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<label for="tasktitel" class="control-label">Contract Start Date</label>';
 			$data .= '<div class="controls">';
 			$data .= '<input type="text" id="contract_start_date" placeholder="Enter Contract Start Date" name="contract_start_date"  ';
-			$data .='  class="input-large keyup-char datepicker" data-rule-required="true"  value="'.@$contract_start_date.'"/>';
+			$data .='  class="input-large keyup-char datepicker"   value="'.@$contract_start_date.'"/>';
 			$data .= '</div>';
 			$data .= '</div> <!-- Experience -->';
 			$data .="<script type=\"text/javascript\">	 $( '#contract_start_date' ).datepicker({
@@ -839,11 +811,10 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 				$contract_end_date             = $contract_end_date[2].'-'.$contract_end_date[1].'-'.$contract_end_date[0];
 			}
 			$data .= '<div class="control-group">';
-			$data .= '<label for="tasktitel" class="control-label">Enter  Contract End Date<sup class="validfield">
-			<span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<label for="tasktitel" class="control-label">Enter  Contract End Date</label>';
 			$data .= '<div class="controls">';
-			$data .= '<input type="text" id="contract_end_date" placeholder="Contract End Date" name="contract_end_date"  ';
-			$data .='  class="input-large datepicker" data-rule-required="true"  value="'.@$contract_end_date.'"/>';
+			$data .= '<input type="text" id="contract_end_date" placeholder="Enter Contract End Date" name="contract_end_date"  ';
+			$data .='  class="input-large datepicker"   value="'.@$contract_end_date.'"/>';
 			$data .= '</div>';
 			$data .= '</div> <!-- Experience -->';
 			$data .="<script type=\"text/javascript\">	 $( '#contract_end_date' ).datepicker({
@@ -858,93 +829,14 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 	
 			//////=============================================Start : Bio======================================
 			$data .= '<div class="control-group">';
-			$data .= '<label for="tasktitel" class="control-label">About yourself<sup class="validfield">
-			<span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<label for="tasktitel" class="control-label">About yourself</label>';
 			$data .= '<div class="controls">';
-			$data .= '<textarea  id="coach_bio" name="coach_bio" class="input-large" placeholder="About yourself" data-rule-required="true">';
+			$data .= '<textarea  id="coach_bio" name="coach_bio" class="input-large" placeholder="Enter About yourself">';
 			$data .= @$row_get_info['coach_about']; 
 			$data .='</textarea><br>';
 			$data .= '</div>';
 			$data .= '</div> <!-- Coach Address -->';
-			//=====================================================================================================================//
-			//================================= Start Batch and Competition Assignment Dn By satish  =============================================//
-		  /* 
-			$data .= '<div class="control-group">';
-			$data .= '<label for="radio" class="control-label">Competition And Batches<span style="color:#F00;font-size:20px;">*</span></label>';
-			$data .='<div class="controls">';
 			
-			if($req_type !='add')
-			{
-				$batch_arr =  array();
-				$comp_arr  =  array();
-				
-				$sql_get_batch ="SELECT * FROM tbl_coach_batches WHERE coach_id ='".$id."'";
-				$res_get_batch = mysqli_query($db_con,$sql_get_batch) or die(mysqli_error($db_con));
-				while($row_get_batch = mysqli_fetch_array($res_get_batch))
-				{
-					array_push($batch_arr,$row_get_batch['batch_id']);
-				}
-				
-				$sql_get_comp ="SELECT * FROM tbl_coach_competition WHERE coach_id ='".$id."'";
-				$res_get_comp = mysqli_query($db_con,$sql_get_comp) or die(mysqli_error($db_con));
-				while($row_get_comp = mysqli_fetch_array($res_get_comp))
-				{
-					array_push($comp_arr,$row_get_comp['competition_id']);
-				}
-			}
-			
-			
-			$sql_get_comp =" SELECT * FROM tbl_competition WHERE competition_status=1 ";
-			if($utype!=1)
-			{
-				$sql_get_comp .=" AND created_by ='".$uid."'";
-			}
-			$res_get_comp =mysqli_query($db_con,$sql_get_comp) or die(mysqli_error($db_con));
-			foreach($res_get_comp as $row_comp)
-			{
-				$data .='  <div style="float:left;border-bottom:1px solid #8f8f8f;padding:10px;border-right:1px solid ';
-				$data .=' #8f8f8f;margin-right:10px;margin-top:10px;">
-					  <input value="'.$row_comp['competition_id'].'" id="comp'.$row_comp['competition_id'].'" ';
-				$data .='onclick="checkbatch('.$row_comp['competition_id'].')" name="comp[]" class="css-checkbox batch_levels levels_parent" ';
-					  
-				if(in_array($row_comp['competition_id'],$comp_arr))
-				{
-					$data .=' checked="checked" ';
-				}
-				
-				$data .=' type="checkbox">'.$row_comp['competition_name'].'
-				<label for="comp'.$row_comp['competition_id'].'" class="css-label"></label>';
-					 
-				$data .='<div style="margin:20px;">'; 
-				$sql_get_comp =" SELECT * FROM tbl_batches WHERE competition_id='".$row_comp['competition_id']."' ";
-				if($utype!=1)
-				{
-					$sql_get_comp .=" AND batch_created_by ='".$uid."'";
-				}
-				$res_get_comp =mysqli_query($db_con,$sql_get_comp) or die(mysqli_error($db_con));
-				while($row_batch = mysqli_fetch_array($res_get_comp))
-				{  
-					  
-					$data .=' <input value="'.$row_batch['batch_id'].'" id="cbatch'.$row_batch['batch_id'].'" name="batch[]" ';
-					$data .=' onchange="checkcompetition('.$row_comp['competition_id'].','.$row_batch['batch_id'].');"';
-					$data .=' class="css-checkbox batch'.$row_comp['competition_id'].'"';
-			
-					if(in_array($row_batch['batch_id'],$batch_arr))
-					{
-						$data .=' checked="checked" ';
-					}
-					 $data .= '  type="checkbox">'.$row_batch['batch_name'].'
-					  <label for="cbatch'.$row_batch['batch_id'].'" class="css-label"></label>';
-					  
-				}
-				$data .=' </div>';
-			   $data .='</div>';
-			}
-			$data .='</div>';// end control
-			$data .='</div>';// end control group*/
-		
-		//================================= End Batch and Competition Assignment   =============================================//
-		//=====================================================================================================================//
 		
 			$data .= '<div class="control-group">';
 			$data .= '<label for="radio" class="control-label">Status<span style="color:#F00;font-size:20px;">*</span></label>';
@@ -952,11 +844,11 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 			
 			if($id != "" && $req_type == "view")
 			{
-				if($row_get_add['add_status'] == 1)
+				if($row_get_add['status'] == 1)
 				{
 					$data .= ' <label class="control-label" style="color:#30DD00"> Active </label>';
 				}
-				if($row_get_add['add_status'] == 0)
+				if($row_get_add['status'] == 0)
 				{
 					$data .= ' <label class="control-label" style="color:#E63A3A"> Inactive </label>';
 				}
@@ -971,7 +863,7 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 					{
 					//$data .= ' disabled="disabled" ';
 					}
-					if($row_coach_data['add_status'] == 1)
+					if($row_coach_data['status'] == 1)
 					{
 						$data .= 'checked ';
 					}
@@ -981,7 +873,7 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 					{
 					//$data .= ' disabled="disabled" ';
 					}
-					if($row_coach_data['add_status'] == 0  )
+					if($row_coach_data['status'] == 0  )
 					{
 						$data .= 'checked ';
 					}
@@ -1016,26 +908,106 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 		}
 		else
 		{
+			$sql_get_info = " SELECT * FROM coach_additional_info WHERE coach_id='".$id."' ";
+			$res_get_info = mysqli_query($db_con,$sql_get_info) or die(mysqli_error($db_con));
+			$row_get_info = mysqli_fetch_array($res_get_info);
+			
+			$sql_get_add  = " SELECT * FROM tbl_address_master as tam ";
+			$sql_get_add .= " INNER JOIN tbl_state as ts ON tam.add_state = ts.state ";
+			$sql_get_add .= " INNER JOIN tbl_area as ta ON tam.add_area = ta.area_id ";
+			$sql_get_add .= " INNER JOIN tbl_city as tc ON tam.add_city = tc.city_id ";
+			$sql_get_add .= " WHERE add_user_type='admin' AND add_user_id='".$id."'";
+			
+			$res_get_add  = mysqli_query($db_con,$sql_get_add) or die(mysqli_error($db_con));
+			$row_get_add  = mysqli_fetch_array($res_get_add);
+			
+			$state        = $row_get_add['state_name'];
+			$area         = $row_get_add['area_name'];
+			$city         = $row_get_add['city_name'];
+			$add_detail   = $row_get_add['add_details'];
 			//==================Start :  Heading  ===========================================//
-			$data .='<div class="control-group">';
+			
+			if($row_coach_data['status']==1)
+			{
+				$bgcolor = '#18BB7C';
+				$color   = 'white';
+			}
+			else
+			{
+				$bgcolor = '#da4f49';
+				$color    ='';
+			}
+			
+			
+			$data .='<div class="control-group" style="background-color:'.$bgcolor.';color:'.$color.' important">';
 			
 			$data .='<div class="span4">';
 				$data .='<div style="padding:20px">';
-				  $data .='<img style="width:200px" src="images/coach/'.$row_coach_data['image'].'">';
+				if($row_coach_data['image']!='')
+				{
+					$data .='<img style="width:200px" src="images/coach/'.$row_coach_data['image'].'" alt="">';
+				}
+				else
+				{
+					$data .='<img style="width:200px" src="img/person.jpg" alt="">';
+				}
+				  
 				$data .='</div>';
 			$data .='</div>';
 			
-			$data .='<div class="span4">';
+			$data .='<div class="span8">';
 			    $data .='<div style="padding:20px;">';
-					$data .='<h3  style="text-align:center"> '.ucwords($row_coach_data['fullname']).'</h3>';
+					$data .='<h3  style="color:white"> '.ucwords($row_coach_data['fullname']).'</h3>';
+					$data .='<div class="control-group" style="background-color:'.$bgcolor.'">';
+						$data .='<div class="span6">
+						<span class="head2" style="color:white">Email: </span> <span class="head2" style="color:white">'.$row_coach_data['email'].'</span><br>
+						<span class="head2" style="color:white">Designation: </span> <span class="head2" style="color:white">'.@$row_get_info['coach_designation'].'</span><br>
+						
+						';
+						if($state !='')
+						{
+							$data .='<br><span class="head2" style="color:white">State: </span>
+							<span class="head2" style="color:white"> '.@$state.'</span>';
+						}
+						if($area !='')
+						{
+							$data .='<br><span class="head2" style="color:white">Area: </span>
+							<span class="head2" style="color:white"> '.@$area.'</span>';
+						}
+						$data .='</div>';
+						$data .='<div class="span6"><span class="head2" style="color:white">Mobile : </span>
+						<span class="head2"style="color:white">'.ucwords($row_coach_data['mobile_num']).'</span><br>
+						<span class="head2" style="color:white">Experience: </span> <span class="head2" style="color:white">'.@$row_get_info['coach_experience'].' years</span><br>
+						';
+						if($city !='')
+						{
+							$data .='<br><span class="head2" style="color:white">City: </span>
+							<span class="head2" style="color:white"> '.@ucwords($city).'</span>';
+						}
+						
+						if($add_detail !='')
+						{
+							$data .='<br><span class="head2" style="color:white">Address: </span>
+							<span class="head2" style="color:white"> '.@ucwords($add_detail).'</span>';
+						}
+						$data .='</div>';
+						
+						if($row_get_info['coach_about']!='')
+						{
+							$data .='<div class="span12" style="text-align:justify;padding-top:45px" >';
+							$data .='<span class="head2" style="color:white">About : '.$row_get_info['coach_about'].'</span>';
+							$data .='</div>';
+						}
+						
+					$data .='</div>';
 				$data .='</div>';
 			$data .='</div>';
 			
-			$data .='<div class="span4">';
+			/*$data .='<div class="span4">';
 				$data .='<div style="padding:20px">';
 					
 				$data .='</div>';
-			$data .='</div>';
+			$data .='</div>';*/
 			
 			$data .='</div>';// control-group end
 			
@@ -1062,9 +1034,9 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 				$num_get_stud2 = $num_get_stud - $num_get_stud1;
 				$data .='<div class="control-group">';
 			
-				$data .='<div class="span4">';
+				$data .='<div class="span12">';
 					$data .='<div style="padding:20px">';
-						$data .='<h5>Batches</h5>';
+						$data .='<h5>Training Batches ('.$num_get_stud.')</h5>';
 					$data .='</div>';
 				$data .='</div>';
 				
@@ -1074,7 +1046,7 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 						$data .='<ul>';
 						for($i=0;$i<$num_get_stud1;$i++)
 						{
-							$data .='<li><a href="#" target="_blank" >'.$res_array[$i]['batch_name'].'</a></li>';
+							$data .='<li class="head2"><a href="view_batch.php?pag=Training Batches&batch_id='.$res_array[$i]['batch_id'].'" target="_blank" >'.ucwords($res_array[$i]['batch_name']).'</a></li>';
 						}
 						$data .='</ul>';
 					$data .='</div>';
@@ -1087,7 +1059,7 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 						$data .='<ul>';
 						for($i=$i;$i<$num_get_stud;$i++)
 						{
-							$data .='<li><a href="#" target="_blank" > '.$res_array[$i]['batch_name'].'</a></li>';
+							$data .='<li class="head2"><a href="view_batch.php?pag=Training Batches&batch_id='.$res_array[$i]['batch_id'].'" target="_blank" > '.ucwords($res_array[$i]['batch_name']).'</a></li>';
 						}
 						$data .='</ul>';
 					$data .='</div>';
@@ -1119,7 +1091,7 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 				
 				$data .='<div class="span4">';
 					$data .='<div style="padding:20px">';
-						$data .='<h5> Teams </h5>';
+						$data .='<h5> Teams ('.$num_get_stud.')</h5>';
 					$data .='</div>';
 				$data .='</div>';
 				
@@ -1128,7 +1100,7 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 						$data .='<ul>';
 						for($i=0;$i<$num_get_stud1;$i++)
 						{
-							$data .='<li><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.$res_array[$i]['team_name'].'</a></li>';
+							$data .='<li class="head2"><a href="view_team.php?pag=Teams&team_id='.$res_array[$i]['team_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.ucwords($res_array[$i]['team_name']).'</a></li>';
 						}
 						$data .='</ul>';
 					$data .='</div>';
@@ -1139,7 +1111,7 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 						$data .='<ul>';
 						for($i=$i;$i<$num_get_stud;$i++)
 						{
-							$data .='<li><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.$res_array[$i]['team_name'].'</a></li>';
+							$data .='<li class="head2"><a href="view_team.php?pag=Teams&team_id='.$res_array[$i]['team_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.ucwords($res_array[$i]['team_name']).'</a></li>';
 						}
 						$data .='</ul>';
 					$data .='</div>';
@@ -1147,63 +1119,6 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 				
 				$data .='</div>';// row end
 		     }
-			
-			//==================End : Team  ===========================================//
-			
-			//==================Start : Competition  ===========================================//
-			$sql_get_stud  = "SELECT * FROM tbl_coach_competition  as tcc ";
-			$sql_get_stud .= " INNER JOIN tbl_competition as  tc ON tcc.competition_id =tc.competition_id ";
-			$sql_get_stud .= " WHERE coach_id='".$id."'";
-			$res_get_stud  = mysqli_query($db_con,$sql_get_stud) or die(mysqli_error($db_con));
-			$num_get_stud  = mysqli_num_rows($res_get_stud);
-			$res_array     = array();
-			while($row = mysqli_fetch_array($res_get_stud))
-			{
-				array_push($res_array,$row);
-			}
-			$num_get_stud1 = round(($num_get_stud)/2);
-			$num_get_stud2 = $num_get_stud - $num_get_stud1;
-			if(!empty($res_array))
-			{
-				$data .='<div class="control-group">';
-				
-				$data .='<div class="span4">';
-					$data .='<div style="padding:20px">';
-						$data .='<h5> Competition </h5>';
-					$data .='</div>';
-				$data .='</div>';
-				
-				
-				
-				
-				$data .='<div class="span4" style="clear:both">';
-					$data .='<div style="padding:20px">';
-						$data .='<ul>';
-						for($i=0;$i<$num_get_stud1;$i++)
-						{
-							$data .='<li><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.$res_array[$i]['competition_name'].'</a></li>';
-						}
-						$data .='</ul>';
-					$data .='</div>';
-				$data .='</div>';
-				
-				$data .='<div class="span4">';
-					$data .='<div style="padding:20px;">';
-						$data .='<ul>';
-						for($i=$i;$i<$num_get_stud;$i++)
-						{
-							$data .='<li><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.$res_array[$i]['student_lname'].'</a></li>';
-						}
-						$data .='</ul>';
-					$data .='</div>';
-				$data .='</div>';
-				
-				$data .='</div>';// row end
-			}
-			//==================End : Competiton  ===========================================//
-			
-			
-			
 		}
 		$response_array = array("Success"=>"Success","resp"=>$data);				
 	}
@@ -1248,20 +1163,35 @@ if((isset($obj->change_status)) == "1" && isset($obj->change_status))
 }
 
 //------------------This is used for delete data---------------------------------
-if((isset($obj->delete_area)) == "1" && isset($obj->delete_area))
+if((isset($obj->delete_coach)) == "1" && isset($obj->delete_coach))
 {
 	$response_array   = array();		
 	$ids 	  = $obj->batch;
 	$del_flag 		  = 0; 
+	
+	$row                  = checkExist('tbl_cadmin_users' ,array('id'=>$id));
+	
 	foreach($ids as $id)	
 	{
-		$sql_delete_area	= " DELETE FROM `tbl_cadmin_users` WHERE `id` = '".$id."' ";
-		$result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));			
-		if($result_delete_area)
+		$sql_delete_coach	= " DELETE FROM `tbl_cadmin_users` WHERE `id` = '".$id."' ";
+		$result_delete_coach	= mysqli_query($db_con,$sql_delete_coach) or die(mysqli_error($db_con));			
+		if($result_delete_coach)
 		{
 			$del_flag = 1;
-			$sql_delete_area	= " DELETE FROM `tbl_address_master` WHERE `add_user_id` = '".$id."' AND add_user_type='admin'";
-		    $result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));	
+			$sql_delete_coach	= " DELETE FROM `tbl_address_master` WHERE `add_user_id` = '".$id."' AND add_user_type='admin'";
+		    $result_delete_coach	= mysqli_query($db_con,$sql_delete_coach) or die(mysqli_error($db_con));	
+			
+			$sql_delete_team	= " DELETE FROM `tbl_team_coach` WHERE `coach_id` = '".$id."'";
+		    $res_delete_team	= mysqli_query($db_con,$sql_delete_team) or die(mysqli_error($db_con));	
+			
+			$sql_delete_batch	= " DELETE FROM `tbl_batch_coach` WHERE `coach_id` = '".$id."'";
+		    $res_delete_batch	= mysqli_query($db_con,$sql_delete_batch) or die(mysqli_error($db_con));	
+			
+			if($row['image']!='')
+			{
+				unlink('images/coach/'.$row['image']);
+			}
+			
 		}			
 	}	
 	if($del_flag == 1)

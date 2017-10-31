@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -11,9 +13,9 @@ $utype				= $_SESSION['panel_user']['utype'];
 
 if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 {
-	$data['student_fname']             = mysqli_real_escape_string($db_con,$_POST['student_fname']);
-	$data['student_mname']             = mysqli_real_escape_string($db_con,$_POST['student_mname']);
-	$data['student_lname']             = mysqli_real_escape_string($db_con,$_POST['student_lname']);
+	$data['student_fname']             = strtolower(mysqli_real_escape_string($db_con,$_POST['student_fname']));
+	$data['student_mname']             =strtolower( mysqli_real_escape_string($db_con,$_POST['student_mname']));
+	$data['student_lname']             = strtolower(mysqli_real_escape_string($db_con,$_POST['student_lname']));
 	
 	$data['birth_country']     = mysqli_real_escape_string($db_con,$_POST['birth_country']);//new
 	$data['domicile_state']    = mysqli_real_escape_string($db_con,$_POST['domicile_state']);//new
@@ -26,20 +28,39 @@ if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 	$data['student_email']     = mysqli_real_escape_string($db_con,$_POST['student_email']);
 	$data['student_mobile']    = mysqli_real_escape_string($db_con,$_POST['student_mobile']);
 	$data['student_gender']    = mysqli_real_escape_string($db_con,$_POST['student_gender']);
-	$data['student_dob']       = mysqli_real_escape_string($db_con,$_POST['student_dob']);
+	
+	$student_dob                    = mysqli_real_escape_string($db_con,$_POST['student_dob']);
+	$student_dob                    = explode('-',$student_dob);// d/m/y
+	$data['student_dob']            = $student_dob[2].'-'.$student_dob[1].'-'.$student_dob[0];
+	//$data['student_dob']       = mysqli_real_escape_string($db_con,$_POST['student_dob']);
+	
+	
 	$data['student_status']    = mysqli_real_escape_string($db_con,$_POST['student_status']);
-	$data['student_institute'] =  mysqli_real_escape_string($db_con,$_POST['student_institute']);
+	$data['student_institute'] =  strtolower(mysqli_real_escape_string($db_con,$_POST['student_institute']));
 	
 	if($_FILES['student_file']['name'] !="" && isset($_FILES['student_file']['name']))
 	{
+		$imagedata = getimagesize($_FILES['student_file']['tmp_name']);
+		
+		if($imagedata[0] <500 )
+		{
+			quit('Student Image width should be greater than 500 Pixel');
+		}
 		$stud_photo                  = explode('.',$_FILES['student_file']['name']);
 		$stud_photo                  = date('dhyhis').'.'.$stud_photo[1];
 		$data['profile_img']         = $stud_photo;
 		
-		$dir                         ='images/students_img/'.$stud_photo;
-		if(!move_uploaded_file($_FILES['student_file']['tmp_name'],$dir))
+		$dir                         ='images/students_img/';
+		if(!move_uploaded_file($_FILES['student_file']['tmp_name'],$dir.$stud_photo))
 		{
 			quit('Profile photo not uploaded please try letter...!');
+			
+		}
+		else
+		{
+			make_thumb($dir.$stud_photo,$dir.'small/'.$stud_photo,100,100);
+			make_thumb($dir.$stud_photo,$dir.'/'.$stud_photo,400,400);	
+			unlink($dir.$stud_photo);
 		}
 	}
 	else
@@ -49,6 +70,12 @@ if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 	
 	if($_FILES['student_id']['name'] !="" && isset($_FILES['student_id']['name']))
 	{
+		$imagedata = getimagesize($_FILES['student_id']['tmp_name']);
+		
+		if($imagedata[0] <400 || $imagedata[0] >400 )
+		{
+			quit('Document Image size should be 400 Pixel');
+		}
 		$stud_doc                  = explode('.',$_FILES['student_id']['name']);
 		$stud_doc                  = date('dhyhis').'.'.$stud_doc[1];
 		$data['student_doc']       = $stud_doc;
@@ -56,8 +83,10 @@ if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 		$dir                         ='images/students_doc/'.$stud_doc;
 		if(!move_uploaded_file($_FILES['student_id']['tmp_name'],$dir))
 		{
+			
 			quit('Student Document not uploaded please try letter...!');
 		}
+		make_thumb($dir,$dir.'small_'.$stud_photo,100,100);
 	}
 	else
 	{
@@ -76,7 +105,7 @@ if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 		    
 			if($insert_id)
 			{
-				$adata['add_details']    = mysqli_real_escape_string($db_con,$_POST['address']);
+				$adata['add_details']    = strtolower(mysqli_real_escape_string($db_con,$_POST['address']));
 				$adata['add_state']      = mysqli_real_escape_string($db_con,$_POST['state_code']);
 				$adata['add_city']       = mysqli_real_escape_string($db_con,$_POST['city']);
 				$adata['add_area']       = mysqli_real_escape_string($db_con,$_POST['area']);
@@ -87,23 +116,7 @@ if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 				$adata['add_created_by'] = $logged_uid;
 				$adata['add_id']         = getNewId('add_id','tbl_address_master');
 				insert('tbl_address_master',$adata);
-				//================Start insertion of batch and competiton==============//
-				$batches                 = $_POST['batch'];
-				foreach($batches as $batch)
-				{
-					$bdata['batch_id'] = $batch;
-					$bdata['student_id'] = $insert_id;
-					insert('tbl_student_batches',$bdata);
-				}
 				
-				$competitions            = $_POST['comp'];
-				foreach($competitions as $competition)
-				{
-					$ccdata['competition_id']    = $competition;
-					$ccdata['student_id']          = $insert_id;
-					insert('tbl_student_competition',$ccdata);
-				}
-				//================End insertion of batch and competiton==============//
 				
 				quit('Student Added Successfully...!',1);
 			}
@@ -126,16 +139,18 @@ if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 //------------------this is used for Update records---------------------
 if((isset($_POST['update_student'])) == "1" && isset($_POST['update_student']))
 {
-	$data['student_fname']             = mysqli_real_escape_string($db_con,$_POST['student_fname']);
-	$data['student_mname']             = mysqli_real_escape_string($db_con,$_POST['student_mname']);
-	$data['student_lname']             = mysqli_real_escape_string($db_con,$_POST['student_lname']);
+	$data['student_fname']             = strtolower(mysqli_real_escape_string($db_con,$_POST['student_fname']));
+	$data['student_mname']             = strtolower(mysqli_real_escape_string($db_con,$_POST['student_mname']));
+	$data['student_lname']             = strtolower(mysqli_real_escape_string($db_con,$_POST['student_lname']));
 	
 	$data['student_email']     = mysqli_real_escape_string($db_con,$_POST['student_email']);
 	$data['student_mobile']    = mysqli_real_escape_string($db_con,$_POST['student_mobile']);
 	$data['student_gender']    = mysqli_real_escape_string($db_con,$_POST['student_gender']);
-	$data['student_dob']       = mysqli_real_escape_string($db_con,$_POST['student_dob']);
+	$student_dob                    = mysqli_real_escape_string($db_con,$_POST['student_dob']);
+	$student_dob                    = explode('-',$student_dob);// d/m/y
+	$data['student_dob']            = $student_dob[2].'-'.$student_dob[1].'-'.$student_dob[0];
 	$data['student_status']    = mysqli_real_escape_string($db_con,$_POST['student_status']);
-	$data['student_institute'] =  mysqli_real_escape_string($db_con,$_POST['student_institute']);
+	$data['student_institute'] =  strtolower(mysqli_real_escape_string($db_con,$_POST['student_institute']));
 	$student_id                = mysqli_real_escape_string($db_con,$_POST['student_id']);
 	
 	//=======================End : Image and Doc Upload End=====================================//
@@ -145,6 +160,12 @@ if((isset($_POST['update_student'])) == "1" && isset($_POST['update_student']))
 	
 	if($_FILES['student_file']['name'] !="" && isset($_FILES['student_file']['name']))
 	{
+		$imagedata = getimagesize($_FILES['student_file']['tmp_name']);
+		
+		if($imagedata[0] <500 )
+		{
+			quit('Student Image width should be greater than 500 Pixel');
+		}
 		$stud_photo                  = explode('.',$_FILES['student_file']['name']);
 		$stud_photo                  = date('dhyhis').'.'.$stud_photo[1];
 		$dir                         ='images/students_img/';
@@ -152,7 +173,10 @@ if((isset($_POST['update_student'])) == "1" && isset($_POST['update_student']))
 		if(move_uploaded_file($_FILES['student_file']['tmp_name'],$dir.$stud_photo))
 		{
 			$data['profile_img']         = $stud_photo;
+			make_thumb($dir.$stud_photo,$dir.'small/'.$stud_photo,100,100);
+			make_thumb($dir.$stud_photo,$dir.'/'.$stud_photo,400,400);	
 			unlink($dir.$row_get_stud['profile_img']);
+			unlink($dir.'small_'.$row_get_stud['profile_img']);
 		}
 	}
 	
@@ -196,69 +220,27 @@ if((isset($_POST['update_student'])) == "1" && isset($_POST['update_student']))
 		    
 			if($insert_id)
 			{
-				$adata['add_details']    = mysqli_real_escape_string($db_con,$_POST['address']);
+				$adata['add_details']    = strtolower(mysqli_real_escape_string($db_con,$_POST['address']));
 				$adata['add_state']      = mysqli_real_escape_string($db_con,$_POST['state_code']);
 				$adata['add_city']       = mysqli_real_escape_string($db_con,$_POST['city']);
 				$adata['add_area']       = mysqli_real_escape_string($db_con,$_POST['area']);
 				$adata['add_status']     = mysqli_real_escape_string($db_con,$_POST['student_status']);
 				$adata['add_user_type']  = 'student';
-				$adata['add_modified']    = $datetime;
-				$adata['add_modified_by'] = $logged_uid;
-				update('tbl_address_master',$adata,array('add_user_id'=>$student_id,'add_user_type'=>'student'));
-				
-			   //====================Start Insertion of batch and competiion for coach=====================//
-				$batches                 = $_POST['batch'];
-				$competitions            = $_POST['comp'];
-				
-				if(!empty($batches))
+				$num = isExist('tbl_address_master' ,array('add_user_id'=>$student_id,'add_user_type'=>'student'));
+			
+				if($num!=0)
 				{
-					$sql_delete_batch ="DELETE FROM tbl_student_batches WHERE batch_id NOT IN (".implode($batches).")";
-					mysqli_query($sql_delete_batch);
+					$adata['add_modified']    = $datetime;
+					$adata['add_modified_by'] = $logged_uid;
+					update('tbl_address_master',$adata,array('add_user_id'=>$student_id,'add_user_type'=>'student'));
 				}
-				if(!empty($competitions))
+				else
 				{
-					$sql_delete_batch ="DELETE FROM tbl_student_competition WHERE competition_id NOT IN (".implode($competitions).")";
-					mysqli_query($sql_delete_batch);
+					$adata['add_id']         = getNewId('add_id','tbl_address_master');
+					$adata['add_created']    = $datetime;
+					$adata['add_created_by'] = $logged_uid;
+					$adata['add_user_id']    = $student_id;
 				}
-				
-				$batch_arr =  array();
-				$comp_arr  =  array();
-				
-				$sql_get_batch ="SELECT * FROM tbl_student_batches WHERE student_id ='".$student_id."'";
-				$res_get_batch = mysqli_query($db_con,$sql_get_batch) or die(mysqli_error($db_con));
-				while($row_get_batch = mysqli_fetch_array($res_get_batch))
-				{
-					array_push($batch_arr,$row_get_batch['batch_id']);
-				}
-				
-				$sql_get_comp ="SELECT * FROM tbl_student_competition WHERE student_id ='".$student_id."'";
-				$res_get_comp = mysqli_query($db_con,$sql_get_comp) or die(mysqli_error($db_con));
-				while($row_get_comp = mysqli_fetch_array($res_get_comp))
-				{
-					array_push($comp_arr,$row_get_comp['competition_id']);
-				}
-				
-				foreach($batches as $batch)
-				{
-					if(!in_array($batch,$batch_arr))
-					{
-						$cbdata['batch_id']    = $batch;
-						$cbdata['student_id']    = $student_id;
-						insert('tbl_student_batches',$cbdata);
-					}
-				}
-				
-				foreach($competitions as $competition)
-				{
-					if(!in_array($competition,$comp_arr))
-					{
-						$ccdata['competition_id']    = $competition;
-						$ccdata['student_id']          = $student_id;
-						insert('tbl_student_competition',$ccdata);
-					}
-				}
-				
-				//====================End : Insertion of batch and competiion for coach=====================//
 				
 				quit('Student Updated Successfully...!',1);
 			}
@@ -321,7 +303,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		$data .= ' '.$disabled.' placeholder="First Name" data-rule-required="true"  value="'.@$row_student_data['student_fname'].'"'; 
 		$data .= '/>';
 		$data .= '&nbsp;&nbsp;<input onkeypress="return charsonly(event);" type="text" id="student_mname" name="student_mname" class="input-large keyup-char" ';
-		$data .= ' '.$disabled.' placeholder="Middle Name" data-rule-required="true"  value="'.@$row_student_data['student_mname'].'"'; 
+		$data .= ' '.$disabled.' placeholder="Middle Name" value="'.@$row_student_data['student_mname'].'"'; 
 		$data .= '/>';
 		$data .= '&nbsp;&nbsp;<input onkeypress="return charsonly(event);" type="text" id="student_lname" name="student_lname" class="input-large keyup-char" ';
 		$data .= ' '.$disabled.' placeholder="Last Name" data-rule-required="true"  value="'.@$row_student_data['student_lname'].'"'; 
@@ -329,11 +311,23 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		
 		//=====Start : Profile Image Start===============//
 		$data .= '<div class="" style="max-height:200px;width:200px;float:right">';
-		$data .= '<div class="" style="max-height:150px;width:150px;">';
-		$data .='<img id="blah" src="images/students_img/'.@$row_student_data['profile_img'].'" alt="Profile Photo" />';
+		$data .= '<div class="" style="max-height:150px;width:250px;">';
+		if(isset($row_student_data['profile_img']) && $row_student_data['profile_img']!="")
+		{
+			$data .='<img id="blah" src="images/students_img/'.@$row_student_data['profile_img'].'" alt="Profile Photo" style="width:90px;height:90px" />';
+		}
+		else
+		{
+			$data .='<img id="blah" src="images/person.png" alt="Profile Photo" style="width:90px;height:90px"  />';
+		}
+		$data .='<ul class="css-ul-list" style="color:red">
+						   <li>Only "jpg" , "png" or "jpeg" <br>image will be accepted.</li>
+						   <li>Image Width should be greater <br> than \'500\'   pixel.<br></li>
+						</ul><br><br><br>';
 		$data .='</div>';
-		$data .= '&nbsp;&nbsp;<input style="float:right"  type="file" id="student_file" name="student_file" ';
-		$data .= ' '.$disabled.' placeholder="Last Name" '; 
+		
+		$data .= '&nbsp;&nbsp;<br><input style="float:right;"  type="file" id="student_file" name="student_file" ';
+		$data .= ' '.$disabled.' '; 
 		if($req_type=='add')
 		{
 			$data .=' data-rule-required="true"  ';
@@ -350,6 +344,12 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		readURL(this);
 	});
 	  </script>";
+		
+		
+		
+		
+		//////=============================================Start : Student Mobile Number======================================
+		
 		
 		//////=============================================Start : Student Email======================================
 		$data .= '<div class="control-group span6" >';
@@ -400,11 +400,12 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		$data .= '</div> <!--Student Gender -->';
 		
 		//////=============================================Start : Student DOB======================================
+		$student_dob = explode('-',$row_student_data['student_dob']);
 		$data .= '<div class="control-group span6" >';
 		$data .= '<label for="tasktitel" class="control-label">DOB<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
 		$data .= '<input   type="text" readonly id="student_dob" name="student_dob" class="input-large datepicker" placeholder="Date of Birth" ';
-		$data .= 'data-rule-required="true"  value="'.@$row_student_data['student_dob'].'" '.$disabled.'/><br>';
+		$data .= 'data-rule-required="true"  value="'.@$student_dob[2].'-'.@$student_dob[1].'-'.@$student_dob[0].'" '.$disabled.'/><br>';
 		$data .= '</div>';
 		$data .= '</div> <!-- Student DOB-->';
 		
@@ -530,12 +531,13 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		$data .= '$("#stud_cat").select2();';
 		$data .= '</script>';
 			//////=============================================Start : Student Joining Date======================================
+		$stud_joinig_date   = explode('-',@$row_student_data['stud_joinig_date']);
 		$data .= '<div class="control-group" >';
 		$data .= '<label for="tasktitel" class="control-label">Joining Date
 		<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
 		$data .= '<input   type="text" readonly id="stud_joinig_date" name="stud_joinig_date" class="input-large datepicker" placeholder="Joinig Date" ';
-		$data .= 'data-rule-required="true"  value="'.@$row_student_data['stud_joinig_date'].'" /><br>';
+		$data .= 'data-rule-required="true"  value="'.@$stud_joinig_date[2].'-'.@$stud_joinig_date[1].'-'.@$stud_joinig_date[0].'" /><br>';
 		$data .= '</div>';
 		$data .= '</div> <!-- Student Joining Date -->';
 		
@@ -551,9 +553,9 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 	  
 		//////=============================================Start : Student Bio======================================
 		$data .= '<div class="control-group" style="clear:both;">';
-		$data .= '<label for="tasktitel" class="control-label">Bio<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<label for="tasktitel" class="control-label">About yourself</label>';
 		$data .= '<div class="controls">';
-		$data .= '<textarea   id="stud_bio" name="stud_bio" class="input-large" placeholder="Bio" data-rule-required="true">';
+		$data .= '<textarea   id="stud_bio" name="stud_bio" class="input-large" placeholder="About yourself">';
 		$data .= @$row_student_data['stud_bio']; 
 		$data .='</textarea><br>';
 		$data .= '</div>';
@@ -571,19 +573,24 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		
 		//////=============================================Start : Student ID======================================
 		$data .= '<div class="control-group">';
-		$data .= '<label for="tasktitel" class="control-label">Id Proof<br>Pan Card / Addhar Card <sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<label for="tasktitel" class="control-label">Id Proof<br>Pan Card / Addhar Card </label>';
 		$data .= '<div class="controls">';
-		$data .= '<input type="file" id="student_id" placeholder="" name="student_id" class="input-large keyup-char" ';
+		$data .= '<input type="file" id="student_id" accept="image/png,image/jpeg,image/jpg,application/pdf" placeholder="" name="student_id" class="input-large keyup-char" ';
 		if($req_type=='add')
 		{
-			$data .=' data-rule-required="true"';
+			//$data .=' data-rule-required="true"';
 		}
 		$data .='/>';
+		
 		
 		if(@$row_student_data['student_doc']!='')
 		{
 			$data .='<a target="_blank" href="images/students_doc/'.$row_student_data['student_doc'].'">'.$row_student_data['student_doc'].'</a>';
 		}
+		$data .='<ul class="css-ul-list" style="color:red">
+						   <li>Only "jpg" , "png" ,"pdf" or "jpeg" image will be accepted.</li>
+						   <li>Image width should be  \'400\'   pixel.</li>
+						</ul>';
 		$data .= '</div>';
 		$data .= '</div> <!-- Document -->';
 
@@ -641,53 +648,125 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 	}
 		else
 		{
-		//==================Start :  Heading  ===========================================//
-		$data .='<div class="control-group">';
-		
-		$data .='<div class="span4">';
-			$data .='<div style="padding:20px">';
-				$data .='<img style="width:200px" src="images/students_img/'.$row_student_data['profile_img'].'">';
-			$data .='</div>';
-		$data .='</div>';
-		
-		$data .='<div class="span8">';
-			$data .='<div style="">';
-				$data .='<h3  style="">'.ucwords($row_student_data['student_fname']).' '.ucwords($row_student_data['student_lname']).'</h3>';
-			$data .='</div>';
-			//==== Age strat==//
-			  $data .='<div>';
-			  	$data .='Age : ';
-				$year  = explode('-',$row_student_data['student_dob']);
-				
-				$data .=(date('Y') - date('Y',strtotime($year[2])));
-				$data .='';
-			  $data .='</div>';
-			//==== Age strat==//
-			//==== Instidtude Start strat==//
-			  $data .='<div>';
-			  	$data .='Institute : ';
-				$data .=$row_student_data['student_institute'];
-				$data .='';
-			  $data .='</div>';
-			//==== Instidtude strat==//
+			if($row_student_data['student_status']==1)
+			{
+				$bgcolor = '#18BB7C';
+				//$color   = 'white';
+			}
+			else
+			{
+				$bgcolor = '#da4f49';
+			}
 			
-		$data .='</div>';
-		
-		/*$data .='<div class="span4">';
-			$data .='<div style="padding:20px">';
-				$data .='<img style="max-width:200px" src="images/team/'.$row_student_data['team_jercy'].'">';
-			$data .='</div>';
-		$data .='</div>';*/
-		
-		$data .='</div>';// control-group end
+			$sql_get_add  = " SELECT * FROM tbl_address_master as tam ";
+			$sql_get_add .= " INNER JOIN tbl_state as ts ON tam.add_state = ts.state ";
+			$sql_get_add .= " INNER JOIN tbl_area as ta ON tam.add_area = ta.area_id ";
+			$sql_get_add .= " INNER JOIN tbl_city as tc ON tam.add_city = tc.city_id ";
+			$sql_get_add .= " WHERE add_user_type='student' AND add_user_id='".$student_id."'";
+			
+			$res_get_add  = mysqli_query($db_con,$sql_get_add) or die(mysqli_error($db_con));
+			$row_get_add  = mysqli_fetch_array($res_get_add);
+			
+			$state        = $row_get_add['state_name'];
+			$area         = $row_get_add['area_name'];
+			$city         = $row_get_add['city_name'];
+			$add_detail   = $row_get_add['add_details'];
+			
+			//==================Start :  Heading  ===========================================//
+			$data .='<div class="control-group" style="background-color:'.$bgcolor.'; padding-bottom:25px">';
+			
+			$data .='<div class="span4">';
+				$data .='<div style="padding:20px">';
+				if($row_student_data['profile_img']!="")
+				{
+					$data .='<img style="width:200px" src="images/students_img/'.$row_student_data['profile_img'].'" alt="">';
+				}
+				else
+				{
+					$data .='<img style="width:200px" src="img/person.jpg" alt="">';
+				}
+					
+				$data .='</div>';
+		   $data .='</div>';
+			
+	       $data .='<div class="span8">';
+		   $data .='<div style="">';
+					$data .='<h3 class="head1" style="color:white">'.ucwords($row_student_data['student_fname']).'
+					 '.ucwords($row_student_data['student_lname']).'
+					 </h3>';
+		   $data .='</div>';
+				
+		   $year  = explode('-',$row_student_data['student_dob']);
+				//date('Y',strtotime($year[2]))).date('Y',strtotime($year[2]));
+				
+			$data .='<div class="control-group" style="background-color:'.$bgcolor.'">';
+					$data .='<div class="span6">
+								<span class="head2" style="color:white">Email: </span> <span class="head2" style="color:white">
+								'.$row_student_data['student_email'].'</span><br>
+								<span class="head2" style="color:white">Date of Birth:  
+								'.@$year[2].' / '.@$year[1].' / '.@$year[0].'</span><br>
+								<span class="head2" style="color:white">Institute: </span>
+								<span class="head2" style="color:white"> '.@ucwords($row_student_data['student_institute']).'</span>';
+								
+								if($state !='')
+								{
+									$data .='<br><br><span class="head2" style="color:white">State: </span>
+									<span class="head2" style="color:white"> '.@$state.'</span>';
+								}
+								if($area !='')
+								{
+									$data .='<br><span class="head2" style="color:white">Area: </span>
+									<span class="head2" style="color:white"> '.@$area.'</span>';
+								}
+								if($row_student_data['student_doc']!="")
+								{
+									$data .='<br><span class="head2" style="color:white">Id Proof: </span>
+									<span class="head2" style="color:white"><a style="color:white" target="_blank" href="images/students_doc/'.$row_student_data['student_doc'].'">'.$row_student_data['student_doc'].'</a></span>';
+								}
+								
+					
+					$data .='</div>';
+					$age   = (date('Y'))-$year[0];
+					$stud_joinig_date = explode('-',$row_student_data['stud_joinig_date']);
+					$data .='<div class="span6">
+									<span class="head2" style="color:white">Mobile : </span>
+									<span class="head2" style="color:white">'.ucwords($row_student_data['student_mobile']).'</span><br>
+									<span  class="head2" style="color:white">Age: </span> <span class="head2" style="color:white">'.@$age.' years </span><br>
+									<span class="head2" style="color:white">Joining Date: </span> 
+									<span class="head2" style="color:white">'.@$stud_joinig_date[2].' / '.@$stud_joinig_date[1].' / '.@$stud_joinig_date[0].'</span>					<br>
+							';
+								if($city !='')
+								{
+									$data .='<br><span class="head2" style="color:white">City: </span>
+									<span class="head2" style="color:white"> '.@ucwords($city).'</span>';
+								}
+							    
+								if($add_detail !='')
+								{
+									$data .='<br><span class="head2" style="color:white">Address: </span>
+									<span class="head2" style="color:white"> '.@ucwords($add_detail).'</span>';
+								}
+						$data .='</div>';
+						
+							
+							
+							if(@$row_student_data['stud_bio']!="")
+							{
+								$data .='<div class="span12" style="text-align:justify;padding-top:45px" >';
+									$data .='<span class="head2" style="color:white">About :</span>
+											 <span class="head2" style="color:white"> '.@$row_student_data['stud_bio'].'</span>';
+								$data .='</div>';
+							}
+				$data .='<br><br></div>';
+			$data .='</div><br><br>';
+			$data .='</div>';// control-group end
 		
 		//==================End : Heading  ===========================================//
 		
 		
 		
 		//==================Start : Coaches  ===========================================//
-		$data .='<div class="control-group">';
-	
+		
 		$sql_get_stud  = " SELECT * FROM tbl_team_students  as tts ";
 		$sql_get_stud .= " INNER JOIN tbl_team as  tm ON tts.team_id =tm.team_id ";
 		$sql_get_stud .= " WHERE tts.student_id='".$student_id."'";
@@ -700,51 +779,57 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		}
 		$num_get_stud1 = round(($num_get_stud)/2);
 		$num_get_stud2 = $num_get_stud - $num_get_stud1;
-		
-		$data .='<div class="span4">';
-			$data .='<div style="padding:20px">';
-				$data .='<h5>Teams</h5>';
+		if($res_array)
+		{
+			$data .='<div class="control-group">';
+			$data .='<div class="span12">';
+				$data .='<div style="padding:20px">';
+					$data .='<h5>Teams</h5>';
+				$data .='</div>';
 			$data .='</div>';
-		$data .='</div>';
-		
-		
-		$data .='<div class="span4">';
-			$data .='<div style="padding:20px">';
-				$data .='<ul>';
-				for($i=0;$i<$num_get_stud1;$i++)
-				{
-					$data .='<li><a href="view_team.php?pag=Teams&team_id='.$res_array[$i]['team_id'].'" target="_blank" >'.$res_array[$i]['team_name'].'</a></li>';
-				}
-				$data .='</ul>';
+			
+			
+			$data .='<div class="span4">';
+				$data .='<div style="padding:20px">';
+					$data .='<ul>';
+					for($i=0;$i<$num_get_stud1;$i++)
+					{
+						$data .='<li class="head2"><a href="view_team.php?pag=Teams&team_id='.$res_array[$i]['team_id'].'" target="_blank" >'.ucwords($res_array[$i]['team_name']).'</a>';
+						if($res_array[$i]['isCaptain']==1)
+						{
+							$data .=' ( Captain )';
+						}
+						
+						$data .='</li>';
+					}
+					$data .='</ul>';
+				$data .='</div>';
 			$data .='</div>';
-		$data .='</div>';
-		
-		
-		
-		$data .='<div class="span4">';
-			$data .='<div style="padding:20px;">';
-				$data .='<ul>';
-				for($i=$i;$i<$num_get_stud;$i++)
-				{
-					$data .='<li><a href="#" target="_blank" > '.$res_array[$i]['team_name'].'</a></li>';
-				}
-				$data .='</ul>';
+			
+			
+			
+			$data .='<div class="span4">';
+				$data .='<div style="padding:20px;">';
+					$data .='<ul>';
+					for($i=$i;$i<$num_get_stud;$i++)
+					{
+						$data .='<li class="head2"><a href="view_team.php?pag=Teams&team_id='.$res_array[$i]['team_id'].'" target="_blank" > '.ucwords($res_array[$i]['team_name']).'</a>';
+						if($res_array[$i]['isCaptain']==1)
+						{
+							$data .=' ( Captain )';
+						}
+						$data .='</li>';
+					}
+					$data .='</ul>';
+				$data .='</div>';
 			$data .='</div>';
-		$data .='</div>';
-		
-		$data .='</div>';// control-group
+			
+			$data .='</div>';// control-group
+		}
 		//==================End : Coaches  ===========================================//
 		
 		
-		//==================Start : Student  ===========================================//
-		$data .='<div class="control-group">';
-		
-		$data .='<div class="span4">';
-			$data .='<div style="padding:20px">';
-				$data .='<h5> Competition </h5>';
-			$data .='</div>';
-		$data .='</div>';
-		
+		//==================Start : Competition  ===========================================//
 		$sql_get_stud  = " SELECT competition_name,tc.competition_id FROM tbl_competition  as tc ";
 		$sql_get_stud .= " WHERE competition_id IN (SELECT DISTINCT(competition_id) FROM tbl_competition_team WHERE team_id IN ( ";
 		$sql_get_stud .= " SELECT DISTINCT(team_id) FROM tbl_team_students WHERE student_id='".$student_id."' ) ";
@@ -758,42 +843,46 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		}
 		$num_get_stud1 = round(($num_get_stud)/2);
 		$num_get_stud2 = $num_get_stud - $num_get_stud1;
-		
-		
-		$data .='<div class="span4" style="clear:both">';
-			$data .='<div style="padding:20px">';
-				$data .='<ul>';
-				for($i=0;$i<$num_get_stud1;$i++)
-				{
-					$data .='<li><a href="view_competition.php?pag=Competitions&competition_id='.$res_array[$i]['competition_id'].'" target="_blank" >'.$res_array[$i]['competition_name'].' </a></li>';
-				}
-				$data .='</ul>';
+		if($res_array)
+		{
+			$data .='<div class="control-group">';
+			
+			$data .='<div class="span12">';
+				$data .='<div style="padding:20px">';
+					$data .='<h5> Competition </h5>';
+				$data .='</div>';
 			$data .='</div>';
-		$data .='</div>';
-		
-		$data .='<div class="span4">';
-			$data .='<div style="padding:20px;">';
-				$data .='<ul>';
-				for($i=$i;$i<$num_get_stud;$i++)
-				{
-					$data .='<li><a href="view_competition.php?pag=Competitions&competition_id='.$res_array[$i]['competition_id'].'" target="_blank" >'.$res_array[$i]['competition_name'].' </a></li>';
-				}
-				$data .='</ul>';
+			
+			
+			
+			
+			$data .='<div class="span4" style="clear:both">';
+				$data .='<div style="padding:20px">';
+					$data .='<ul>';
+					for($i=0;$i<$num_get_stud1;$i++)
+					{
+						$data .='<li class="head2"><a href="view_competition.php?pag=Competitions&competition_id='.$res_array[$i]['competition_id'].'" target="_blank" >'.ucwords($res_array[$i]['competition_name']).' </a></li>';
+					}
+					$data .='</ul>';
+				$data .='</div>';
 			$data .='</div>';
-		$data .='</div>';
-		
-		$data .='</div>';// row end
-		//==================End : Student  ===========================================//
+			
+			$data .='<div class="span4">';
+				$data .='<div style="padding:20px;">';
+					$data .='<ul>';
+					for($i=$i;$i<$num_get_stud;$i++)
+					{
+						$data .='<li class="head2"><a href="view_competition.php?pag=Competitions&competition_id='.$res_array[$i]['competition_id'].'" target="_blank" >'.ucwords($res_array[$i]['competition_name']).' </a></li>';
+					}
+					$data .='</ul>';
+				$data .='</div>';
+			$data .='</div>';
+			
+			$data .='</div>';// row end
+		}
+		//==================End : Competition  ===========================================//
 		
 		//==================Start : Participation  ===========================================//
-		$data .='<div class="control-group">';
-		
-		$data .='<div class="span4">';
-			$data .='<div style="padding:20px">';
-				$data .='<h5> Batches </h5>';
-			$data .='</div>';
-		$data .='</div>';
-		
 		$sql_get_comp  = "SELECT * FROM tbl_batch_students  as tct ";
 		$sql_get_comp .= " INNER JOIN tbl_batches as  tc ON tct.batch_id =tc.batch_id ";
 		$sql_get_comp .= " WHERE student_id='".$student_id."'";
@@ -807,34 +896,47 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		$num_get_comp1 = round(($num_get_comp)/2);
 		$num_get_comp2 = $num_get_comp - $num_get_comp1;
 		
-		
-		$data .='<div class="span4" style="clear:both">';
-			$data .='<div style="padding:20px">';
-				$data .='<ul>';
-				for($i=0;$i<$num_get_comp1;$i++)
-				{
-					$data .='<li><a href="view_batches.php?pag=Competitions&competition_id='.$comp_array[$i]['batch_id'].'" target="_blank" >'.$comp_array[$i]['batch_name'].'</a></li>';
-				}
-				$data .='</ul>';
+		if($comp_array)
+		{
+			$data .='<div class="control-group">';
+			
+			$data .='<div class="span12">';
+				$data .='<div style="padding:20px">';
+					$data .='<h5> Training Batches </h5>';
+				$data .='</div>';
 			$data .='</div>';
-		$data .='</div>';
-		
-		$data .='<div class="span4">';
-			$data .='<div style="padding:20px;">';
-				$data .='<ul>';
-				for($i=$i;$i<$num_get_comp;$i++)
-				{
-					$data .='<li><a href="view_competition.php?pag=Competitions&competition_id='.$comp_array[$i]['batch_id'].'" target="_blank" >'.$comp_array[$i]['batch_name'].' </a></li>';
-				}
-				$data .='</ul>';
+			
+			
+			
+			
+			$data .='<div class="span4" style="clear:both">';
+				$data .='<div style="padding:20px">';
+					$data .='<ul>';
+					for($i=0;$i<$num_get_comp1;$i++)
+					{
+						$data .='<li class="head2"><a href="view_batch.php?pag=Training Batches&batch_id='.$comp_array[$i]['batch_id'].'" target="_blank" >'.ucwords($comp_array[$i]['batch_name']).'</a></li>';
+					}
+					$data .='</ul>';
+				$data .='</div>';
 			$data .='</div>';
-		$data .='</div>';
-		
-		$data .='</div>';// row end
-		//==================End : Student  ===========================================//
-		
-		
+			
+			$data .='<div class="span4">';
+				$data .='<div style="padding:20px;">';
+					$data .='<ul>';
+					for($i=$i;$i<$num_get_comp;$i++)
+					{
+						$data .='<li class="head2"><a href="view_batch.php?pag=Training Batches&batch_id='.$comp_array[$i]['batch_id'].'" target="_blank" >'.ucwords($comp_array[$i]['batch_name']).' </a></li>';
+					}
+					$data .='</ul>';
+				$data .='</div>';
+			$data .='</div>';
+			
+			$data .='</div>';// row end
 	}
+	//==================End : Student  ===========================================//
+	
+	
+}
 			
 		$response_array = array("Success"=>"Success","resp"=>$data);				
 	}
@@ -854,7 +956,7 @@ if((isset($obj->load_student)) == "1" && isset($obj->load_student))
 	$start_offset   = 0;
 	$page 			= $obj->page;	
 	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
+	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);	
 	
 	$area_id 		= $obj->area_id;	
 	$batch_id		= $obj->batch_id;
@@ -907,7 +1009,7 @@ if((isset($obj->load_student)) == "1" && isset($obj->load_student))
 		}
 		if($search_text != "")
 		{
-			$sql_load_data .= " and (student_name like '%".$search_text."%' or student_email like '%".$search_text."%' ";
+			$sql_load_data .= " and (student_fname like '%".$search_text."%' or student_lname like '%".$search_text."%' or student_mname like '%".$search_text."%' or  student_email like '%".$search_text."%' ";
 			$sql_load_data .= " or student_mobile like '%".$search_text."%'  or student_gender like '%".$search_text."%') ";	
 		}
 		$data_count		  = dataPagination($sql_load_data,$per_page,$start,$cur_page);		
@@ -957,16 +1059,34 @@ if((isset($obj->load_student)) == "1" && isset($obj->load_student))
 			{
 	    	  	$student_data .= '<tr>';				
 				$student_data .= '<td style="text-align:center">'.++$start_offset.'</td>';				
-		     	$student_data .= '<td style="text-align:center"><img src="images/students_img/'.$row_load_data['profile_img'].'" alt="No Image" width="50px"></td>';	
+		     	$student_data .= '<td style="text-align:center">';
+				
+				if($row_load_data['profile_img']!="")
+				{
+					$student_data .=' <img src="images/students_img/small/'.$row_load_data['profile_img'].'" alt="No Image" width="50px">';
+				}
+				else
+				{
+					$student_data .='<img style="width:60px" src="img/person.jpg" alt="">';
+				}
+				$student_data .='</td>';	
 				$student_data .= '<td style="text-align:center"><input type="button" value="'.ucwords($row_load_data['student_fname']).' '.ucwords($row_load_data['student_lname']).'" class="btn-link" id="'.$row_load_data['student_id'].'" onclick="addMoreArea(this.id,\'view\');"></td>';
-					$student_data .= '<td style="text-align:center">'.$row_load_data['student_email'].'</td>';
+				
+				$date = strtotime($row_load_data['student_dob']);
+	            $student_data .= '<td style="text-align:center">'.date(' j M, Y',$date).'</td>';
+				//$student_data .= '<td style="text-align:center">'.$row_load_data['student_dob'].'</td>';
+				$student_data .= '<td style="text-align:center">'.$row_load_data['student_email'].'</td>';
 				
 				$student_data .= '<td style="text-align:center">'.$row_load_data['student_mobile'].'</td>';			
 				$student_data .= '<td style="text-align:center">'.$row_load_data['student_gender'].'</td>';
-				$student_data .= '<td style="text-align:center">'.$row_load_data['student_created'].'</td>';
-				$student_data .= '<td style="text-align:center">'.$row_load_data['name_created_by'].'</td>';
-				$student_data .= '<td style="text-align:center">'.$row_load_data['student_modified'].'</td>';
-				$student_data .= '<td style="text-align:center">'.$row_load_data['name_midified_by'].'</td>';
+				$student_created = strtotime($row_load_data['student_created']);
+	            $student_data .= '<td style="text-align:center">'.date(' j M, Y, g : i a',$student_created).'</td>';
+				//$student_data .= '<td style="text-align:center">'.$row_load_data['student_created'].'</td>';
+				$student_data .= '<td style="text-align:center">'.ucwords($row_load_data['name_created_by']).'</td>';
+				//$student_data .= '<td style="text-align:center">'.$row_load_data['student_modified'].'</td>';
+				$student_modified = strtotime($row_load_data['student_modified']);
+	            $student_data .= '<td style="text-align:center">'.date(' j M, Y, g : i a',$student_modified).'</td>';
+				$student_data .= '<td style="text-align:center">'.ucwords($row_load_data['name_midified_by']).'</td>';
 				$dis = checkFunctionalityRight("view_student.php",3);
 				$dis = 1;
 				if($dis)
@@ -1056,21 +1176,32 @@ if((isset($obj->delete_student)) == "1" && isset($obj->delete_student))
 	$response_array   = array();		
 	$student_ids 	  = $obj->batch;
 	$del_flag 		  = 0; 
+	
+	$row = checkExist('tbl_students' ,array('student_id'=>$student_id));
+	
 	foreach($student_ids as $student_id)	
 	{
 		$sql_delete_area	= " DELETE FROM `tbl_students` WHERE `student_id` = '".$student_id."' ";
 		$result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));			
 		if($result_delete_area)
 		{
+			
+			
 			$del_flag = 1;
 			$sql_delete_area	= " DELETE FROM `tbl_address_master` WHERE `add_user_id` = '".$student_id."' AND add_user_type='student' ";
-		    $result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));	
-			
-			$sql_delete_batch	= " DELETE FROM `tbl_student_batches` WHERE `student_id` = '".$student_id."' ";
+		    $result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));
+				
+			//=================Start to delete from batch table=====================================//
+			$sql_delete_batch	= " DELETE FROM `tbl_batch_students` WHERE `student_id` = '".$student_id."' ";
 		    $res_delete_batch	= mysqli_query($db_con,$sql_delete_batch) or die(mysqli_error($db_con));	
 			
-			$sql_delete_comp	= " DELETE FROM `tbl_student_competition` WHERE `student_id` = '".$student_id."' ";
+			//=================Start to delete from team table=====================================//
+			$sql_delete_comp	= " DELETE FROM `tbl_team_students` WHERE `student_id` = '".$student_id."' ";
 		    $res_delete_comp	= mysqli_query($db_con,$sql_delete_comp) or die(mysqli_error($db_con));
+			
+			unlink('images/students_img/'.$row['profile_img']);
+			unlink('images/students_img/small/'.$row['profile_img']);
+			unlink('images/students_doc/'.$row['students_doc']);
 		}			
 	}	
 	if($del_flag == 1)
@@ -1148,7 +1279,7 @@ if((isset($obj->getArea)) == "1" && isset($obj->getArea))
 	
 	if($city_id=="")
 	{
-		quit('Please Select State...!');
+		quit('Please Select City...!');
 	}
 	
 	$data ='<option value="">Select City</option>';
@@ -1157,7 +1288,7 @@ if((isset($obj->getArea)) == "1" && isset($obj->getArea))
 	$res = mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
 	if(mysqli_num_rows($res)==0)
 	{
-		quit('city not found...!');
+		quit('Area not found...!');
 	}
 	else
 	{

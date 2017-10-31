@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -30,11 +32,11 @@ if((isset($_POST['insert_category'])) == "1" && isset($_POST['insert_category'])
 	if($num_check==0)
 	{
 		insert('tbl_category',$data);
-		quit('Category Added Successfully...!',1);
+		quit('Fee Added Successfully...!',1);
 	}
 	else
 	{
-		quit('Category Name already Exist...!');
+		quit('Fee Name already Exist...!');
 	}
 }
 
@@ -61,11 +63,11 @@ if((isset($_POST['update_category'])) == "1" && isset($_POST['update_category'])
 	if($num_check==0)
 	{
 		update('tbl_category',$data,array('cat_id'=>$category_id));
-		quit('Category Updated Successfully...!',1);
+		quit('Fee Updated Successfully...!',1);
 	}
 	else
 	{
-		quit('Category Name already Exist...!'.$sql_check);
+		quit('Fee already Exist...!'.$sql_check);
 	}
 
 }
@@ -77,7 +79,7 @@ if((isset($obj->load_country)) == "1" && isset($obj->load_country))
 	$start_offset   = 0;
 	$page 			= $obj->page;	
 	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
+	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);	
 	
 	if($page != "" && $per_page != "")	
 	{
@@ -104,9 +106,9 @@ if((isset($obj->load_country)) == "1" && isset($obj->load_country))
     	 	$area_data .= '<thead>';
     	  	$area_data .= '<tr>';
          	$area_data .= '<th style="text-align:center">Sr No.</th>';
-			$area_data .= '<th style="text-align:center">Category ID</th>';
-			$area_data .= '<th style="text-align:center">Category Name</th>';
-			$area_data .= '<th style="text-align:center">Category  Fee</th>';
+			$area_data .= '<th style="text-align:center">ID</th>';
+			$area_data .= '<th style="text-align:center">Name</th>';
+			$area_data .= '<th style="text-align:center">Fee</th>';
 			$dis = checkFunctionalityRight("view_category.php",3);
 		
 			if($dis)
@@ -233,21 +235,21 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 		 
 		//====================Start : Category Name =================================================                                                      		
 		$data .= '<div class="control-group">';
-		$data .= '<label for="tasktitel" class="control-label">Category Name
+		$data .= '<label for="tasktitel" class="control-label">Fee Name
 		<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
 		$data .= '<input onkeypress="return charsonly(event);" type="text" id="cat_name" name="cat_name" ';
-		$data .= 'class="input-large keyup-char" data-rule-required="true" placeholder="Category Name"  value="'.@$row_area_data['cat_name'].'"/><br>';
+		$data .= 'class="input-large keyup-char" data-rule-required="true" placeholder="Name"  value="'.@$row_area_data['cat_name'].'"/><br>';
 		$data .= '</div>';
 		$data .= '</div> <!-- Category Name -->';
 		
 		
 		$data .= '<div class="control-group">';
-		$data .= '<label for="tasktitel" class="control-label">Category Fee
+		$data .= '<label for="tasktitel" class="control-label">Fee
 		<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
 		$data .= '<input onkeypress="return nusOnly(event);" type="text" id="cat_fee" name="cat_fee" ';
-		$data .= 'class="input-large keyup-char" data-rule-required="true" placeholder="Category Fee"  value="'.@$row_area_data['cat_fee'].'"/><br>';
+		$data .= 'class="input-large keyup-char" data-rule-required="true" placeholder="Fee"  value="'.@$row_area_data['cat_fee'].'"/><br>';
 		$data .= '</div>';
 		$data .= '</div> <!-- Category Fee -->';
 		
@@ -311,11 +313,11 @@ if((isset($obj->load_area_parts)) == "1" && isset($obj->load_area_parts))
 		$data .= '<div class="form-actions">';
 		if($cat_id == "" && $req_type == "add")
 		{
-			$data .= '<button type="submit" name="reg_submit_add" class="btn-success">Add Category</button>';			
+			$data .= '<button type="submit" name="reg_submit_add" class="btn-success">Add Fee</button>';			
 		}
 		elseif($cat_id != "" && $req_type == "edit")
 		{
-			$data .= '<button type="submit" name="reg_submit_edit" class="btn-success">Update Category</button>';			
+			$data .= '<button type="submit" name="reg_submit_edit" class="btn-success">Update Fee</button>';			
 		}			
 		$data .= '</div> <!-- Save and cancel -->';	
 			

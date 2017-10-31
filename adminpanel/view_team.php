@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -72,7 +73,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <option value="50">50</option>
                                             <option value="100">100</option>
                                         </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search by Team Name..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Search by Team Name"  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -106,7 +107,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_add_area','div_view_team');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">                                     
-                                    	<form id="frm_area_add" class="form-horizontal form-bordered form-validate" enctype="multipart/form-data" >
+                                    	<form id="frm_team_add" class="form-horizontal form-bordered form-validate" enctype="multipart/form-data" >
                                         	<div id="div_add_team_part">
                                         	</div>                                    
                                         </form>
@@ -132,7 +133,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_edit_area','div_view_team');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
-                                        <form id="frm_area_edit" class="form-horizontal form-bordered form-validate" >
+                                        <form id="frm_team_edit" class="form-horizontal form-bordered form-validate" >
                                             <div id="div_edit_team_part">
                                             </div>                                    
                                         </form>                                    
@@ -152,10 +153,10 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                             <div class="span12">
                                 <div class="box box-color box-bordered">
                                     <div class="box-title">
-                                        <h3>
+                                       <!-- <h3>
                                             <i class="icon-table"></i>
                                             Team Details
-                                        </h3>
+                                        </h3>-->
                                         <button type="button" class="btn-info_1" style= "float:right" onClick="backToMain('div_view_team_details','div_view_team');loadData();" ><i class="icon-arrow-left"></i>&nbsp Back </button>                                          
                                     </div> <!-- header title-->
                                     <div class="box-content nopadding">
@@ -226,7 +227,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                 </div>
             </div>
         </div>
-            <?php getloder();?>
+        <?php getloder();?>
         <script type="text/javascript">
 		
 		$( document ).ready(function() {
@@ -305,7 +306,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			else
 			{
 				
-				var sendInfo 	= {"batch":batch, "delete_student":1};
+				var sendInfo 	= {"batch":batch, "delete_team":1};
 				var del_cat 	= JSON.stringify(sendInfo);								
 				$.ajax({
 					url: "load_team.php?",
@@ -626,23 +627,13 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				});
 		}		/*Add more area*/
 		
-		
-		function isNumberKey(evt)
-		{
-			var charCode = (evt.which) ? evt.which : event.keyCode
-			if (charCode > 31 && (charCode < 48 || charCode > 57))
-			return false;
-			return true;
-		}
-				
-		
 		//======================================================================================//
 		//=======================Start : Form Dn By Satish====================================//
 		//======================================================================================//
 		
-		$('#frm_area_add').on('submit', function(e) {
+		$('#frm_team_add').on('submit', function(e) {
 			e.preventDefault();
-			if ($('#frm_area_add').valid())
+			if ($('#frm_team_add').valid())
 			{
 				$.ajax({
 						url: "load_team.php",
@@ -681,9 +672,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 		});	/* Add Area*/
 		
-		$('#frm_area_edit').on('submit', function(e) {
+		$('#frm_team_edit').on('submit', function(e) {
 			e.preventDefault();
-			if ($('#frm_area_edit').valid())
+			if ($('#frm_team_edit').valid())
 			{
 				
 				$.ajax({
@@ -785,8 +776,8 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 							data = JSON.parse(response);
 							if(data.Success == "Success") 
 							{
-							
-								viewStudent(data.resp);
+							    alert(data.resp[0]);
+								viewStudent(data.resp[1]);
 								loading_hide();
 							} 
 							else 
@@ -831,248 +822,17 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			$('#'+show_div).css('display','block');
 		}
 		
-		function getState(country_id)
-		{
-			if(country_id=="")
-			{
-				alert('Please select country...!');
-				return false;
-			}
-			var sendInfo 	= {"country_id":country_id,"getState":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_city.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					if(data.Success == "Success") 
-					{							
-						$('#state_code').html(data.resp);
-					} 
-					else 
-					{
-						$('#state_code').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		}
-		
-		function getCityList(state_id,city_select_id)
-		{
-			if(state_id=="")
-			{
-				alert('Please select State...!');
-				return false;
-			}
-			var sendInfo 	= {"state_id":state_id,"getCity":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_team.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					$('#city').prop('disabled',false);
-					if(data.Success == "Success") 
-					{						
-						$('#city').html(data.resp);
-					} 
-					else 
-					{
-						$('#state_code').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		}
-		
-		 function charsonly(e)
-		 {
-  			  var unicode=e.charCode? e.charCode : e.keyCode
-			 
-			  if (unicode !=8 && unicode !=32)
-			  {  // unicode<48||unicode>57 &&
-				  if (unicode<65||unicode>90 && unicode<97||unicode>122  )  //if not a number
-				  return false //disable key press
-              }
-		}
-		
-		
-		function numsonly(e)
-		 {
-  			  var unicode=e.charCode? e.charCode : e.keyCode
-			 
-			  if (unicode !=8 && unicode !=32)
-			  {  // unicode<48||unicode>57 &&
-				  if (unicode<48||unicode>57)  //if not a number
-				  return false //disable key press
-              }
-		}
-		
-		function getState(country_id)
-		{
-			if(country_id=="")
-			{
-				alert('Please select country...!');
-				return false;
-			}
-			var sendInfo 	= {"country_id":country_id,"getState":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_city.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					if(data.Success == "Success") 
-					{							
-						$('#state_code').html(data.resp);
-					} 
-					else 
-					{
-						$('#state_code').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		}
-		
-		function getArea(city_id)
-		{
-			if(city_id=="")
-			{
-				alert('Please select country...!');
-				return false;
-			}
-			var sendInfo 	= {"city_id":city_id,"getArea":1};
-			var area_status = JSON.stringify(sendInfo);								
-			$.ajax({
-				url: "load_team.php?",
-				type: "POST",
-				data: area_status,
-				contentType: "application/json; charset=utf-8",						
-				success: function(response) 
-				{			
-					data = JSON.parse(response);
-					if(data.Success == "Success") 
-					{							
-						$('#area').html(data.resp);
-					} 
-					else 
-					{
-						$('#area').select2();
-						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
-						$('#error_model').modal('toggle');
-						loading_hide();					
-					}
-				},
-				error: function (request, status, error) 
-				{
-					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
-					$('#error_model').modal('toggle');
-					loading_hide();
-				},
-				complete: function()
-				{
-					loading_hide();	
-				}
-			});		
-		
-		}
-		
-		
-		 $( ".datepicker" ).datepicker({
-		changeMonth	: true,
-		changeYear	: true,
-		dateFormat	: 'mm-dd-yy',
-		yearRange 	: 'c:c',//replaced "c+0" with c (for showing years till current year)
-		maxDate		: new Date(),
-			
-	   });
+		$( ".datepicker" ).datepicker({
+			changeMonth	: true,
+			changeYear	: true,
+			dateFormat	: 'mm-dd-yy',
+			yearRange 	: 'c:c',//replaced "c+0" with c (for showing years till current year)
+			maxDate		: new Date(),
+		});
 	   
-	   //===========================Start Check parent child========================//
 	   
-	   function checkbatch(competition_id)
-		{
-			if($("#comp"+competition_id).attr("checked")) 
-			{
-				$(".batch"+competition_id).prop("checked",true);
-			} 
-			else 
-			{
-				$(".batch"+competition_id).prop("checked",false);
-			}
-		}
-		
-		function checkcompetition(competition_id,batch_id)
-		{
-			batch =[];
-			$(".batch"+competition_id+":checked").each(function ()
-			{
-				batch.push(parseInt($(this).val()));
-			});
-			
-			if($("#cbatch"+batch_id).attr("checked")) 
-			{
-				$("#comp"+competition_id).prop("checked",true);
-			} 
-			else 
-			{
-				if(batch.length < 1)
-				{
-					$("#comp"+competition_id).prop("checked",false);
-				}
-				
-			}
-		}
-		
-		//===========================End Check parent child========================//
 	   function readURL(input)
-	    {
+	   {
 			 if (input.files && input.files[0])
 			 {
 				var reader = new FileReader();
@@ -1082,7 +842,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				}
 				reader.readAsDataURL(input.files[0]);
 			}
-      }
+       }
 
      
 	   function viewCoach(team_id)
@@ -1126,11 +886,9 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		
 	   }
 
-
-        function viewStudent(team_id)
+		function viewStudent(team_id)
 	   {
-		   
-			var sendInfo 	= {"team_id":team_id,"getStudent":1};
+		   var sendInfo 	= {"team_id":team_id,"getStudent":1};
 			var area_status = JSON.stringify(sendInfo);								
 			$.ajax({
 				url: "load_team.php?",
@@ -1153,6 +911,44 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
 						$('#error_model').modal('toggle');
 						loading_hide();					
+					}
+				},
+				error: function (request, status, error) 
+				{
+					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+					$('#error_model').modal('toggle');
+					loading_hide();
+				},
+				complete: function()
+				{
+					loading_hide();	
+				}
+			});		
+		
+	   }
+	   
+	   function selectCaptain(id,team_id)
+	   {
+		   loading_show();
+		   var sendInfo 	= {"id":id,"team_id":team_id,"selectCaptain":1};
+			var area_status = JSON.stringify(sendInfo);								
+			$.ajax({
+				url: "load_team.php?",
+				type: "POST",
+				data: area_status,
+				contentType: "application/json; charset=utf-8",						
+				success: function(response) 
+				{			
+					data = JSON.parse(response);
+					if(data.Success == "Success") 
+					{	 
+						viewStudent(team_id)
+						loading_hide();
+					} 
+					else 
+					{
+						alert(data.resp);	
+						loading_hide();			
 					}
 				},
 				error: function (request, status, error) 

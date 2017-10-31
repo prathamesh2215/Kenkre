@@ -87,6 +87,7 @@
 		}
 	}
 	// For Compile
+	
 	function quit($msg,$Success="")
 	{
 		if($Success ==1)
@@ -101,6 +102,7 @@
 		exit();
 	}
 	// Select Query For getting the Record count
+	
 	function isExist($table ,$where, $not_where_array=array(), $and_like_array=array(), $or_like_array=array())
 	{
 		global $db_con;
@@ -145,8 +147,6 @@
 			return false;
 		}
 	}
-	
-	
 	
 	function checkExist($table ,$where, $not_where_array=array(), $and_like_array=array(), $or_like_array=array())
 	{
@@ -193,7 +193,6 @@
 		}
 	}
 	
-	
 	function getRecord($table ,$where, $not_where_array=array(), $and_like_array=array(), $or_like_array=array())
 	{
 		global $db_con;
@@ -238,4 +237,51 @@
 			return false;
 		}
 	}
+	
+	function getList($table,$option_val,$option_name,$selected_id='',$where_arr=array(),$not_where=array())
+	{
+		global $db_con;
+		if(!isset($table))
+		{
+			return 'Please provide table name';
+		}
+		$sql=" SELECT * FROM ".$table." WHERE 1=1 "; 
+		//==Check Where Condtions=====//
+		if(!empty($where_arr))
+		{
+			foreach($where_arr as $field => $value )
+			{   
+				$sql  .= " AND ".$field ."='".$value."' ";
+			}
+		}
+		if(!empty($not_where))
+		{
+			foreach($not_where as $field1 => $value1 )
+			{   
+				$sql  .= " AND ".$field1 ."!='".$value1."' ";
+			}
+		}
+		$sql  .= " ORDER BY ".$option_name." ASC  ";
+		$res   = mysqli_query($db_con,$sql) or die(mysqli_error($db_con));
+		$num   = mysqli_num_rows($res);
+		if($num !=0)
+		{
+			$data ='';
+			while($row = mysqli_fetch_array($res))
+			{
+				$data .='<option value="'.$row[$option_val].'" ';
+				if($row[$option_val]==$selected_id)
+				{
+					$data .=' selected="selected" ';
+				}
+				$data .='>'.ucwords($row[$option_name]).'</option>';
+			}
+			return $data;
+		}
+		else
+		{
+		return '<option value="">NO item\'s found..! </option>';
+		}
+	}
+
 ?>

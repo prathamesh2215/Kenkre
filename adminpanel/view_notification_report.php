@@ -1,4 +1,5 @@
 <?php
+include("include/db_con.php");
 include("include/routines.php");
 checkuser();
 chkRights(basename($_SERVER['PHP_SELF']));
@@ -76,15 +77,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                     <div class="box-content nopadding">
                                     
                                     <div style="padding:10px 15px 10px 15px !important">
-                                    	<input type="hidden" name="hid_page" id="hid_page" value="1">
-                                    	<input type="hidden" name="ind_parent" id="ind_parent" value="Parent">
-                                        <select name="rowlimit" id="rowlimit" onChange="loadData();"  class = "select2-me">
-                                            <option value="10" selected>10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select> entries per page
-                                        <input type="text" class="input-medium" id = "srch" name="srch" placeholder="Fullname, Email, Mobile Number can be Search..."  style="float:right;margin-right:10px;margin-top:10px;width:300px" >
+                                    	
                                     </div>
                                     <div id="req_resp"></div>
                                     <div class="profileGallery">
@@ -242,24 +235,14 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		function loadData()
 		{
 			loading_show();
-			row_limit   = $.trim($('select[name="rowlimit"]').val());
-			search_text = $.trim($('#srch').val());
-			page        = $.trim($("#hid_page").val());	
+			
 			
 			ft_type          = $("#ft_type").val();	
 			start_date       = $("#start_date").val();	
 			end_date	     = $("#end_date").val();
 					
 								
-			if(row_limit == "" && page == "")
-			{
-				$("#model_body").html('<span style="style="color:#F00;">Can not Get Row Limit and Page number</span>');	
-				$('#error_model').modal('toggle');
-				loading_hide();							
-			}
-			else
-			{
-				var sendInfo = {"type":ft_type,"end_date":end_date,"start_date":start_date,"row_limit":row_limit, "search_text":search_text, "load_notification":1, "page":page};
+			var sendInfo = {"type":ft_type,"end_date":end_date,"start_date":start_date, "load_notification":1};
 				var ind_load = JSON.stringify(sendInfo);				
 				$.ajax({
 					url: "load_notification_report.php?",
@@ -292,7 +275,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 						//alert("complete");
 					}
 			    });
-			}
+			
 		}   /*Load Data*/
 		
 		function viewStudent(batch_id,req_type)

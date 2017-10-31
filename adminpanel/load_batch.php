@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -123,7 +125,7 @@ if((isset($obj->load_batch)) == "1" && isset($obj->load_batch))
 	$start_offset   = 0;
 	$page 			= $obj->page;	
 	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
+	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);	
 	
 	if($page != "" && $per_page != "")	
 	{
@@ -145,7 +147,7 @@ if((isset($obj->load_batch)) == "1" && isset($obj->load_batch))
 		if($search_text != "")
 		{
 			$sql_load_data .= " and (batch_name like '%".$search_text."%' or batch_limit like '%".$search_text."%' ";
-			$sql_load_data .= " or start_date like '%".$search_text."%'  or end_date like '%".$search_text."%' or competition_name like '%".$search_text."%') ";	
+			$sql_load_data .= " or start_date like '%".$search_text."%'  or end_date like '%".$search_text."%') ";	
 		}
 		$data_count		  = dataPagination($sql_load_data,$per_page,$start,$cur_page);		
 		$sql_load_data   .= " ORDER BY batch_id DESC LIMIT $start, $per_page ";
@@ -322,7 +324,7 @@ if((isset($obj->load_batch_parts)) == "1" && isset($obj->load_batch_parts))
 		$data .= '<div class="control-group">';
 		$data .= '<label for="tasktitel" class="control-label">Student / Batch Limit<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
-		$data .= '<input  type="text" id="batch_limit" name="batch_limit" class="input-large" onkeypress="return isNumberKey(event);" placeholder="Enter  Student Limit" data-rule-required="true" ';
+		$data .= '<input  type="text" id="batch_limit" placeholder="Enter Student Limit" name="batch_limit" class="input-large" onkeypress="return isNumberKey(event);"  data-rule-required="true" ';
 		if($batch_id != "" && $req_type == "edit")
 		{
 			$data .= ' value="'.$row_batch_data['batch_limit'].'"'; 
@@ -541,26 +543,60 @@ $('.timepicker').timepicker({
 	 }
 	    else
 		{
+			if($row_batch_data['batch_status']==1)
+			{
+				$bgcolor = '#18BB7C';
+				$color   = 'white';
+			}
+			else
+			{
+				$bgcolor = '#da4f49';
+				$color    ='';
+			}
 			//==================Start :  Heading  ===========================================//
-			$data .='<div class="control-group">';
+			$data .='<div class="control-group" style="background-color:'.$bgcolor.'">';
 			
-			$data .='<div class="span4">';
+			$data .='<div class="span2">';
 				$data .='<div style="padding:20px">';
 					
 				$data .='</div>';
 			$data .='</div>';
 			
-			$data .='<div class="span4">';
-			    $data .='<div style="padding:20px;">';
-					$data .='<h3  style="text-align:center">Batch : '.ucwords($row_batch_data['batch_name']).'</h3>';
+			$data .='<div class="span8">';
+			    $data .='<div style="padding-bottom:0px;">';
+					$data .='<h3  style="text-align:center; color:white">'.ucwords($row_batch_data['batch_name']).'</h3>';
+				$data .='</div>';
+				$data .='<div class="control-group" style="background-color:'.$bgcolor.';padding-bottom:20px;">';
+					$data .='<div class="span4">';
+						$data .='<div style="">';
+							$start_date = explode('-',$row_batch_data['start_date']);
+							$data .='<span class="head2" style="color:white">Star Date : ';
+							$data .=$start_date[2].'/'.$start_date[1].'/'.$start_date[0].'</span>';
+						$data .='</div>';
+					$data .='</div>';
+					$data .='<div class="span4">';
+						$data .='<div style="">';
+							$start_date = explode('-',$row_batch_data['end_date']);
+							$data .='<span class="head2" style="color:white">End Date : ';
+							$data .=$start_date[2].'/'.$start_date[1].'/'.$start_date[0].'</span>';
+						$data .='</div>';
+					$data .='</div>';
+					$data .='<div class="span4">';
+						$data .='<div style="">';
+							$data .='<span class="head2" style="color:white">Student Limit : ';
+							$data .=$row_batch_data['batch_limit'].'</span>';
+						$data .='</div>';
+					$data .='</div>';// student limit
 				$data .='</div>';
 			$data .='</div>';
 			
-			$data .='<div class="span4">';
+			$data .='<div class="span2">';
 				$data .='<div style="padding:20px">';
 					
 				$data .='</div>';
 			$data .='</div>';
+			
+			
 			
 			$data .='</div>';// control-group end
 			
@@ -569,7 +605,7 @@ $('.timepicker').timepicker({
 			
 			
 			//==================Start : Coaches  ===========================================//
-			$data .='<div class="control-group">';
+			
 		
 		    $sql_get_stud  = "SELECT * FROM tbl_batch_coach  as ttc ";
 			$sql_get_stud .= " INNER JOIN tbl_cadmin_users as  tcu ON ttc.coach_id =tcu.id ";
@@ -584,49 +620,49 @@ $('.timepicker').timepicker({
 			$num_get_stud1 = round(($num_get_stud)/2);
 			$num_get_stud2 = $num_get_stud - $num_get_stud1;
 			
-			$data .='<div class="span4">';
-				$data .='<div style="padding:20px">';
-				    $data .='<h5>Coaches</h5>';
+			if(!empty($res_array))
+			{
+			
+			
+				$data .='<div class="control-group">';
+				$data .='<div class="span12">';
+					$data .='<div style="padding:20px">';
+						$data .='<h5>Coaches ('.$num_get_stud.')</h5>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			
-			$data .='<div class="span4">';
-				$data .='<div style="padding:20px">';
-				    $data .='<ul>';
-					for($i=0;$i<$num_get_stud1;$i++)
-					{
-						$data .='<li><a href="#" target="_blank" >'.$res_array[$i]['fullname'].'</a></li>';
-					}
-					$data .='</ul>';
+				
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px">';
+						$data .='<ul>';
+						for($i=0;$i<$num_get_stud1;$i++)
+						{
+							$data .='<li class="head2"><a href="view_coach.php?pag=Coaches&coach_id='.$res_array[$i]['id'].'" target="_blank" >'.ucwords($res_array[$i]['fullname']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			
-			
-			$data .='<div class="span4">';
-			    $data .='<div style="padding:20px;">';
-				    $data .='<ul>';
-					for($i=$i;$i<$num_get_stud;$i++)
-					{
-						$data .='<li><a href="#" target="_blank" > '.$res_array[$i]['fullname'].'</a></li>';
-					}
-					$data .='</ul>';
+				
+				
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px;">';
+						$data .='<ul>';
+						for($i=$i;$i<$num_get_stud;$i++)
+						{
+							$data .='<li class="head2"><a href="view_coach.php?pag=Coaches&coach_id='.$res_array[$i]['id'].'" target="_blank" > '.ucwords($res_array[$i]['fullname']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			$data .='</div>';// control-group
+				
+				$data .='</div>';// control-group
+		    }
 			//==================End : Coaches  ===========================================//
 			
 			
 			//==================Start : Student  ===========================================//
-			$data .='<div class="control-group">';
 			
-			$data .='<div class="span4">';
-				$data .='<div style="padding:20px">';
-				    $data .='<h5> Students </h5>';
-				$data .='</div>';
-			$data .='</div>';
 			
 			$sql_get_stud  = "SELECT * FROM tbl_batch_students  as tts ";
 			$sql_get_stud .= " INNER JOIN tbl_students as  ts ON tts.student_id =ts.student_id ";
@@ -641,30 +677,40 @@ $('.timepicker').timepicker({
 			$num_get_stud1 = round(($num_get_stud)/2);
 			$num_get_stud2 = $num_get_stud - $num_get_stud1;
 			
-			
-			$data .='<div class="span4" style="clear:both">';
-				$data .='<div style="padding:20px">';
-				    $data .='<ul>';
-					for($i=0;$i<$num_get_stud1;$i++)
-					{
-						$data .='<li><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.$res_array[$i]['student_lname'].'</a></li>';
-					}
-					$data .='</ul>';
+			if(!empty($res_array))
+			{
+				$data .='<div class="control-group">';
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px">';
+						$data .='<h5> Students ('.$num_get_stud.')</h5>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			$data .='<div class="span4">';
-			    $data .='<div style="padding:20px;">';
-				    $data .='<ul>';
-					for($i=$i;$i<$num_get_stud;$i++)
-					{
-						$data .='<li><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.$res_array[$i]['student_lname'].'</a></li>';
-					}
-					$data .='</ul>';
+				
+				$data .='<div class="span4" style="clear:both">';
+					$data .='<div style="padding:20px">';
+						$data .='<ul>';
+						for($i=0;$i<$num_get_stud1;$i++)
+						{
+							$data .='<li class="head2"><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.ucwords($res_array[$i]['student_fname']).' '.ucwords($res_array[$i]['student_lname']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			$data .='</div>';// row end
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px;">';
+						$data .='<ul>';
+						for($i=$i;$i<$num_get_stud;$i++)
+						{
+							$data .='<li class="head2"><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.ucwords($res_array[$i]['student_fname']).' '.ucwords($res_array[$i]['student_lname']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
+				$data .='</div>';
+				
+				$data .='</div>';// row end
+			}
 			//==================End : Student  ===========================================//
 			
 		}
@@ -676,6 +722,7 @@ $('.timepicker').timepicker({
 	}
 	echo json_encode($response_array);
 }
+
 
 //---------------This is used for status change--------------------------------
 if((isset($obj->change_status)) == "1" && isset($obj->change_status))
@@ -700,7 +747,7 @@ if((isset($obj->change_status)) == "1" && isset($obj->change_status))
 
 //------------------This is used for delete data---------------------------------
 
-if((isset($obj->delete_area)) == "1" && isset($obj->delete_area))
+if((isset($obj->delete_batch)) == "1" && isset($obj->delete_batch))
 {
 	$response_array   = array();		
 	$ids 	  = $obj->batch;
@@ -712,6 +759,11 @@ if((isset($obj->delete_area)) == "1" && isset($obj->delete_area))
 		if($result_delete_area)
 		{
 			$del_flag = 1;
+			$sql_delete_batch	= " DELETE FROM `tbl_batch_coach` WHERE `batch_id` = '".$id."'";
+		    $res_delete_batch	= mysqli_query($db_con,$sql_delete_batch) or die(mysqli_error($db_con));
+			
+			$sql_delete_stud	= " DELETE FROM `tbl_batch_students` WHERE `batch_id` = '".$id."'";
+		    $res_delete_stud	= mysqli_query($db_con,$sql_delete_stud) or die(mysqli_error($db_con));
 		}			
 	}	
 	if($del_flag == 1)
@@ -746,7 +798,7 @@ if((isset($obj->getCoach)) == "1" && isset($obj->getCoach))
 
 	foreach($res_get_coach as $row)
 	{
-		$data .='<option value="'.$row['id'].'">'.$row['fullname'].'</option>';
+		$data .='<option value="'.$row['id'].'">'.ucwords($row['fullname']).'</option>';
 	}
 	$data .= '</select> ';
 	
@@ -804,14 +856,14 @@ if((isset($obj->getCoach)) == "1" && isset($obj->getCoach))
 		$data .= '</table>';
 	}
 	
-	quit(array($data,$row_get_team['batch_name']),1);
+	quit(array($data,ucwords($row_get_team['batch_name'])),1);
 }
 
 if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
 {
 	$batch_id   =       $obj->batch_id;
-	$data ='';
-	$data .='<input type="hidden" name="batch_id" id="batch_id" value="'.$batch_id.'">';
+	$data       ='';
+	$data  	   .='<input type="hidden" name="batch_id" id="batch_id" value="'.$batch_id.'">';
 	$data .='<input type="hidden" name="addStudent" id="addStudent" value="1">';
 	$data .='<div style="padding:15px;text-align:center">';
 	
@@ -826,7 +878,7 @@ if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
 
 	foreach($res_get_student as $row)
 	{
-		$data .='<option value="'.$row['student_id'].'">'.$row['student_fname'].' '.$row['student_lname'].'</option>';
+		$data .='<option value="'.$row['student_id'].'">'.ucwords($row['student_fname']).' '.ucwords($row['student_lname']).'</option>';
 	}
 	$data .= '</select> ';
 	
@@ -860,7 +912,7 @@ if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
 			<div style="text-align:center">';
 			$data .= '<input type="button"  value="Delete" onclick="multipleStudentDelete('.$batch_id.');" class="btn-danger"/>
 			</div></th>';
-			$data .= '<th style="text-align:center">Captain</th>';
+		
 		}
 		
 		$data .= '</tr>';
@@ -879,9 +931,7 @@ if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
 				$data .= '<input type="checkbox" value="'.$row_load_data['id'].'" id="student_batch'.$row_load_data['id'].'" name="student_batch'.$row_load_data['id'].'" class="css-checkbox student_batch">';
 				$data .= '<label for="student_batch'.$row_load_data['id'].'" class="css-label"></label>';
 				$data .= '</div></td>';		
-				$data .= '<td style="text-align:center">
-				<input type="radio" name="captain" value="'.$row_load_data['id'].' >"
-				</td>';								
+										
 			}
 			$data .= '</tr>';															
 		}	
@@ -889,7 +939,7 @@ if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
 		$data .= '</table>';
 	}
 	
-	quit(array($data,$row_get_team['batch_name']),1);
+	quit(array($data,ucwords($row_get_team['batch_name'])),1);
 }
 
 
@@ -922,22 +972,36 @@ if((isset($_POST['addCoach'])) == "1" && isset($_POST['addCoach']))
 
 if((isset($_POST['addStudent'])) == "1" && isset($_POST['addStudent']))
 {
-	$data['batch_id']  =  $_POST['batch_id'];  
+	
+	$batch_id          = $_POST['batch_id'];  
 	$student_ids      =  $_POST['student_id'];
 	$add_flag         =  0;
+	$row       = checkExist('tbl_batches',array('batch_id'=>$batch_id));
+	
+	
+	
 	foreach($student_ids as $student_id)
 	{
-		$data['student_id']          = $student_id;
-		$data['student_created']     = $datetime;
-		$data['student_created_by']  = $uid;
-		$data['team_student_status'] = 1;
-		insert('tbl_batch_students',$data);
-		$add_flag         =  1;
+		$studCount = isExist('tbl_batch_students',array('batch_id'=>$batch_id));
+		if($row['batch_limit'] <= $studCount)
+		{
+			quit(array('Student limit exceed...!',$batch_id),1);
+		}
+		else
+		{
+			$data['batch_id']            = $batch_id;
+			$data['student_id']          = $student_id;
+			$data['student_created']     = $datetime;
+			$data['student_created_by']  = $uid;
+			$data['team_student_status'] = 1;
+			insert('tbl_batch_students',$data);
+			$add_flag         =  1;
+		}
 	}
 	
 	if($add_flag == 1)
 	{
-		quit($data['batch_id'],1);
+		quit(array('Student added successfully',$batch_id),1);
 	}
 	else
 	{

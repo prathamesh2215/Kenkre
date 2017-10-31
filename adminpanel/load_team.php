@@ -1,4 +1,6 @@
 <?php
+include("include/db_con.php");
+include("include/query-helper.php");
 include("include/routines.php");
 $json = file_get_contents('php://input');
 $obj = json_decode($json);
@@ -7,27 +9,27 @@ $uid				= $_SESSION['panel_user']['id'];
 $utype				= $_SESSION['panel_user']['utype'];
 
 
-//------------------this is used for inserting records---------------------
+//------------------This is used for inserting records---------------------
 if((isset($_POST['insert_team'])) == "1" && isset($_POST['insert_team']))
 {
-	$data['team_name']                   = mysqli_real_escape_string($db_con,$_POST['team_name']);
-	$data['short_color']                 = mysqli_real_escape_string($db_con,$_POST['short_color']);
-	$data['socks_color']                 = mysqli_real_escape_string($db_con,$_POST['socks_color']);
+	$data['team_name']                   = strtolower(mysqli_real_escape_string($db_con,$_POST['team_name']));
+	$data['short_color']                 = strtolower(mysqli_real_escape_string($db_con,$_POST['short_color']));
+	$data['socks_color']                 = strtolower(mysqli_real_escape_string($db_con,$_POST['socks_color']));
 	$data['team_created']                = $datetime;
 	$data['team_created_by']             = $uid;
 	$data['team_status']                 = mysqli_real_escape_string($db_con,$_POST['team_status']);
-	
+	$data['team_limit']                  = mysqli_real_escape_string($db_con,$_POST['team_limit']);
 	
 	
 	if($_FILES['team_logo']['name'] !="" && isset($_FILES['team_logo']['name']))
 	{
 		$imagedata = getimagesize($_FILES['team_logo']['tmp_name']);
-		if($imagedata[0] <200|| $imagedata[0] >300 )
+		if($imagedata[0] <500 )
 		{
-			quit('Logo size should be 200 to 300');
+			quit('Logo width should be greater than 500');
 		}
 		$team_logo                  = explode('.',$_FILES['team_logo']['name']);
-		$team_logo                  = date('dhyhis').'.'.$team_logo[1];
+		$team_logo                  = 'l'.date('dhyhis').'.'.$team_logo[1];
 		$data['team_logo']          = $team_logo;
 		
 		$dir                         ='images/team/';
@@ -35,6 +37,8 @@ if((isset($_POST['insert_team'])) == "1" && isset($_POST['insert_team']))
 		{
 			quit('Team Logo not uploaded please try letter...!');
 		}
+		make_thumb($dir.$team_logo,$dir.'small/'.$team_logo,100,100);
+		make_thumb($dir.$team_logo,$dir.'medium/'.$team_logo,300,300);
 	}
 	else
 	{
@@ -44,9 +48,9 @@ if((isset($_POST['insert_team'])) == "1" && isset($_POST['insert_team']))
 	if($_FILES['team_jercy']['name'] !="" && isset($_FILES['team_jercy']['name']))
 	{
 		$imagedata = getimagesize($_FILES['team_jercy']['tmp_name']);
-		if($imagedata[0] <200 || $imagedata[0] >300 )
+		if($imagedata[0] <500 )
 		{
-			quit('Jercy size should be 200 to 300');
+			quit('Jercy width should be greater than 500');
 		}
 		$team_jercy                  = explode('.',$_FILES['team_jercy']['name']);
 		$team_jercy                  = date('dhyhis').'.'.$team_jercy[1];
@@ -57,6 +61,8 @@ if((isset($_POST['insert_team'])) == "1" && isset($_POST['insert_team']))
 		{
 			quit('Team Jercy not uploaded please try letter...!');
 		}
+		make_thumb($dir.$team_jercy,$dir.'small/'.$team_jercy,100,100);
+		make_thumb($dir.$team_jercy,$dir.'medium/'.$team_jercy,300,300);
 	}
 	else
 	{
@@ -81,20 +87,22 @@ if((isset($_POST['insert_team'])) == "1" && isset($_POST['insert_team']))
 	}
 	else
 	{
-		quit('TEam Name already Exist...!');
+		quit('Team Name already Exist...!');
 	}	
 }
 
 
 if((isset($_POST['update_team'])) == "1" && isset($_POST['update_team']))
 {
-	$data['team_name']                   = mysqli_real_escape_string($db_con,$_POST['team_name']);
-	$data['short_color']                 = mysqli_real_escape_string($db_con,$_POST['short_color']);
-	$data['socks_color']                 = mysqli_real_escape_string($db_con,$_POST['socks_color']);
+	$data['team_name']                   = strtolower(mysqli_real_escape_string($db_con,$_POST['team_name']));
+	$data['short_color']                 = strtolower(mysqli_real_escape_string($db_con,$_POST['short_color']));
+	$data['socks_color']                 = strtolower(mysqli_real_escape_string($db_con,$_POST['socks_color']));
 	$data['team_modified']               = $datetime;
 	$data['team_modified_by']            = $uid;
 	$data['team_status']                 = mysqli_real_escape_string($db_con,$_POST['team_status']);
+	$data['team_limit']                  = mysqli_real_escape_string($db_con,$_POST['team_limit']);
 	$team_id                             = mysqli_real_escape_string($db_con,$_POST['team_id']);
+	
 	
 	//=======================End : Image and Doc Upload End=====================================//
 	$sql_get_team             = " SELECT * FROM tbl_team WHERE team_id ='".$team_id."' ";
@@ -104,18 +112,26 @@ if((isset($_POST['update_team'])) == "1" && isset($_POST['update_team']))
 	if($_FILES['team_logo']['name'] !="" && isset($_FILES['team_logo']['name']))
 	{
 		$imagedata = getimagesize($_FILES['team_logo']['tmp_name']);
-		if($imagedata[0] <200 || $imagedata[0] >300 )
+		if($imagedata[0]<500 )
 		{
-			quit('Logo size should be 200 to 300');
+			quit('Logo width should be greater than 500');
 		}
 		$team_logo                  = explode('.',$_FILES['team_logo']['name']);
-		$team_logo                  = date('dhyhis').'.'.$team_logo[1];
+		$team_logo                  = 'l'.date('dhyhis').'.'.$team_logo[1];
 		$dir                         ='images/team/';
 		
 		if(move_uploaded_file($_FILES['team_logo']['tmp_name'],$dir.$team_logo))
 		{
 			$data['team_logo']         = $team_logo;
-			unlink($dir.$row_get_team['team_logo']);
+			
+			$res = make_thumb($dir.$team_logo,$dir.'small/'.$team_logo,100,100);
+			$res = make_thumb($dir.$team_logo,$dir.'medium/'.$team_logo,200,200);
+			
+			unlink($dir.$team_logo);
+			
+			
+			unlink($dir.'small/'.$row_get_team['team_logo']);
+			unlink($dir.'medium/'.$row_get_team['team_logo']);
 		}
 	}
 	
@@ -123,18 +139,22 @@ if((isset($_POST['update_team'])) == "1" && isset($_POST['update_team']))
 	if($_FILES['team_jercy']['name'] !="" && isset($_FILES['team_jercy']['name']))
 	{
 		$imagedata = getimagesize($_FILES['team_jercy']['tmp_name']);
-		if($imagedata[0] <200 || $imagedata[0] >300 )
+		if($imagedata[0]<500 )
 		{
-			quit('Jercy size should be 200 to 300');
+			quit('Jercy width should be greater than 500');
 		}
 		$team_jercy                  = explode('.',$_FILES['team_jercy']['name']);
 		$team_jercy                  = date('dhyhis').'.'.$team_jercy[1];
-		$dir                         ='images/students_doc/';
+		$dir                         ='images/team/';
 		
-		if(move_uploaded_file($_FILES['student_id']['tmp_name'],$dir.$stud_doc))
+		if(move_uploaded_file($_FILES['team_jercy']['tmp_name'],$dir.$team_jercy))
 		{
+			$res = make_thumb($dir.$team_jercy,$dir.'small/'.$team_jercy,100,100);
+			$res = make_thumb($dir.$team_jercy,$dir.'medium/'.$team_jercy,200,200);
 			$data['team_jercy']       = $team_jercy;
-			unlink($dir.$row_get_team['team_jercy']);
+			unlink($dir.$team_jercy);
+			
+			
 		}
 	}
 	
@@ -216,12 +236,8 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 			$data .= '<label for="tasktitel" class="control-label">Team Logo';
 			$data .= '<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 			$data .= '<div class="controls">';
-			$data .= '<img src="images/team/'.@$row_student_data['team_logo'].'" width="200px"  id="team_logo" name="team_jercy_p" class="" alt="Team Logo"><br>';
+			$data .= '<img src="images/team/medium/'.@$row_student_data['team_logo'].'" width="200px"  id="team_logo" name="team_jercy_p" class="" alt=""><br>';
 			
-			$data .='<ul class="css-ul-list">
-			           <li>Only "jpg" , "png" or "jpeg" image will be accepted.</li>
-			           <li>Image size should be  \'400\' to \'500\'  pixel.</li>
-					</ul>';
 					
 			$data .= '<input accept="image/jpeg,image/jpg,image/png"  type="file" id="team_logo" name="team_logo" class="input-large keyup-char team_logo" ';
 			if($req_type=='add')
@@ -229,6 +245,10 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 				$data .=' data-rule-required="true" ';
 			}
 			$data .= '/>';
+			$data .='<ul class="css-ul-list" style="color:red">
+						   <li>Only "jpg" , "png" or "jpeg" image will be accepted.</li>
+						   <li>Image width should be  greater than \'500\'   pixel.</li>
+						</ul>';
 			$data .= '</div>';
 			$data .= '</div> <!-- Team Logo -->';
 			$data .="<script type=\"text/javascript\">	$('.team_logo').change(function(){
@@ -240,23 +260,37 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 			$data .= '<label for="tasktitel" class="control-label">Team Jercy';
 			$data .= '<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 			$data .= '<div class="controls">';
-			$data .= '<img src="images/team/'.@$row_student_data['team_jercy'].'" width="200px" id="team_jercy" name="team_jercy_p" class="" alt="Team Jercy"><br>';
-			$data .='<ul class="css-ul-list">
-			           <li>Only "jpg" , "png" or "jpeg" image will be accepted.</li>
-			           <li>Image size should be  \'400\' to \'500\'  pixel.</li>
-					</ul>';
+			$data .= '<img src="images/team/medium/'.@$row_student_data['team_jercy'].'" width="200px" id="team_jercy" name="team_jercy_p" class="" alt=""><br>';
+			
 			$data .= '<input accept="image/jpeg,image/jpg,image/png"  type="file" id="team_jercy" name="team_jercy" class="input-large keyup-char team_jercy" ';
 			if($req_type=='add')
 			{
 				$data .=' data-rule-required="true" ';
 			}
 			$data .= '/>';
+			$data .='<ul class="css-ul-list" style="color:red">
+						   <li>Only "jpg" , "png" or "jpeg" image will be accepted.</li>
+						   <li>Image width should be   greater than \'500\'   pixel.</li>
+						</ul>';
 			$data .= '</div>';
 			$data .= '</div> <!-- Team Jercy -->';
 			$data .="<script type=\"text/javascript\">	$('.team_jercy').change(function(){
 			readURL(this);
 			});
 		  </script>";
+		  
+		    //////=============================================Start :  Team Limit======================================
+		    $data .= '<div class="control-group">';
+			$data .= '<label for="tasktitel" class="control-label">Student Limit';
+			$data .= '<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+			$data .= '<div class="controls">';
+			$data .= '<input  type="number" id="team_limit" min=1 name="team_limit" class="input-large keyup-char" ';
+			$data .= ' '.$disabled.' placeholder="Student Limit"   value="'.@$row_student_data['team_limit'].'"'; 
+			
+			$data .= '/>';
+			$data .= '</div>';
+			$data .= '</div> <!-- Team Name -->';
+			
 			//////=============================================Start :  Shorts======================================
 			$data .= '<div class="control-group">';
 			$data .= '<label for="tasktitel" class="control-label">Shorts Color';
@@ -350,23 +384,40 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 		else
 		{
 			//==================Start :  Heading  ===========================================//
-			$data .='<div class="control-group">';
+			if($row_student_data['team_status']==1)
+			{
+				$color = '#18BB7C';
+			}
+			else
+			{
+				$color = '#da4f49';
+			}
+			
+			$data .='<div class="control-group" style="background-color:'.$color.'">';
 			
 			$data .='<div class="span4">';
 				$data .='<div style="padding:20px">';
-					$data .='<img style="width:200px" src="images/team/'.$row_student_data['team_logo'].'">';
+					$data .='<img style="width:200px;height:200px" src="images/team/medium/'.$row_student_data['team_logo'].'">';
 				$data .='</div>';
 			$data .='</div>';
 			
 			$data .='<div class="span4">';
 			    $data .='<div style="padding:20px;">';
-					$data .='<h3  style="text-align:center">'.ucwords($row_student_data['team_name']).'</h3>';
+					$data .='<h3  style="text-align:center;color:white">'.ucwords($row_student_data['team_name']).'</h3>';
+					$data .='<div class="control-group" style="background-color:'.$color.'">';
+						$data .='<div class="span4 text-center"><span class="head2" style="color:white">Team Limit<br>'.ucwords($row_student_data['team_limit']).'</span>';
+						$data .='</div>';
+						$data .='<div class="span4 text-center"><span class="head2" style="color:white">Short Color<br>'.ucwords($row_student_data['short_color']).'</span>';
+						$data .='</div>';
+						$data .='<div class="span4 text-center"><span class="head2" style="color:white">Socks Color<br>'.ucwords($row_student_data['socks_color']).'</span>';
+						$data .='</div>';
+					$data .='</div>';
 				$data .='</div>';
 			$data .='</div>';
 			
-			$data .='<div class="span4">';
-				$data .='<div style="padding:20px">';
-					$data .='<img style="max-width:200px" src="images/team/'.$row_student_data['team_jercy'].'">';
+			$data .='<div class="span4" >';
+				$data .='<div style="padding:20px; float:right">';
+					$data .='<img style="width:200px ;height:200px" src="images/team/medium/'.$row_student_data['team_jercy'].'" alt="">';
 				$data .='</div>';
 			$data .='</div>';
 			
@@ -377,9 +428,7 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 			
 			
 			//==================Start : Coaches  ===========================================//
-			$data .='<div class="control-group">';
-		
-		    $sql_get_stud  = "SELECT * FROM tbl_team_coach  as ttc ";
+			 $sql_get_stud  = "SELECT * FROM tbl_team_coach  as ttc ";
 			$sql_get_stud .= " INNER JOIN tbl_cadmin_users as  tcu ON ttc.coach_id =tcu.id ";
 			$sql_get_stud .= " WHERE team_id='".$team_id."'";
 			$res_get_stud  = mysqli_query($db_con,$sql_get_stud) or die(mysqli_error($db_con));
@@ -391,50 +440,49 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 			}
 			$num_get_stud1 = round(($num_get_stud)/2);
 			$num_get_stud2 = $num_get_stud - $num_get_stud1;
+			if(!empty($res_array))
+			{
+				$data .='<div class="control-group">';
 			
-			$data .='<div class="span4">';
-				$data .='<div style="padding:20px">';
-				    $data .='<h5>Coaches</h5>';
+			   
+				
+				$data .='<div class="span12">';
+					$data .='<div style="padding:20px">';
+						$data .='<h5>Coaches ('.$num_get_stud.')</h5>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			
-			$data .='<div class="span4">';
-				$data .='<div style="padding:20px">';
-				    $data .='<ul>';
-					for($i=0;$i<$num_get_stud1;$i++)
-					{
-						$data .='<li><a href="#" target="_blank" >'.$res_array[$i]['fullname'].'</a></li>';
-					}
-					$data .='</ul>';
+				
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px">';
+						$data .='<ul>';
+						for($i=0;$i<$num_get_stud1;$i++)
+						{
+							$data .='<li class="head2"><a href="view_coach.php?pag=Coaches&coach_id='.$res_array[$i]['id'].'" target="_blank" >'.ucwords($res_array[$i]['fullname']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			
-			
-			$data .='<div class="span4">';
-			    $data .='<div style="padding:20px;">';
-				    $data .='<ul>';
-					for($i=$i;$i<$num_get_stud;$i++)
-					{
-						$data .='<li><a href="#" target="_blank" > '.$res_array[$i]['fullname'].'</a></li>';
-					}
-					$data .='</ul>';
+				
+				
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px;">';
+						$data .='<ul>';
+						for($i=$i;$i<$num_get_stud;$i++)
+						{
+							$data .='<li class="head2"><a href="view_coach.php?pag=Coaches&coach_id='.$res_array[$i]['id'].'" target="_blank" > '.ucwords($res_array[$i]['fullname']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			$data .='</div>';// control-group
+				
+				$data .='</div>';// control-group
+		    }
 			//==================End : Coaches  ===========================================//
 			
 			
 			//==================Start : Student  ===========================================//
-			$data .='<div class="control-group">';
-			
-			$data .='<div class="span4">';
-				$data .='<div style="padding:20px">';
-				    $data .='<h5> Students </h5>';
-				$data .='</div>';
-			$data .='</div>';
 			
 			$sql_get_stud  = "SELECT * FROM tbl_team_students  as tts ";
 			$sql_get_stud .= " INNER JOIN tbl_students as  ts ON tts.student_id =ts.student_id ";
@@ -449,40 +497,51 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 			$num_get_stud1 = round(($num_get_stud)/2);
 			$num_get_stud2 = $num_get_stud - $num_get_stud1;
 			
-			
-			$data .='<div class="span4" style="clear:both">';
-				$data .='<div style="padding:20px">';
-				    $data .='<ul>';
-					for($i=0;$i<$num_get_stud1;$i++)
-					{
-						$data .='<li><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.$res_array[$i]['student_lname'].'</a></li>';
-					}
-					$data .='</ul>';
+			if(!empty($res_array))
+			{
+				$data .='<div class="control-group">';
+				
+				$data .='<div class="span12">';
+					$data .='<div style="padding:20px">';
+						$data .='<h5> Students ('.$num_get_stud.')</h5>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			$data .='<div class="span4">';
-			    $data .='<div style="padding:20px;">';
-				    $data .='<ul>';
-					for($i=$i;$i<$num_get_stud;$i++)
-					{
-						$data .='<li><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.$res_array[$i]['student_fname'].' '.$res_array[$i]['student_lname'].'</a></li>';
-					}
-					$data .='</ul>';
+				
+				$data .='<div class="span4" style="clear:both">';
+					$data .='<div style="padding:20px">';
+						$data .='<ul>';
+						for($i=0;$i<$num_get_stud1;$i++)
+						{
+							$data .='<li class="head2"><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.ucwords($res_array[$i]['student_fname']).' '.ucwords($res_array[$i]['student_lname']).'';
+							
+							$num = isExist('tbl_team_students',array('team_id'=>$team_id,"student_id"=>$res_array[$i]['student_id'],"isCaptain"=>1));
+							if($num!=0)
+							{
+								$data .=' ( Captain )';
+							}
+							
+							$data .='</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			$data .='</div>';// row end
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px;">';
+						$data .='<ul>';
+						for($i=$i;$i<$num_get_stud;$i++)
+						{
+							$data .='<li class="head2"><a href="view_student.php?pag=Students&student_id='.$res_array[$i]['student_id'].'" target="_blank" >'.ucwords($res_array[$i]['student_fname'].' '.$res_array[$i]['student_lname']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
+				$data .='</div>';
+				
+				$data .='</div>';// row end
+			}
 			//==================End : Student  ===========================================//
 			
 			//==================Start : Participation  ===========================================//
-			$data .='<div class="control-group">';
-			
-			$data .='<div class="span4">';
-				$data .='<div style="padding:20px">';
-				    $data .='<h5> Participation </h5>';
-				$data .='</div>';
-			$data .='</div>';
 			
 			$sql_get_comp  = "SELECT * FROM tbl_competition_team  as tct ";
 			$sql_get_comp .= " INNER JOIN tbl_competition as  tc ON tct.competition_id =tc.competition_id ";
@@ -497,30 +556,41 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 			$num_get_comp1 = round(($num_get_comp)/2);
 			$num_get_comp2 = $num_get_comp - $num_get_comp1;
 			
+			if(!empty($comp_array))
+			{
+				$data .='<div class="control-group">';
 			
-			$data .='<div class="span4" style="clear:both">';
-				$data .='<div style="padding:20px">';
-				    $data .='<ul>';
-					for($i=0;$i<$num_get_comp1;$i++)
-					{
-						$data .='<li><a href="view_competition.php?pag=Competitions&competition_id='.$comp_array[$i]['competition_id'].'" target="_blank" >'.$comp_array[$i]['competition_name'].'</a></li>';
-					}
-					$data .='</ul>';
+				$data .='<div class="span12">';
+					$data .='<div style="padding:20px">';
+						$data .='<h5> Competition ('.$num_get_comp.')</h5>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
-			
-			$data .='<div class="span4">';
-			    $data .='<div style="padding:20px;">';
-				    $data .='<ul>';
-					for($i=$i;$i<$num_get_comp;$i++)
-					{
-						$data .='<li><a href="view_competition.php?pag=Competitions&competition_id='.$comp_array[$i]['student_id'].'" target="_blank" >'.$comp_array[$i]['competition_name'].' </a></li>';
-					}
-					$data .='</ul>';
+				
+				$data .='<div class="span4" style="clear:both">';
+					$data .='<div style="padding:20px">';
+						$data .='<ul>';
+						for($i=0;$i<$num_get_comp1;$i++)
+						{
+							$data .='<li class="head2"><a href="view_competition.php?pag=Competitions&competition_id='.$comp_array[$i]['competition_id'].'" target="_blank" >'.ucwords($comp_array[$i]['competition_name']).'</a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
 				$data .='</div>';
-			$data .='</div>';
+				
+				$data .='<div class="span4">';
+					$data .='<div style="padding:20px;">';
+						$data .='<ul>';
+						for($i=$i;$i<$num_get_comp;$i++)
+						{
+							$data .='<li class="head2"><a href="view_competition.php?pag=Competitions&competition_id='.$comp_array[$i]['competition_id'].'" target="_blank" >'.ucwords($comp_array[$i]['competition_name']).' </a></li>';
+						}
+						$data .='</ul>';
+					$data .='</div>';
+				$data .='</div>';
+				
+				$data .='</div>';// row end
+			}
 			
-			$data .='</div>';// row end
 			//==================End : Student  ===========================================//
 			
 			
@@ -535,16 +605,13 @@ if((isset($obj->load_team_parts)) == "1" && isset($obj->load_team_parts))
 	echo json_encode($response_array);
 }
 
-
-
-
 if((isset($obj->load_team)) == "1" && isset($obj->load_team))
 {
 	$response_array = array();	
 	$start_offset   = 0;
 	$page 			= $obj->page;	
 	$per_page		= $obj->row_limit;
-	$search_text	= $obj->search_text;	
+	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);	
 	
 	
 	if($page != "" && $per_page != "")	
@@ -625,24 +692,27 @@ if((isset($obj->load_team)) == "1" && isset($obj->load_team))
 				$team_data .= '<td style="text-align:center">';
 				if($row_load_data['team_logo']!='')
 				{
-					$team_data .='<a href="images/team/'.$row_load_data['team_logo'].'" target="_blank">
-					<img src="images/team/'.$row_load_data['team_logo'].'" style="width:50px;height:50px">
-					</a>';
+					$team_data .='
+					<img src="images/team/small/'.$row_load_data['team_logo'].'" style="width:50px;height:50px">
+					';
 				}
 				$team_data .=$row_load_data['student_email'];
 				$team_data .=	'</td>';
 				
 				$coach_num = isExist('tbl_team_coach',array('team_id'=>$row_load_data['team_id']));
 				$team_data .= '<td style="text-align:center">';
-				$team_data .= '<input type="button" value=" '.$coach_num.' Coach" id="'.$row_load_data['team_id'].'" class="btn-warning" onclick="viewCoach(this.id);"></td>';		
+				$team_data .= '<input type="button" value=" '.$coach_num.' Coaches" id="'.$row_load_data['team_id'].'" class="btn-warning" onclick="viewCoach(this.id);"></td>';		
 				
 				$stud_num   = isExist('tbl_team_students',array('team_id'=>$row_load_data['team_id']));
 				$team_data .= '<td style="text-align:center">';
 				$team_data .= '<input type="button" value="'.$stud_num.' Students" id="'.$row_load_data['team_id'].'" class="btn-warning" onclick="viewStudent(this.id);">  </td>';		
-				
-				$team_data .= '<td style="text-align:center">'.$row_load_data['team_created'].'</td>';
+				$team_created = strtotime($row_load_data['team_created']);
+	            $team_data .= '<td style="text-align:center">'.date(' j M, Y, g : i a',$team_created).'</td>';	
+				//$team_data .= '<td style="text-align:center">'.$row_load_data['team_created'].'</td>';
 				$team_data .= '<td style="text-align:center">'.$row_load_data['name_created_by'].'</td>';
-				$team_data .= '<td style="text-align:center">'.$row_load_data['team_modified'].'</td>';
+				$team_modified = strtotime($row_load_data['team_modified']);
+	            $team_data .= '<td style="text-align:center">'.date(' j M, Y, g : i a',$team_modified).'</td>';	
+				//$team_data .= '<td style="text-align:center">'.$row_load_data['team_modified'].'</td>';
 				$team_data .= '<td style="text-align:center">'.$row_load_data['name_midified_by'].'</td>';
 				$dis = checkFunctionalityRight("view_team.php",3);
 				
@@ -718,7 +788,7 @@ if((isset($obj->change_status)) == "1" && isset($obj->change_status))
 }
 
 //------------------This is used for delete data---------------------------------
-if((isset($obj->delete_student)) == "1" && isset($obj->delete_student))
+if((isset($obj->delete_team)) == "1" && isset($obj->delete_team))
 {
 	$response_array   = array();		
 	$team_ids 	      = $obj->batch;
@@ -733,17 +803,21 @@ if((isset($obj->delete_student)) == "1" && isset($obj->delete_student))
 		$res_delete_team	= mysqli_query($db_con,$sql_delete_team) or die(mysqli_error($db_con));			
 		if($res_delete_team)
 		{
-			unlink('images/team/'.$row_get_team['team_logo']);
-			unlink('images/team/'.$row_get_team['team_jercy']);
+			
+			unlink('images/team/small/'.$row_get_team['team_logo']);
+			unlink('images/team/medium/'.$row_get_team['team_logo']);
+			unlink('images/team/small/'.$row_get_team['team_jercy']);
+			unlink('images/team/medium/'.$row_get_team['team_jercy']);
+			
 			$del_flag = 1;
-			/*$sql_delete_area	= " DELETE FROM `tbl_address_master` WHERE `add_user_id` = '".$student_id."' AND add_user_type='student' ";
-		    $result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));	
+			$sql_delete_stud	= " DELETE FROM `tbl_team_students` WHERE `team_id` = '".$team_id."' ";
+		    $res_delete_stud	= mysqli_query($db_con,$sql_delete_stud) or die(mysqli_error($db_con));	
 			
-			$sql_delete_batch	= " DELETE FROM `tbl_student_batches` WHERE `student_id` = '".$student_id."' ";
-		    $res_delete_batch	= mysqli_query($db_con,$sql_delete_batch) or die(mysqli_error($db_con));	
+			$sql_delete_coach	= " DELETE FROM `tbl_team_coach` WHERE `team_id` = '".$team_id."' ";
+		    $res_delete_coach	= mysqli_query($db_con,$sql_delete_coach) or die(mysqli_error($db_con));
 			
-			$sql_delete_comp	= " DELETE FROM `tbl_student_competition` WHERE `student_id` = '".$student_id."' ";
-		    $res_delete_comp	= mysqli_query($db_con,$sql_delete_comp) or die(mysqli_error($db_con));*/
+			$sql_delete_comp	= " DELETE FROM `tbl_competition_team` WHERE `team_id` = '".$team_id."' ";
+		    $res_delete_comp	= mysqli_query($db_con,$sql_delete_comp) or die(mysqli_error($db_con));
 		}			
 	}	
 	if($del_flag == 1)
@@ -778,7 +852,7 @@ if((isset($obj->getCoach)) == "1" && isset($obj->getCoach))
 
 	foreach($res_get_coach as $row)
 	{
-		$data .='<option value="'.$row['id'].'">'.$row['fullname'].'</option>';
+		$data .='<option value="'.$row['id'].'">'.ucwords($row['fullname']).'</option>';
 	}
 	$data .= '</select> ';
 	
@@ -836,7 +910,7 @@ if((isset($obj->getCoach)) == "1" && isset($obj->getCoach))
 		$data .= '</table>';
 	}
 	
-	quit(array($data,$row_get_team['team_name']),1);
+	quit(array($data,ucwords($row_get_team['team_name'])),1);
 }
 
 if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
@@ -858,7 +932,7 @@ if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
 
 	foreach($res_get_student as $row)
 	{
-		$data .='<option value="'.$row['student_id'].'">'.$row['student_fname'].' '.$row['student_lname'].'</option>';
+		$data .='<option value="'.$row['student_id'].'">'.ucwords($row['student_fname']).' '.ucwords($row['student_lname']).'</option>';
 	}
 	$data .= '</select> ';
 	
@@ -912,7 +986,12 @@ if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
 				$data .= '<label for="student_batch'.$row_load_data['id'].'" class="css-label"></label>';
 				$data .= '</div></td>';		
 				$data .= '<td style="text-align:center">
-				<input type="radio" name="captain" value="'.$row_load_data['id'].' >"
+				<input type="radio" name="captain" value="'.$row_load_data['id'].'" ';
+				if($row_load_data['isCaptain']==1)
+				{
+					$data .=' checked="checked" ';
+				}
+				$data .=' onclick="selectCaptain('.$row_load_data['id'].','.$row_load_data['team_id'].')" />
 				</td>';								
 			}
 			$data .= '</tr>';															
@@ -921,7 +1000,7 @@ if((isset($obj->getStudent)) == "1" && isset($obj->getStudent))
 		$data .= '</table>';
 	}
 	
-	quit(array($data,$row_get_team['team_name']),1);
+	quit(array($data,ucwords($row_get_team['team_name'])),1);
 }
 
 if((isset($_POST['addCoach'])) == "1" && isset($_POST['addCoach']))
@@ -951,22 +1030,38 @@ if((isset($_POST['addCoach'])) == "1" && isset($_POST['addCoach']))
 
 if((isset($_POST['addStudent'])) == "1" && isset($_POST['addStudent']))
 {
-	$data['team_id']  =  $_POST['team_id'];  
+	$team_id          =  $_POST['team_id'];  
 	$student_ids      =  $_POST['student_id'];
 	$add_flag         =  0;
+	
+	$row       = checkExist('tbl_team',array('team_id'=>$team_id));
+	
+	$ar = array();
 	foreach($student_ids as $student_id)
 	{
-		$data['student_id']          = $student_id;
-		$data['student_created']     = $datetime;
-		$data['student_created_by']  = $uid;
-		$data['team_student_status'] = 1;
-		insert('tbl_team_students',$data);
-		$add_flag         =  1;
+		$studCount = isExist('tbl_team_students',array('team_id'=>$team_id));
+		array_push($ar,$studCount);
+		if($row['team_limit'] <= $studCount)
+		{
+			quit(array('Student limit exceed...!',$team_id),1);
+		}
+		else
+		{
+			$data['team_id']			 = $team_id;
+			$data['student_id']          = $student_id;
+			$data['student_created']     = $datetime;
+			$data['student_created_by']  = $uid;
+			$data['team_student_status'] = 1;
+			insert('tbl_team_students',$data);
+			$add_flag         =  1;
+		}
+		
 	}
 	
 	if($add_flag == 1)
 	{
-		quit($data['team_id'],1);
+		
+		quit(array('Student added successfully',$data['team_id']),1);
 	}
 	else
 	{
@@ -1016,4 +1111,15 @@ if((isset($obj->remove_student)) == "1" && isset($obj->remove_student))
 	quit('Something went wrong..!');
 }
 
+
+
+if((isset($obj->selectCaptain)) == "1" && isset($obj->selectCaptain))
+{
+	$id      = $obj->id;
+	$team_id = $obj->team_id;
+	
+	update('tbl_team_students',array("isCaptain"=>0),array("team_id"=>$team_id));
+	update('tbl_team_students',array("isCaptain"=>1),array("id"=>$id,"team_id"=>$team_id));
+	quit('',1);
+}
 ?>

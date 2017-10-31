@@ -1,4 +1,7 @@
-<?php include("include/routines.php");
+<?php 
+include("include/db_con.php");
+include("include/routines.php");
+
 $_SESSION['panel_user']	= array();
 // remove all session variables
 session_unset();
