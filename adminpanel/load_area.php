@@ -257,8 +257,16 @@ if((isset($obj->load_area)) == "1" && isset($obj->load_area))
 				if($delete)
 				{					
 					$area_data .= '<td><div class="controls" align="center">';
+					if($row_load_data['area_status'] == 1)
+					{
 					$area_data .= '<input type="checkbox" value="'.$row_load_data['area_id'].'" id="batch'.$row_load_data['area_id'].'" name="batch'.$row_load_data['area_id'].'" class="css-checkbox batch">';
+					
 					$area_data .= '<label for="batch'.$row_load_data['area_id'].'" class="css-label"></label>';
+					}
+					else
+					{
+						$area_data .= '<input type="button" value="Inactive" id="'.$row_load_data['area_id'].'" class="btn-danger" onclick="changeStatus(this.id,1);">';
+					}
 					$area_data .= '</div></td>';										
 				}
 	          	$area_data .= '</tr>';															

@@ -173,7 +173,7 @@ function chkRights($filename)
 	$af_id 		        = $row_file_name['af_id'];
        
 	$sql_check_auth 	= "select * from tbl_assign_rights where ar_user_owner_id = '".$_SESSION['panel_user']['id']."' and ar_current_rights like '%{".$af_id.":%' ";
-//	echo $sql_check_auth;die;
+	//	echo $sql_check_auth;die;
         $result_chk_auth 	= mysqli_query($db_con,$sql_check_auth) or die(mysqli_error($db_con));
 	$num_rows_check_auth= mysqli_num_rows($result_chk_auth);
 	//echo $sql_check_auth;die;

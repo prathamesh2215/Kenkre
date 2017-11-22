@@ -196,7 +196,7 @@
 		}
 	}
 	
-	function getRecord($table ,$where, $not_where_array=array(), $and_like_array=array(), $or_like_array=array())
+	function getRecord($table ,$where=array(), $not_where_array=array(), $and_like_array=array(), $or_like_array=array())
 	{
 		global $db_con;
 		if($table=="")
@@ -312,6 +312,25 @@
 			$data =mysqli_real_escape_string($db_con,$data);
 			return $data;
 		}
+	}
+
+
+
+	function insertActivity($module,$type,$uid,$change_id,$old_data,$new_data,$message)
+	{
+		global $datetime;
+		global $db_con;
+
+		$data['module'] 					= real_escape($module);
+		$data['type'] 					= real_escape($type);
+		$data['user_id'] 				= real_escape($uid);
+		$data['change_id'] 				= real_escape($change_id);
+		$data['old_data'] 				= real_escape($old_data);
+		$data['new_data']				= real_escape($new_data);
+		$data['message'] 				= real_escape($message);
+		$data['created_date'] 			= real_escape($type);
+		insert('tbl_users_activity',$data);
+
 	}
 
 ?>

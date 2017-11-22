@@ -72,17 +72,17 @@ if (isset($_POST['jsubmit']) && $_POST['jsubmit'] == 'featurelist')
             <table id="tblactive" class="table table-bordered dataTable dataTable-scroll-x" width="98%">
 				<thead>
               		<tr>
-                		<th>Sr. No.</th>
-                        <th>Feature Name</th>
-                        <th>Parent</th>
+                		<th style="text-align:center">Sr. No.</th>
+                        <th style="text-align:center">Feature Name</th>
+                        <th style="text-align:center">Parent</th>
                         <!--<th>Page URL</th>-->
-                        <th>Order</th>
-                        <th>Created Date</th>
-                        <th>Created By</th>
-                        <th>Modified Date</th>
-                        <th>Modified By</th>
-                        <th>Child</th>
-                        <th>Edit</th>
+                        <th style="text-align:center">Order</th>
+                        <th style="text-align:center">Created Date</th>
+                        <th style="text-align:center">Created By</th>
+                        <th style="text-align:center">Modified Date</th>
+                        <th style="text-align:center">Modified By</th>
+                        <th style="text-align:center">Child</th>
+                        <th style="text-align:center">Edit</th>
                         <th>
                             <!--<input type="checkbox" id="selectall" />Select all<br>-->
                             <input type="button" class="btn-danger" value="In-Active" onClick="deactivate_feature()"/>
@@ -107,21 +107,21 @@ if (isset($_POST['jsubmit']) && $_POST['jsubmit'] == 'featurelist')
 		  			?>
 					<tr  <?php if($vals['af_status']==0){ echo 'style="background-color:#CCC"';} ?> > 
                     	<td><?php print $start_offset; ?>			</td>
-                    	<td>
+                    	<td style="text-align:center">
                     		<?php
                         	if($vals['af_status'] != 0)
 							{
 								?>
-                            	<a href="#" title=""><?php echo $vals['af_name']; ?></a>
+                            	<a href="#" title=""><?php echo ucwords($vals['af_name']); ?></a>
                             	<?php
 							}
 							else
 							{
-                            	echo $vals['af_name'];
+                            	echo ucwords($vals['af_name']);
 							}
 							?>
 						</td>
-                    	<td><?php echo $vals['af_parent_type']; ?>	</td>
+                    	<td style="text-align:center"><?php echo ucwords($vals['af_parent_type']); ?>	</td>
                     	<td style="text-align:center">
                     	<?php 
                     		if($vals['af_status'] != 0)
@@ -133,10 +133,10 @@ if (isset($_POST['jsubmit']) && $_POST['jsubmit'] == 'featurelist')
 						?> 
                     	</td>
                     	<td style="text-align:center"><?php echo $vals['createddt']; ?></td>
-                    	<td><?php echo $vals['createdby']; ?></td>
+                    	<td style="text-align:center"><?php echo ucwords($vals['createdby']); ?></td>
                     	<td style="text-align:center"><?php echo $vals['modifieddt']; ?></td>
-                    	<td><?php echo $vals['modifiedby']; ?></td>
-                    	<td>
+                    	<td style="text-align:center"><?php echo ucwords($vals['modifiedby']); ?></td>
+                    	<td style="text-align:center">
                     	<?php 
                     		if($vals['af_status']==0)
 							{ 

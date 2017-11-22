@@ -64,16 +64,16 @@ if (isset($_POST['jsubmit']) && $_POST['jsubmit'] == 'childfeaturelist')
   			<table id="tblactive" class="table table-bordered dataTable dataTable-scroll-x" width="98%">
     			<thead>
     				<tr>
-                        <th>Sr.<br> No.</th>
-                        <th>Feature Name</th>
-                        <th>Parent</th>
-                        <th>Page URL</th>
-                        <th>Order</th>
-                        <th>Created Date</th>
-                        <th>Created By</th>
-                        <th>Modified Date</th>
-                        <th>Modified By</th>
-                        <th>Edit</th>
+                        <th style="text-align:center">Sr.<br> No.</th>
+                        <th style="text-align:center">Feature Name</th>
+                        <th style="text-align:center">Parent</th>
+                        <th style="text-align:center">Page URL</th>
+                        <th style="text-align:center">Order</th>
+                        <th style="text-align:center">Created Date</th>
+                        <th  style="text-align:center">Created By</th>
+                        <th style="text-align:center">Modified Date</th>
+                        <th style="text-align:center">Modified By</th>
+                        <th style="text-align:center">Edit</th>
                         <th>
           					<input type="button" class="btn-danger" value="In-Active" onClick="deactivate_feature()"/>
       					</th>
@@ -86,8 +86,8 @@ if (isset($_POST['jsubmit']) && $_POST['jsubmit'] == 'childfeaturelist')
         			$start_offset++;      
     				?>
       				<tr <?php if($vals['af_status']==0){ echo 'style="background-color:#CCC"';} ?>>
-          			<td><?php print $start_offset; ?>			</td>
-          			<td>
+          			<td style="text-align:center"><?php print $start_offset; ?>			</td>
+          			<td style="text-align:center">
                     	<?php
                         if($vals['af_status'] != 0)
 						{
@@ -101,8 +101,8 @@ if (isset($_POST['jsubmit']) && $_POST['jsubmit'] == 'childfeaturelist')
 						}
 						?>                    
                     </td>
-          			<td><?php echo $vals['af_parent_type']; ?>	</td>
-          			<td><?php echo $vals['af_page_url']; ?>		</td>
+          			<td style="text-align:center"><?php echo $vals['af_parent_type']; ?>	</td>
+          			<td style="text-align:center"><?php echo $vals['af_page_url']; ?>		</td>
           			<td style="text-align:center">
           				<?php 
           					if($vals['af_status'] != 0)
@@ -113,10 +113,10 @@ if (isset($_POST['jsubmit']) && $_POST['jsubmit'] == 'childfeaturelist')
 							}?> 
 					</td>
           			<td style="text-align:center"><?php echo $vals['createddt']; ?></td>
-          			<td><?php echo $vals['createdby']; ?></td>
+          			<td style="text-align:center"><?php echo $vals['createdby']; ?></td>
           			<td style="text-align:center"><?php echo $vals['modifieddt']; ?></td>
-          			<td><?php echo $vals['modifiedby']; ?></td>
-          			<td>
+          			<td style="text-align:center"><?php echo $vals['modifiedby']; ?></td>
+          			<td style="text-align:center">
           				<?php
           					if($vals['af_status'] != 0)
 							{ 

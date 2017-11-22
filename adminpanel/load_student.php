@@ -28,6 +28,9 @@ if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 	$data['student_email']     = mysqli_real_escape_string($db_con,$_POST['student_email']);
 	$data['student_mobile']    = mysqli_real_escape_string($db_con,$_POST['student_mobile']);
 	$data['student_gender']    = mysqli_real_escape_string($db_con,$_POST['student_gender']);
+	$data['batch_type']        = mysqli_real_escape_string($db_con,$_POST['batch_type']);
+	$data['batch_center']      = mysqli_real_escape_string($db_con,$_POST['batch_center']);
+	$data['student_type']      = mysqli_real_escape_string($db_con,$_POST['student_type']);
 	
 	$student_dob                    = mysqli_real_escape_string($db_con,$_POST['student_dob']);
 	$student_dob                    = explode('-',$student_dob);// d/m/y
@@ -139,18 +142,22 @@ if((isset($_POST['insert_student'])) == "1" && isset($_POST['insert_student']))
 //------------------this is used for Update records---------------------
 if((isset($_POST['update_student'])) == "1" && isset($_POST['update_student']))
 {
-	$data['student_fname']             = strtolower(mysqli_real_escape_string($db_con,$_POST['student_fname']));
-	$data['student_mname']             = strtolower(mysqli_real_escape_string($db_con,$_POST['student_mname']));
-	$data['student_lname']             = strtolower(mysqli_real_escape_string($db_con,$_POST['student_lname']));
+	$data['student_fname']     = strtolower(mysqli_real_escape_string($db_con,trim($_POST['student_fname'])));
+	$data['student_mname']     = strtolower(mysqli_real_escape_string($db_con,trim($_POST['student_mname'])));
+	$data['student_lname']     = strtolower(mysqli_real_escape_string($db_con,trim($_POST['student_lname'])));
 	
-	$data['student_email']     = mysqli_real_escape_string($db_con,$_POST['student_email']);
-	$data['student_mobile']    = mysqli_real_escape_string($db_con,$_POST['student_mobile']);
-	$data['student_gender']    = mysqli_real_escape_string($db_con,$_POST['student_gender']);
-	$student_dob                    = mysqli_real_escape_string($db_con,$_POST['student_dob']);
-	$student_dob                    = explode('-',$student_dob);// d/m/y
-	$data['student_dob']            = $student_dob[2].'-'.$student_dob[1].'-'.$student_dob[0];
+	$data['batch_type']        = mysqli_real_escape_string($db_con,$_POST['batch_type']);
+	$data['batch_center']      = mysqli_real_escape_string($db_con,$_POST['batch_center']);
+	
+	$data['student_email']     = mysqli_real_escape_string($db_con,trim($_POST['student_email']));
+	$data['student_mobile']    = mysqli_real_escape_string($db_con,trim($_POST['student_mobile']));
+	$data['student_gender']    = mysqli_real_escape_string($db_con,trim($_POST['student_gender']));
+	$student_dob               = mysqli_real_escape_string($db_con,$_POST['student_dob']);
+	$student_dob               = explode('-',$student_dob);// d/m/y
+	$data['student_dob']       = $student_dob[2].'-'.$student_dob[1].'-'.$student_dob[0];
 	$data['student_status']    = mysqli_real_escape_string($db_con,$_POST['student_status']);
-	$data['student_institute'] =  strtolower(mysqli_real_escape_string($db_con,$_POST['student_institute']));
+	$data['student_institute'] =  strtolower(mysqli_real_escape_string($db_con,trim($_POST['student_institute'])));
+	$data['student_type']      = mysqli_real_escape_string($db_con,$_POST['student_type']);
 	$student_id                = mysqli_real_escape_string($db_con,$_POST['student_id']);
 	
 	//=======================End : Image and Doc Upload End=====================================//
@@ -205,7 +212,7 @@ if((isset($_POST['update_student'])) == "1" && isset($_POST['update_student']))
 	$stud_joinig_date          = explode('-',$stud_joinig_date);// d/m/y
 	$data['stud_joinig_date']  = $stud_joinig_date[2].'-'.$stud_joinig_date[1].'-'.$stud_joinig_date[0];
 	
-	$data['stud_bio']          = mysqli_real_escape_string($db_con,$_POST['stud_bio']);//new
+	$data['stud_bio']          = mysqli_real_escape_string($db_con,trim($_POST['stud_bio']));//new
 	
 	$data['student_modified_by']    = $logged_uid;
 	$data['student_modified']       = $datetime;
@@ -215,8 +222,25 @@ if((isset($_POST['update_student'])) == "1" && isset($_POST['update_student']))
 	$res_check             = mysqli_query($db_con,$sql_check) or die(mysqli_error($db_con));
 	$num_check             = mysqli_num_rows($res_check);
 	if($num_check==0)
-	{
+	{	
+			
+
+
+			$array_diff = array_diff($data,$row_get_stud);
 		    $insert_id = update('tbl_students',$data,array('student_id'=>$student_id)); 
+
+		    $old_data ="";
+		    $new_data ="";
+		    foreach($array_diff as $key =>$val)
+		    {
+		    	$old_data .=ucwords(str_replace('_', ' ',$key)).'=>'.$row_get_stud[$key].',';
+		    	$new_data .=ucwords(str_replace('_', ' ',$key)).'=>'.$data[$key].',';
+		    }
+
+		    insertActivity('Student','Update',$uid,$student_id,$old_data,$new_data,'Edit Student');
+		    
+            $res = implode(',',$res);
+		    print_r($res);
 		    
 			if($insert_id)
 			{
@@ -240,6 +264,7 @@ if((isset($_POST['update_student'])) == "1" && isset($_POST['update_student']))
 					$adata['add_created']    = $datetime;
 					$adata['add_created_by'] = $logged_uid;
 					$adata['add_user_id']    = $student_id;
+					insert('tbl_address_master',$adata);
 				}
 				
 				quit('Student Updated Successfully...!',1);
@@ -295,6 +320,32 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		if($req_type!='view')
 		{
 		
+		//////=============================================Start : Student Type======================================
+		
+		$type_ar  = array('Kenkre','Other');
+		
+		
+		$data .= '<div class="control-group">';
+		$data .= '<label for="tasktitel" class="control-label">Student Type<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<div class="controls">';
+		$data .= '<select name="student_type"  id="student_type" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
+		$data .= '<option value="">Select Type</option>';
+		foreach($type_ar as $type)
+		{
+			$data .='<option  value="'.$type.'" ';
+			if($type==@$row_student_data['student_type'])
+			{
+				$data .=' selected ';
+			}
+			$data .='>'.$type.'</option>';
+		}
+		$data .= '</select>';
+		$data .= '</div>';
+		$data .= '</div> <!-- City -->';
+		$data .= '<script type="text/javascript">';
+		$data .= '$("#student_type").select2();';
+		$data .= '</script>';
+		
 		$data .= '<div class="control-group">';
 		$data .= '<label for="tasktitel" class="control-label">Student Name';
 		$data .= '<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
@@ -330,7 +381,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		$data .= ' '.$disabled.' '; 
 		if($req_type=='add')
 		{
-			$data .=' data-rule-required="true"  ';
+			//$data .=' data-rule-required="true"  ';
 		}
 		$data .= '/>';
 		$data .='</div>';
@@ -342,7 +393,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		
 		$data .="<script type=\"text/javascript\">	$('#student_file').change(function(){
 		readURL(this);
-	});
+	    });
 	  </script>";
 		
 		
@@ -417,7 +468,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		startDate: '',
 		maxDate: new Date(),	
 	   });
-	  </script>";
+	   </script>";
 		//////=============================================Start : Student DOB Country======================================
 		$data .= '<div class="control-group span6">';
 		$data .= '<label for="tasktitel" class="control-label">Birth Country<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
@@ -437,7 +488,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		$data .= '<label for="tasktitel" class="control-label">Domicile State<sup class="validfield">
 		<span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
-       $data .= '<select name="domicile_state"  id="domicile_state" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
+        $data .= '<select name="domicile_state"  id="domicile_state" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
 		$data .='<option value="">Select State</option>';
 		$data.=getList('tbl_state','state','state_name',@$row_student_data['domicile_state'],$where_arr=array('country_id'=>'IN'));
 		$data .= '</select> ';
@@ -519,7 +570,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		
 		//////=============================================Start : Student Category======================================
 		$data .= '<div class="control-group">';
-		$data .= '<label for="tasktitel" class="control-label">Category<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<label for="tasktitel" class="control-label">Fee<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
 		$data .= '<div class="controls">';
 		$data .= '<select  name="stud_cat"  id="stud_cat" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
 		$data .='<option value="">Select Category</option>';
@@ -530,6 +581,62 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		$data .= '<script type="text/javascript">';
 		$data .= '$("#stud_cat").select2();';
 		$data .= '</script>';
+		
+		///////////////=========================Start : Batch Type==================================//
+		$data .= '<div class="control-group">';
+		$data .= '<label for="tasktitel" class="control-label">Batch Type<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<div class="controls">';
+		$data .= '<select  name="batch_type"  onchange="getCenter(this.value)" id="batch_type" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
+		$data .='<option value="">Select Type</option>';
+		
+		$sql_get_type    =  " SELECT * FROM tbl_batch_types WHERE id IN(SELECT DISTINCT type_id FROM tbl_center_types)";
+		$res_get_type    = mysqli_query($db_con,$sql_get_type) or die(mysqli_error($db_con));
+		while($row_get_type = mysqli_fetch_array($res_get_type))
+		{
+			$data .='<option value="'.$row_get_type['id'].'" ';
+			if($row_get_type['id']==@$row_student_data['batch_type'])
+			{
+				$data .=' selected="selected" ';
+			}
+			$data .='>'.ucwords($row_get_type['type']).'</option>';
+		}
+		$data .= '</select>';
+		$data .= '</div>'; 
+		$data .= '</div> <!-- Student Category -->';
+		$data .= '<script type="text/javascript">';
+		$data .= '$("#batch_type").select2();';
+		$data .= '</script>';
+		
+		///////////////=========================Start : Center==================================//
+		$data .= '<div class="control-group">';
+		$data .= '<label for="tasktitel" class="control-label">Center<sup class="validfield"><span style="color:#F00;font-size:20px;">*</span></sup></label>';
+		$data .= '<div class="controls">';
+		$data .= '<select  name="batch_center" id="batch_center" class="select2-me input-large" data-rule-required="true" tabindex="-1">';
+		$data .='<option value="">Select Center</option>';
+		
+		if($req_type!='add')
+		{
+			$sql_get_center    =  " SELECT * FROM tbl_centers WHERE center_status = 1";
+			$res_get_center    = mysqli_query($db_con,$sql_get_center) or die(mysqli_error($db_con));
+			while($row_get_center = mysqli_fetch_array($res_get_center))
+			{
+				$data .='<option value="'.$row_get_center['center_id'].'" ';
+				if($row_get_center['center_id']==@$row_student_data['batch_center'])
+				{
+					$data .=' selected="selected" ';
+				}
+				$data .='>'.ucwords($row_get_center['center_name']).'</option>';
+			}
+		}
+		
+		$data .= '</select>';
+		$data .= '</div>'; 
+		$data .= '</div> <!-- Student Category -->';
+		$data .= '<script type="text/javascript">';
+		$data .= '$("#batch_center").select2();';
+		$data .= '</script>';
+		
+		
 			//////=============================================Start : Student Joining Date======================================
 		$stud_joinig_date   = explode('-',@$row_student_data['stud_joinig_date']);
 		$data .= '<div class="control-group" >';
@@ -549,7 +656,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		startDate: '',
 		endDate: new Date(),	
 	   });
-	  </script>";
+	   </script>";
 	  
 		//////=============================================Start : Student Bio======================================
 		$data .= '<div class="control-group" style="clear:both;">';
@@ -598,7 +705,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 		$data .= '<label for="radio" class="control-label">Status<span style="color:#F00;font-size:20px;">*</span></label>';
 		$data .= '<div class="controls">';
 		if($student_id != "" && $req_type == "edit")
-	  {
+	    {
 			$data  .= '<input type="radio" name="student_status" value="1" class="css-radio" data-rule-required="true" ';
 			$dis	= checkFunctionalityRight("view_student.php",3);
 			if(!$dis)
@@ -645,7 +752,7 @@ if((isset($obj->load_student_parts)) == "1" && isset($obj->load_student_parts))
 			$data .= '<button type="submit" name="reg_submit_edit" class="btn-success">Update Student</button>';			
 		}			
 		$data .= '</div> <!-- Save and cancel -->';	
-	}
+	    }
 		else
 		{
 			if($row_student_data['student_status']==1)
@@ -958,10 +1065,22 @@ if((isset($obj->load_student)) == "1" && isset($obj->load_student))
 	$per_page		= $obj->row_limit;
 	$search_text	= mysqli_real_escape_string($db_con,$obj->search_text);	
 	
-	$area_id 		= $obj->area_id;	
-	$batch_id		= $obj->batch_id;
-	$coach_id	    = $obj->coach_id;	
-	$competition_id	= $obj->competition_id;
+	$center_id 		= $obj->ft_center;	
+	$team_id		= $obj->ft_team;
+	$type	        = $obj->ft_type;	
+	$age_group      = $obj->ft_age;
+	
+	
+	if($age_group !="")
+	{
+	    date_default_timezone_set('Asia/Kolkata'); //required if not set
+		$date = date('m/d/Y');
+		
+		$date = new DateTime($date);
+		$date->modify('-'.$age_group.' year');
+		$age_group = $date->format('Y-m-d');
+	//quit($a);
+	}
 	
 		
 	if($page != "" && $per_page != "")	
@@ -981,20 +1100,27 @@ if((isset($obj->load_student)) == "1" && isset($obj->load_student))
 							
 		$sql_load_data .=" WHERE add_user_type='student'";	
 		//===========Filter By area====================================//
-		if($area_id!="")
+		if($center_id!="")
 		{
-			$sql_load_data .=" AND tam.add_area='".$area_id."' ";
+			$sql_load_data .=" AND ts.batch_center ='".$center_id."' ";
 		}
 		
-		if($batch_id !="")
+		if($team_id !="")
 		{
-			$sql_load_data .=" AND ts.student_id IN(SELECT DISTINCT(student_id) FROM tbl_student_batches WHERE batch_id='".$batch_id."') ";
+			$sql_load_data .=" AND ts.student_id IN(SELECT DISTINCT(student_id) FROM tbl_team_students WHERE team_id='".$team_id."') ";
 		}
 		
-		if($competition_id !="")
+		if($type !="")
 		{
-			$sql_load_data .=" AND ts.student_id IN(SELECT DISTINCT(student_id) FROM tbl_student_competition WHERE competition_id='".$competition_id."') ";
+			$sql_load_data .=" AND ts.student_type ='".$type."' ";
 		}
+		
+		
+		if($age_group!="")
+		{
+			$sql_load_data .=" AND ts.student_dob > '".$age_group."' ";
+		}
+		
 		
 		if($coach_id !='')
 		{
@@ -1145,12 +1271,14 @@ if((isset($obj->change_status)) == "1" && isset($obj->change_status))
 	$response_array 		= array();	
 	
 	$data['student_status']      = $curr_status;
-	$data['student_modified_by'] = $logged_uid;
+	$data['student_modified_by'] = $uid;
 	$data['student_modified']    = $datetime;
 	$res = update('tbl_students',$data,array('student_id'=>$id));
 	
 	if($res)
 	{
+		insertActivity('Student','Update',$uid,$id,'',$curr_status,'Status Changed');
+
 		$adata['add_status']      = $curr_status;
 		$adata['add_modified_by'] = $logged_uid;
 		$adata['add_modified']    = $datetime;
@@ -1177,15 +1305,22 @@ if((isset($obj->delete_student)) == "1" && isset($obj->delete_student))
 	$student_ids 	  = $obj->batch;
 	$del_flag 		  = 0; 
 	
-	$row = checkExist('tbl_students' ,array('student_id'=>$student_id));
 	
 	foreach($student_ids as $student_id)	
 	{
+		$row = checkExist('tbl_students' ,array('student_id'=>$student_id));
+	 
 		$sql_delete_area	= " DELETE FROM `tbl_students` WHERE `student_id` = '".$student_id."' ";
-		$result_delete_area	= mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));			
+		$result_delete_area	= 1; // mysqli_query($db_con,$sql_delete_area) or die(mysqli_error($db_con));			
 		if($result_delete_area)
 		{
-			
+			$data ='';
+			foreach($row as $k=>$v)
+			{
+				$data .=$v.', ';
+			}
+            quit(implode(',',$row));
+			insertActivity('Student','Update',$uid,$student_id,$old_data,$new_data,'Edit Student');
 			
 			$del_flag = 1;
 			$sql_delete_area	= " DELETE FROM `tbl_address_master` WHERE `add_user_id` = '".$student_id."' AND add_user_type='student' ";
@@ -1299,5 +1434,13 @@ if((isset($obj->getArea)) == "1" && isset($obj->getArea))
 		
 		quit($data,1);
 	}
+}
+
+if((isset($obj->getCenter)) == "1" && isset($obj->getCenter))
+{
+	$type_id 	      = $obj->type_id;
+	$data  ='<option value="">Select Center</option>';
+	$data .= getList('tbl_centers','center_id','center_name','',array('center_status'=>1));
+	quit($data,1);
 }
 ?>

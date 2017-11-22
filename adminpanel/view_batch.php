@@ -939,7 +939,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 	   }
 
 
-        function viewStudent(batch_id)
+       function viewStudent(batch_id)
 	   {
 		   	loading_show();
 			var sendInfo 	= {"batch_id":batch_id,"getStudent":1};

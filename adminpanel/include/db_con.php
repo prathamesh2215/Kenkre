@@ -34,7 +34,7 @@ else
 	$dbuser = "";
 	$dbpass = "";	
 	//$BaseFolder = "http://www.planeteducate.com/edupanel/";	
-	$BaseFolder = "http://www.kenkresports.com/adminpanel";	
+	$BaseFolder = "http://riverbridgeventures.com/adminpanel";	
 	include("../PHPMailer/class.phpmailer.php");}
 $db_con = mysqli_connect("localhost",$dbuser, $dbpass) or die("Can not connect to Database");
 if($db_con)

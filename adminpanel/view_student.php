@@ -60,62 +60,54 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
                                             <?php echo $feature_name; ?>
                                         </h3>
                                         
-                                        
-                                        <!--/* <div style="float:right;width:;"> 
-                                <select name="ft_area" id="ft_area"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
-                                        <option value="">Select Area</option>
-                                        <?php   $sql_get_area 			= " SELECT * FROM `tbl_area` WHERE `area_status` = 1 order by area_name";
-												$res_get_area 			= mysqli_query($db_con,$sql_get_area) or die(mysqli_error($db_con));
-												while($area_row =mysqli_fetch_array($res_get_area))
-												{
-										?>
-                                                <option value="<?php echo $area_row['area_id']; ?>"><?php echo ucwords($area_row['area_name']); ?></option>
-                                                
-                                           <?php } ?>
-                                                </select>
-                                        </div>
-                                         
                                          <div style="float:right;width:;"> 
-                               	 <select name="ft_coach" id="ft_coach"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
-                                        <option value="">Select Coach</option>
-                                        <?php   $sql_get_coach     = " SELECT * FROM `tbl_cadmin_users` WHERE `status` = 1 AND utype=15 order by fullname asc";
-												$res_get_coach = mysqli_query($db_con,$sql_get_coach) or die(mysqli_error($db_con));
-												while($coach_row  = mysqli_fetch_array($res_get_coach))
-												{
-										?>
-                                                <option value="<?php echo $coach_row['id']; ?>"><?php echo ucwords($coach_row['fullname']); ?></option>
-                                                
-                                           <?php } ?>
-                                                </select>
+                                       <select name="ft_age" id="ft_age"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
+                                         <option value="">Age Group</option>
+                                         <option value="6">Under 6</option>
+                                         <option value="10">Under 10</option>
+                                       	 <option value="15">Under 15</option>
+                                         <option value="20">Under 20</option>
+                                       </select>
                                         </div>
                                         
                                         <div style="float:right;width:;"> 
-                               			 <select name="ft_batch" id="ft_batch"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
-                                        <option value="">Select Batch</option>
-                                        <?php   $sql_get_batch     = " SELECT * FROM `tbl_batches` WHERE `batch_status` = 1 order by batch_name asc";
-												$res_get_batch = mysqli_query($db_con,$sql_get_batch) or die(mysqli_error($db_con));
-												while($batch_row  = mysqli_fetch_array($res_get_batch))
-												{
-										?>
-                                                <option value="<?php echo $batch_row['batch_id']; ?>"><?php echo ucwords($batch_row['batch_name']); ?></option>
-                                                
-                                           <?php } ?>
-                                                </select>
+                                       <select name="ft_type" id="ft_type"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">										 <option value="">All</option>
+                                         <option value="Kenkre">Kenkre</option>
+                                         <option value="Other">Others</option>
+                                       </select>
                                         </div>
                                         
-                                        <div style="float:right;width:;"> 
-                                        <select name="ft_competition" id="ft_competition"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">
-                                                <option value="">Select Competition</option>
-                                                <?php   $sql_get_status = " SELECT * FROM `tbl_competition` WHERE `competition_status` = 1 order by competition_name asc";
-                                                        $result_get_status 			= mysqli_query($db_con,$sql_get_status) or die(mysqli_error($db_con));
-                                                        while($status_row =mysqli_fetch_array($result_get_status))
-                                                        {
-                                                ?>
-                                                        <option value="<?php echo $status_row['competition_id']; ?>"><?php echo ucwords($status_row['competition_name']); ?></option>
-                                                        
-                                                   <?php } ?>
+                                         <div style="float:right;width:;"> 
+                                       <select name="ft_team" id="ft_team"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">							 <option value="">All Team</option>
+                                         <?php
+										 	
+											$sql_get_team =" SELECT team_id,team_name FROM tbl_team WHERE team_id IN ( SELECT DISTINCT team_id FROM tbl_team_students)";
+											$res_get_team = mysqli_query($db_con,$sql_get_team) or die(mysqli_error($db_con));
+											while($row_get_team =mysqli_fetch_array($res_get_team))
+											{
+												echo '<option value="'.$row_get_team['team_id'].'">'.ucwords($row_get_team['team_name']).'</option>';
+											}
+										 ?>
+                                        
+                                       </select>
+                                        </div>
+                                        
+                                        
+                                         <div style="float:right;width:;"> 
+                                           <select name="ft_center" id="ft_center"  class="select2-me input-medium" data-rule-required="true" onChange="loadData();">						     <option value="">All Center</option>
+                                              <?php
+                                                
+                                                $sql_get_team =" SELECT center_id,center_name FROM tbl_centers WHERE center_id IN ( SELECT DISTINCT batch_center FROM tbl_students)";
+                                                $res_get_team = mysqli_query($db_con,$sql_get_team) or die(mysqli_error($db_con));
+                                                while($row_get_team =mysqli_fetch_array($res_get_team))
+                                                {
+                                                    echo '<option value="'.$row_get_team['center_id'].'">'.ucwords($row_get_team['center_name']).'</option>';
+                                                }
+                                             ?>
                                           </select>
-                                        </div>*/-->
+                                       
+                                        </div>
+                                       
                                         
                                     </div> <!-- header title-->
 
@@ -242,7 +234,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
         <script type="text/javascript">
 		function multipleDelete()
 		{			
-			loading_show();		
+			//loading_show();		
 			var batch = [];
 			$(".batch:checked").each(function ()
 			{
@@ -296,15 +288,16 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		
 		function loadData()
 		{
-			loading_show();
+			//loading_show();
 			row_limit   = $.trim($('select[name="rowlimit"]').val());
 			search_text = $.trim($('#srch').val());
 			page        = $.trim($("#hid_page").val());	
 			
-			coach_id         = $("#ft_coach").val();	
-			batch_id	     = $("#ft_batch").val();
-			competition_id	 = $("#ft_competition").val();	
-			area_id	         = $("#ft_area").val();			
+			ft_age	         = $("#ft_age").val();	
+			ft_team	         = $("#ft_team").val();	
+			ft_center	     = $("#ft_center").val();	
+			ft_type	         = $("#ft_type").val();	
+					
 								
 			if(row_limit == "" && page == "")
 			{
@@ -314,7 +307,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 			}
 			else
 			{
-				var sendInfo = {"coach_id":coach_id,"batch_id":batch_id,"competition_id":competition_id,"area_id":area_id,"row_limit":row_limit, "search_text":search_text, "load_student":1, "page":page};
+				var sendInfo = {"ft_center":ft_center,"ft_type":ft_type,"ft_age":ft_age,"ft_team":ft_team,"row_limit":row_limit, "search_text":search_text, "load_student":1, "page":page};
 				var ind_load = JSON.stringify(sendInfo);				
 				$.ajax({
 					url: "load_student.php?",
@@ -820,6 +813,45 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 		}
 		
 		
+		function getCenter(type_id)
+		{
+			loading_show();
+			var sendInfo 	= {"type_id":type_id,"getCenter":1};
+			var area_status = JSON.stringify(sendInfo);								
+			$.ajax({
+				url: "load_student.php?",
+				type: "POST",
+				data: area_status,
+				contentType: "application/json; charset=utf-8",						
+				success: function(response) 
+				{			
+					data = JSON.parse(response);
+					if(data.Success == "Success") 
+					{							
+						$('#batch_center').html(data.resp);
+					} 
+					else 
+					{
+						$('#batch_center').select2();
+						$("#model_body").html('<span style="style="color:#F00;">'+data.resp+'</span>');
+						$('#error_model').modal('toggle');
+						loading_hide();					
+					}
+				},
+				error: function (request, status, error) 
+				{
+					$("#model_body").html('<span style="style="color:#F00;">'+request.responseText+'</span>');
+					$('#error_model').modal('toggle');
+					loading_hide();
+				},
+				complete: function()
+				{
+					loading_hide();	
+				}
+			});	
+		}
+		
+		
 		 $( ".datepicker" ).datepicker({
 		changeMonth	: true,
 		changeYear	: true,
@@ -841,7 +873,7 @@ $tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
 				reader.readAsDataURL(input.files[0]);
 			}
       }
-
+     
 	
 		</script>     
 		<script src="js/bootstrap-datepicker.js"></script>   

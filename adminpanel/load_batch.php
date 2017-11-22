@@ -587,7 +587,23 @@ $('.timepicker').timepicker({
 							$data .=$row_batch_data['batch_limit'].'</span>';
 						$data .='</div>';
 					$data .='</div>';// student limit
+					$data .='<div class="span12" style="clear:both">';
+						$data .='<div style="">';
+							$data .='<span class="head2" style="color:white">Days : ';
+							$sql_get_days =" SELECT DISTINCT(batch_day) FROM tbl_batch_time WHERE batch_id='".$batch_id."'";
+							$res_get_days = mysqli_query($db_con,$sql_get_days) or die(mysqli_error($db_con));
+							$day_array    =  array(); 
+							while($row = mysqli_fetch_array($res_get_days))
+							{
+								array_push($day_array,$row['batch_day']);
+							}
+							$days         = implode(' / ',$day_array);
+							$data 		 .= $days.'</span>';
+						$data .='</div>';
+					$data .='</div>';// student limit
+					
 				$data .='</div>';
+				
 			$data .='</div>';
 			
 			$data .='<div class="span2">';

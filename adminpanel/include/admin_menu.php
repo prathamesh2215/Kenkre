@@ -39,14 +39,20 @@
 		$sql_parent_menu_name = "select * from tbl_admin_features where af_id = '".$val."' and af_status = '1'";
 		$res_parent_menu_name = mysqli_query($db_con,$sql_parent_menu_name);
 		$row_parent_menu_name = mysqli_fetch_array($res_parent_menu_name);
-		$str_menu_order .= $row_parent_menu_name['af_menu_order'].",";
-		$str_feature_id .= $val.",";
+		if($row_parent_menu_name['af_menu_order']!="")
+		{
+		     $str_menu_order .= $row_parent_menu_name['af_menu_order'].",";
+	         $str_feature_id .= $val.",";
+		}
+		
 	}
 	//This is for sorting main menus (Parent) according to menu order 
+	
 	$ar_feature_id 	= explode(',', rtrim($str_feature_id,','));
 	$ar_menu_order 	= explode(',',rtrim($str_menu_order,','));
 	$ar_combine 	= array_combine($ar_feature_id,$ar_menu_order);
 	
+    
 	asort($ar_combine);
 	$ar_assigned_child_menu = array();
 	foreach($ar_combine as $x => $x_value) 

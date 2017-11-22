@@ -14,22 +14,22 @@
 	{
 		$title = $_GET['pag'];
 	}
-	$path_parts   		= pathinfo(__FILE__);
-	$filename 	  		= $path_parts['filename'].".php";
-	$sql_feature 		= "select * from tbl_admin_features where af_page_url = '".$filename."'";
-	$result_feature 	= mysqli_query($db_con,$sql_feature) or die(mysqli_error($db_con));
-	$row_feature  		= mysqli_fetch_row($result_feature);
-	$feature_name 		= $row_feature[1];
-	$home_name    		= "Home";
-	$home_url 	  		= "view_dashboard.php?pag=Dashboard";
-	$utype				= $_SESSION['panel_user']['utype'];
-	$tbl_users_owner 	= $_SESSION['panel_user']['tbl_users_owner'];
-	$start_offset = 0;
+  $path_parts      = pathinfo(__FILE__);
+  $filename        = $path_parts['filename'].".php";
+  $sql_feature     = "select * from tbl_admin_features where af_page_url = '".$filename."'";
+  $result_feature  = mysqli_query($db_con,$sql_feature) or die(mysqli_error($db_con));
+  $row_feature     = mysqli_fetch_row($result_feature);
+  $feature_name    = $row_feature[1];
+  $home_name       = "Home";
+  $home_url        = "view_dashboard.php?pag=Dashboard";
+  $utype           = $_SESSION['panel_user']['utype'];
+  $tbl_users_owner = $_SESSION['panel_user']['tbl_users_owner'];
+  $start_offset    = 0;
 ?>
 <!doctype html>
 <html>
 <head>
-<?php
+      <?php
         /* This function used to call all header data like css files and links */
         headerdata($feature_name);
         /* This function used to call all header data like css files and links */
@@ -82,9 +82,9 @@
                                   <div class="huge" style="color:#FFF">
                                     <h2>
                                     <?php
-										$num  = isExist('tbl_competition',array("competition_status"=>1));
-										echo $num;
-									?>
+                  										$num  = isExist('tbl_competition',array("competition_status"=>1));
+                  										echo $num;
+                  									?>
                                     </h2>
                                   </div>
                                   <div style="color:#FFF">
@@ -105,9 +105,9 @@
                                   <div class="huge" style="color:#FFF">
                                     <h2>
                                     <?php
-										$num  = isExist('tbl_team',array("team_status"=>1));
-										echo $num;
-									?>
+                  										$num  = isExist('tbl_team',array("team_status"=>1));
+                  										echo $num;
+                  									?>
                                     </h2>
                                   </div>
                                   <div style="color:#FFF">

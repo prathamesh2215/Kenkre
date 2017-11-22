@@ -2083,7 +2083,7 @@ background-size:22px 22px
 	text-align:center
 }
 .box.box-bordered .table.table-bordered td:first-child, .box.box-bordered .table.table-bordered th:first-child {
-	border-left:0
+	border-left:1px solid #dadada;
 }
 .box.box-bordered .slimScrollDiv {
 	border-bottom:2px solid #ddd
