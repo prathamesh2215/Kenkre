@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="Design Lots">
+		<link rel="icon" href="favicon.ico">
+		
+		<title>Kenkre | Point Table</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet" type="text/css" href="library/bs/css/bootstrap.min.css">
+		
+		<!-- Menu Stylesheets -->
+		<link rel="stylesheet" type="text/css" href="library/css/menuzord/menuzord.css">
+		<link rel="stylesheet" type="text/css" href="library/css/menuzord/menuzord-animations.css">
+		<link rel="stylesheet" type="text/css" href="library/css/menuzord/skins/menuzord-border-top.css">
+		
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="library/css/library.css">
+		<link rel="stylesheet" type="text/css" href="library/css/responsive.css">
+		<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" type="text/css" href="styles.css">
+
+		<style type="text/css">
+			
+			.tbl th,th{
+				text-align: center;
+			}
+		</style>
+	</head>
+	
+	
+	
+	<body class="">
+  
+    
+	    <!-- Start Full Screen Overlay -->
+	    <div class="canvas-overlay">
+	    	<!-- Close Button -->
+	    	<a class="overlay-btn btn-closer" href="#"></a>
+	    	<!-- Content Container -->
+	    	<div class="container" data-anijs="if: scroll, on:window, do: fadeInDown animated, before: scrollReveal, after: $fireOnce removeAnim ">
+	    		<h2>Search Website</h2>
+	    		<form class="search-hero">
+	    			<div class="input-group">
+	    				<label class="input">
+		    				<input type="text" class="form-control" placeholder="Search for...">
+	    				</label>
+	    				<span class="input-group-btn">
+	    					<button class="btn btn-success" type="button">Search</button>
+	    				</span>
+	    			</div>
+	    		</form>
+	
+	    		<br/><br/>
+	    		<div class="row">
+	    			<div class="col-sm-4">
+			    		<h3>Quick Links</h3>
+			    		<ul class="list-styled list-bordered">
+			    			<li><a href="index.html">Home page</a></li>
+			    			<li><a href="teams.html">Our teams</a></li>
+			    			<li><a href="contact.html">Get in touch</a></li>
+			    		</ul>
+	    			</div>
+	    			
+	    			<div class="col-sm-4">
+	    				<h3>Recent Posts</h3>
+	    				<ul class="list-styled list-bordered">
+	    					<li><a href="post-standard.html">Nominated club of the year</a></li>
+	    					<li><a href="post-standard.html">Pre season camp success</a></li>
+	    					<li><a href="post-standard.html">Road to the grand finals</a></li>
+	    				</ul>
+	    			</div>
+	    			
+	    			<div class="col-sm-4">
+	    				<h3>Follow Us</h3>
+	    				<ul class="social-links sl-vertical list-bordered">
+	    					<li><a href="#"><i class="fa fa-facebook"></i>Facebook</a></li>
+	    					<li><a href="#"><i class="fa fa-twitter"></i>Twitter</a></li>
+	    					<li><a href="#"><i class="fa fa-globe"></i>Website</a></li>
+	    				</ul>
+	    			</div>
+	    		</div>
+	    	</div>
+	    </div>
+	    <!-- End Full Screen Overlay -->
+	    
+	    
+	    
+		
+		<!-- Start Header -->
+		<header id="header">
+			
+			
+			
+			
+			
+			<!-- Start Main Header -->
+			<nav class="main-header header-reveal">
+			  <div class="container">
+				<!-- Start Menu -->
+				<div id="menuzord" class="menuzord">
+					<div class="head-left">
+						<a href="index.html" class="menuzord-brand">
+							<!-- Sport <div class="tag-line">Sporting Club Theme</div> -->
+							<img  class="logo-img" src="img/logo1.png" alt="Logo" />
+						</a>
+					</div>
+					
+					<ul class="menuzord-menu head-right">
+						<li class="active"><a href="index.php">Home</a></li>
+						<li><a href="about.html">About</a>
+							 
+						</li>
+						
+					</ul>
+				</div><!--/.menuzord -->
+			  </div>
+			</nav>
+			<!-- End Main Header -->
+			
+			
+			
+			<!-- End Post Header -->
+			
+			
+		</header>
+		<!-- End Header -->
+		
+		
+		
+		
+	
+	
+		
+		<!-- Start Main Content -->
+		<main class="main-content">
+		    <div class="container body-content">
+		    	
+		    	<div class="row">
+		    		<div class="col-sm-12 main-column fixtures-page">
+		    			
+		    			<div class="page-header">
+		    				<h2>Points Leaderboard</h2>
+		    				
+		    			</div> 
+		    			
+		    			
+		    			<!-- Responsive Table Heading Labels -->
+		    			<style>
+		    				@media only screen and (max-width: 767px) {
+		    				td:nth-of-type(1):before { content: "Competitor"; }
+		    				td:nth-of-type(2):before { content: "Position"; }
+		    				td:nth-of-type(3):before { content: "Wins"; }
+		    				td:nth-of-type(4):before { content: "Draws"; }
+		    				td:nth-of-type(5):before { content: "Losses"; }
+		    				td:nth-of-type(6):before { content: "%"; }
+		    				}
+		    			</style>
+		    			
+		    			
+		    			<!-- Start Events Filter -->
+		    			<div class="events-filter">
+		    				<ul class="list-inline">
+		    					<li><strong>View: </strong></li>
+		    					<li><a class="meta-text" href="index.php"><em class="fa fa-table"></em> Game Fixtures</a> &nbsp;</li>
+		    					<li><a class="meta-text" href="results.html"><em class="fa fa-trophy"></em> Results</a> &nbsp;</li>
+		    					<li><a class="feat-color" href="points-leaderboard.html"><em class="fa fa-trophy"></em> Points Leaderboard</a> &nbsp;</li>
+		    					<li><a class="meta-text" href="format.html"><em class="fa fa-sticky-note-o"></em> Format</a> &nbsp;</li>
+		    					<li><a class="meta-text" href="grouping.html"><em class="fa fa-users"></em> Grouping  </a> &nbsp;</li>
+		    				</ul>
+		    			</div>
+		    			
+		    			
+		    			<!-- Time Leaderboard -->			
+		    			<table class="table-striped table-responsive table-hover table-leaderboard table-tops table-top-5 tbl" >
+		    				<thead>
+		    				<tr>
+		    					<th class="head1">Position</th>
+		    					<th class="head1">Team</th>
+		    					<th class="head1">P</th>
+		    					<th class="head1">W</th>
+		    					<th class="head1">D</th>
+		    					<th class="head1">L</th>
+		    					<th class="head1">F</th>
+		    					<th class="head1">A</th>
+		    					<th class="head1">GD</th>
+		    					<th class="head1">Pts</th>
+		    				</tr>
+		    				</thead>
+		    				<tbody>
+
+
+		    				<!-- Under 10 A -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 10 A</th>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH BRAVEHEARTS</td>
+		    					<td>2</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>5</td>
+		    					<td>2</td>
+		    					<td>3</td>
+		    					<td>6</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />STANIS KNIGHTS</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>3</td>
+		    					<td>4</td>
+		    					<td>-1</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOSCO 7</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>2</td>
+		    					<td>3</td>
+		    					<td>-1</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH DEVIL RED</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>2</td>
+		    					<td>3</td>
+		    					<td>-1</td>
+		    					<td>0</td>
+		    				</tr>
+		    				
+		    				<!-- Under 10 B -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 10 B</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO A</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>15</td>
+		    					<td>1</td>
+		    					<td>14</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />EFIB</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>4</td>
+		    					<td>1</td>
+		    					<td>3</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U10 A</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>9</td>
+		    					<td>17</td>
+		    					<td>-8</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUTH SA</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    					<td>3</td>
+		    					<td>12</td>
+		    					<td>-9</td>
+		    					<td>0</td>
+		    				</tr>
+
+
+		    				<!-- Under 10 C -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 10 C</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>5</td>
+		    					<td>1</td>
+		    					<td>4</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO B</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>4</td>
+		    					<td>0</td>
+		    					<td>4</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW B</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>4</td>
+		    					<td>5</td>
+		    					<td>-1</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DIAMOND FC</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>7</td>
+		    					<td>-7</td>
+		    					<td>0</td>
+		    				</tr>
+
+		    				<!-- Under 10 D -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 10 D</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U10 A</td>
+		    					<td>2</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>17</td>
+		    					<td>3</td>
+		    					<td>14</td>
+		    					<td>6</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOMBAY STALLIONS U10</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>7</td>
+		    					<td>0</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO C</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>5</td>
+		    					<td>-5</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U10 B</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>10</td>
+		    					<td>-9</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<!-- Under 10 E -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 10 E</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />RISING STAR</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>4</td>
+		    					<td>0</td>
+		    					<td>4</td>
+		    					<td>3</td>
+		    				</tr>
+		    				
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH DEVIL BLUE</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>4</td>
+		    					<td>-4</td>
+		    					<td>0</td>
+		    				</tr>
+		    				
+		    				<!-- Start for Under 12 -->
+
+		    				<!-- Under 10 A -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 12 A</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />CASTLE BY A U12</td>
+		    					<td>2</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>11</td>
+		    					<td>0</td>
+		    					<td>11</td>
+		    					<td>6</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SHINING STARS</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>7</td>
+		    					<td>1</td>
+		    					<td>6</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U12 B</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>5</td>
+		    					<td>-5</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW U12</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>13</td>
+		    					<td>-12</td>
+		    					<td>0</td>
+		    				</tr>
+		    				
+		    				<!-- Under 10 B -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 12 B</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOSCO FALCONS</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>9</td>
+		    					<td>0</td>
+		    					<td>9</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />CASTLE BY B U12</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOOH A U12</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />MUMBAI ROOKIES</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>2</td>
+		    					<td>11</td>
+		    					<td>-9</td>
+		    					<td>1</td>
+		    				</tr>
+
+
+		    				<!-- Under 10 C -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 12 C</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOMBAY STALLIONS U12</td>
+		    					<td>3</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>17</td>
+		    					<td>4</td>
+		    					<td>13</td>
+		    					<td>6</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DBOSCO DRAGONS</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>3</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS A U12</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>4</td>
+		    					<td>-3</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />PANTHERS</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>11</td>
+		    					<td>-11</td>
+		    					<td>0</td>
+		    				</tr>
+
+		    				<!-- Under 10 D -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 12 D</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GOALSTERS U12</td>
+		    					<td>2</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>8</td>
+		    					<td>5</td>
+		    					<td>3</td>
+		    					<td>6</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GOALSTERS U12</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>3</td>
+		    					<td>1</td>
+		    					<td>2</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA RED</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>2</td>
+		    					<td>3</td>
+		    					<td>-1</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />EFIB A U12</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    					<td>4</td>
+		    					<td>8</td>
+		    					<td>-4</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<!-- Under 10 E -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 12 E</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH SHOOTERS</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>6</td>
+		    					<td>2</td>
+		    					<td>4</td>
+		    					<td>4</td>
+		    				</tr>
+		    				
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />HUSKIES</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>5</td>
+		    					<td>1</td>
+		    					<td>4</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA BLUE</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />EFIB B U12</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>9</td>
+		    					<td>-8</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<!-- Under12 F -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 12 F</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U12 A</td>
+		    					<td>2</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>3</td>
+		    					<td>0</td>
+		    					<td>3</td>
+		    					<td>6</td>
+		    				</tr>
+		    				
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />HEARTS</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>3</td>
+		    					<td>2</td>
+		    					<td>1</td>
+		    					<td>3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE 06 A </td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>-1</td>
+		    					<td>0</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS B U12</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>3</td>
+		    					<td>-3</td>
+		    					<td>0</td>
+		    				</tr>
+
+		    				<!-- Under14 a -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 14 A</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />JOGA BONITO</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>8</td>
+		    					<td>0</td>
+		    					<td>8</td>
+		    					<td>3</td>
+		    				</tr>
+		    				
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GLADIATORS</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>8</td>
+		    					<td>-8</td>
+		    					<td>0</td>
+		    				</tr>
+
+		    				<!-- Under14 F -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 14 B</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOOH SPORTS U14</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>3</td>
+		    				</tr>
+		    				
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH STRIKERS</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>-1</td>
+		    					<td>0</td>
+		    				</tr>
+
+
+		    				<!-- Under14 C -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 14 C</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GOALSTERS</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>17</td>
+		    					<td>1</td>
+		    					<td>16</td>
+		    					<td>3</td>
+		    				</tr>
+		    				
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U14 A</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>17</td>
+		    					<td>-16</td>
+		    					<td>0</td>
+		    				</tr>
+
+		    				<!-- Under14 D -->
+		    				<tr>
+		    					<th style="text-align: center;" colspan="10" class="head1">Under 14 D</td>
+		    				</tr>
+		    				<tr>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOMBAY STALLIONS U14</td>
+		    					<td>2</td>
+		    					<td>2</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>5</td>
+		    					<td>1</td>
+		    					<td>5</td>
+		    					<td>6</td>
+		    				</tr>
+		    				
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW U14</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>1</td>
+		    					<td>2</td>
+		    					<td>-1</td>
+		    					<td>0</td>
+		    				</tr>
+
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U14 B</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>0</td>
+		    					<td>1</td>
+		    					<td>0</td>
+		    					<td>3</td>
+		    					<td>-3</td>
+		    					<td>0</td>
+		    				</tr>
+		    				
+		    				</tbody>
+		    			</table>
+		    			
+		    			
+		    				    			
+		    				    			
+		    				    			    				
+					</div><!--/.main-column -->
+								
+					
+					
+				
+		
+		    </div><!-- /.container -->
+		</main><!-- /.main-content -->
+		
+		
+		
+		
+		
+		<!--Start Footer -->
+		<!--Start Footer -->
+		<div id="footer">
+			<!-- Start Pre Footer -->
+			
+			
+			
+			
+			<!-- Start Footer -->
+			<footer class="main-footer">
+				<div class="container">
+					<!-- Start Row -->
+					<div class="row">
+						<div class="col-md-6">
+							<div class="widget widget-contact">
+								<h3><img class="logo-img" src="img/logo1.png" alt="Logo" />
+							</div>		
+						</div>
+						
+						
+						<div class="col-md-6">
+							<div class="widget widget-brand-address">
+								
+								<ul class="list-styled list-bordered">
+									<li><strong>Address:</strong><br/>
+												No. 2, Mahim House,
+												Mogul Lane, Mahim (W), Mumbai 400016 
+									</li>
+									<li><strong>Phone:</strong><br/>
+												 7738098599 / 7738054599 / 9821445880
+									</li>
+									
+								</ul>
+							</div>
+						</div>	
+					</div><!--/.row -->
+				</div>
+			</footer>
+			
+			
+			
+			<!-- Start Post Footer -->
+			<footer class="post-footer">
+				<div class="container">
+					<div class="foot-center">
+						<div>&copy; Kenkre Football Club 2017-2018. All rights reserved.</div> 
+					</div>
+					
+				</div>
+			</footer>
+		</div><!--/footer -->
+	
+	
+	
+    	<!-- JavaScript
+	   	================================================== -->
+	   	<script src="../../../ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	   	<script>window.jQuery || document.write('<script src="library/js/vendor/jquery.min.html"><\/script>')</script>
+	   	<script src="library/bs/js/bootstrap.min.js"></script>
+	   	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	    <script type="text/javascript" src="library/js/jquery.scrollUp.min.js"></script>
+		<script type="text/javascript" src="library/js/menuzord.js"></script>
+		<script src="js/scripts.js"></script>
+	</body>
+
+
+</html>

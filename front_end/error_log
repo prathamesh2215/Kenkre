@@ -1,0 +1,29 @@
+[21-Nov-2017 17:06:42 Asia/Calcutta] PHP Warning:  include(includes/db_con.php): failed to open stream: No such file or directory in /home/kenkresports/public_html/index.php on line 3
+[21-Nov-2017 17:06:42 Asia/Calcutta] PHP Warning:  include(): Failed opening 'includes/db_con.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/kenkresports/public_html/index.php on line 3
+[21-Nov-2017 17:06:42 Asia/Calcutta] PHP Warning:  include(includes/query-helper.php): failed to open stream: No such file or directory in /home/kenkresports/public_html/index.php on line 4
+[21-Nov-2017 17:06:42 Asia/Calcutta] PHP Warning:  include(): Failed opening 'includes/query-helper.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/kenkresports/public_html/index.php on line 4
+[21-Nov-2017 17:06:42 Asia/Calcutta] PHP Fatal error:  Call to undefined function query() in /home/kenkresports/public_html/index.php on line 185
+[21-Nov-2017 17:06:44 Asia/Calcutta] PHP Warning:  include(includes/db_con.php): failed to open stream: No such file or directory in /home/kenkresports/public_html/index.php on line 3
+[21-Nov-2017 17:06:44 Asia/Calcutta] PHP Warning:  include(): Failed opening 'includes/db_con.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/kenkresports/public_html/index.php on line 3
+[21-Nov-2017 17:06:44 Asia/Calcutta] PHP Warning:  include(includes/query-helper.php): failed to open stream: No such file or directory in /home/kenkresports/public_html/index.php on line 4
+[21-Nov-2017 17:06:44 Asia/Calcutta] PHP Warning:  include(): Failed opening 'includes/query-helper.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/kenkresports/public_html/index.php on line 4
+[21-Nov-2017 17:06:44 Asia/Calcutta] PHP Fatal error:  Call to undefined function query() in /home/kenkresports/public_html/index.php on line 185
+[21-Nov-2017 17:06:46 Asia/Calcutta] PHP Warning:  include(includes/db_con.php): failed to open stream: No such file or directory in /home/kenkresports/public_html/index.php on line 3
+[21-Nov-2017 17:06:46 Asia/Calcutta] PHP Warning:  include(): Failed opening 'includes/db_con.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/kenkresports/public_html/index.php on line 3
+[21-Nov-2017 17:06:46 Asia/Calcutta] PHP Warning:  include(includes/query-helper.php): failed to open stream: No such file or directory in /home/kenkresports/public_html/index.php on line 4
+[21-Nov-2017 17:06:46 Asia/Calcutta] PHP Warning:  include(): Failed opening 'includes/query-helper.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/kenkresports/public_html/index.php on line 4
+[21-Nov-2017 17:06:46 Asia/Calcutta] PHP Fatal error:  Call to undefined function query() in /home/kenkresports/public_html/index.php on line 185
+[21-Nov-2017 17:06:48 Asia/Calcutta] PHP Warning:  include(includes/db_con.php): failed to open stream: No such file or directory in /home/kenkresports/public_html/index.php on line 3
+[21-Nov-2017 17:06:48 Asia/Calcutta] PHP Warning:  include(): Failed opening 'includes/db_con.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/kenkresports/public_html/index.php on line 3
+[21-Nov-2017 17:06:48 Asia/Calcutta] PHP Warning:  include(includes/query-helper.php): failed to open stream: No such file or directory in /home/kenkresports/public_html/index.php on line 4
+[21-Nov-2017 17:06:48 Asia/Calcutta] PHP Warning:  include(): Failed opening 'includes/query-helper.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/kenkresports/public_html/index.php on line 4
+[21-Nov-2017 17:06:48 Asia/Calcutta] PHP Fatal error:  Call to undefined function query() in /home/kenkresports/public_html/index.php on line 185
+[21-Nov-2017 17:07:37 Asia/Kolkata] PHP Warning:  mysqli_connect(): (28000/1045): Access denied for user 'kenkresp_2018'@'localhost' (using password: YES) in /home/kenkresports/public_html/includes/db_con.php on line 33
+[21-Nov-2017 17:07:38 Asia/Kolkata] PHP Warning:  mysqli_connect(): (28000/1045): Access denied for user 'kenkresp_2018'@'localhost' (using password: YES) in /home/kenkresports/public_html/includes/db_con.php on line 33
+[21-Nov-2017 17:07:41 Asia/Kolkata] PHP Warning:  mysqli_connect(): (28000/1045): Access denied for user 'kenkresp_2018'@'localhost' (using password: YES) in /home/kenkresports/public_html/includes/db_con.php on line 33
+[23-Nov-2017 12:45:46 Asia/Calcutta] PHP Parse error:  syntax error, unexpected '$sql' (T_VARIABLE) in /home/kenkresports/public_html/results.php on line 72
+[23-Nov-2017 12:45:47 Asia/Calcutta] PHP Parse error:  syntax error, unexpected '$sql' (T_VARIABLE) in /home/kenkresports/public_html/results.php on line 72
+[23-Nov-2017 12:45:48 Asia/Calcutta] PHP Parse error:  syntax error, unexpected '$sql' (T_VARIABLE) in /home/kenkresports/public_html/results.php on line 72
+[23-Nov-2017 12:45:53 Asia/Calcutta] PHP Parse error:  syntax error, unexpected '$sql' (T_VARIABLE) in /home/kenkresports/public_html/results.php on line 72
+[23-Nov-2017 12:45:57 Asia/Calcutta] PHP Parse error:  syntax error, unexpected '$sql' (T_VARIABLE) in /home/kenkresports/public_html/results.php on line 72
+[23-Nov-2017 12:45:58 Asia/Calcutta] PHP Parse error:  syntax error, unexpected '$sql' (T_VARIABLE) in /home/kenkresports/public_html/results.php on line 72

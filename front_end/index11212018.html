@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="favicon.ico">
+		
+		<title>Home | Kenkre Sport Club</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet" type="text/css" href="library/bs/css/bootstrap.min.css">
+		
+		<!-- Menu Stylesheets -->
+		<link rel="stylesheet" type="text/css" href="library/css/menuzord/menuzord.css">
+		<link rel="stylesheet" type="text/css" href="library/css/menuzord/menuzord-animations.css">
+		<link rel="stylesheet" type="text/css" href="library/css/menuzord/skins/menuzord-border-top.css">
+		
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="library/css/library.css">
+		<link rel="stylesheet" type="text/css" href="library/css/responsive.css">
+		<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" type="text/css" href="styles.css">
+		
+		<style type="text/css">
+			
+			.tbl th,th{
+				text-align: center;
+			}
+		</style>
+	</head>
+	
+	
+	
+	<body class="">
+  
+    
+	    <!-- Start Full Screen Overlay -->
+	    <div class="canvas-overlay">
+	    	<!-- Close Button -->
+	    	<a class="overlay-btn btn-closer" href="#"></a>
+	    	<!-- Content Container -->
+	    	<div class="container" data-anijs="if: scroll, on:window, do: fadeInDown animated, before: scrollReveal, after: $fireOnce removeAnim ">
+	    		
+	
+	    		<br/><br/>
+	    		<div class="row">
+	    			<div class="col-sm-4">
+			    		<h3>Quick Links</h3>
+			    		<ul class="list-styled list-bordered">
+			    			<li><a href="index.html">Home</a></li>
+			    			<li><a href="teams.html">Our teams</a></li>
+			    			<li><a href="contact.html">Get in touch</a></li>
+			    		</ul>
+	    			</div>
+	    			
+	    			<div class="col-sm-4">
+	    				<h3>Recent Posts</h3>
+	    				<ul class="list-styled list-bordered">
+	    					<li><a href="post-standard.html">Nominated club of the year</a></li>
+	    					<li><a href="post-standard.html">Pre season camp success</a></li>
+	    					<li><a href="post-standard.html">Road to the grand finals</a></li>
+	    				</ul>
+	    			</div>
+	    			
+	    			<div class="col-sm-4">
+	    				<h3>Follow Us</h3>
+	    				<ul class="social-links sl-vertical list-bordered">
+	    					<li><a href="#"><i class="fa fa-facebook"></i>Facebook</a></li>
+	    					<li><a href="#"><i class="fa fa-twitter"></i>Twitter</a></li>
+	    					<li><a href="#"><i class="fa fa-globe"></i>Website</a></li>
+	    				</ul>
+	    			</div>
+	    		</div>
+	    	</div>
+	    </div>
+	    <!-- End Full Screen Overlay -->
+	    
+	    
+	    
+		
+		<!-- Start Header -->
+		<header id="header">
+			
+			
+			
+			
+			<!-- Start Main Header -->
+			<nav class="main-header header-reveal">
+			  <div class="container">
+				<!-- Start Menu -->
+				<div id="menuzord" class="menuzord">
+					<div class="head-left">
+						<a href="index.html" class="menuzord-brand">
+							
+							<img  class="logo-img" src="img/logo1.png" alt="Logo" />
+						</a>
+					</div>
+					
+					<ul class="menuzord-menu head-right">
+						<li class="active"><a href="">Home</a></li>
+						<li><a href="about.html">About</a>
+						</li>
+						
+					</ul>
+				</div><!--/.menuzord -->
+			  </div>
+			</nav>
+			<!-- End Main Header -->
+			
+			
+			
+			
+			
+		</header>
+		<!-- End Header -->
+		
+		
+		
+		
+	
+	
+		
+		<!-- Start Main Content -->
+		<main class="main-content">
+		    <div class="container body-content">
+		    	
+		    	<div class="row">
+		    		<div class="col-sm-12 main-column fixtures-page">
+		    			
+		    			<div class="page-header">
+		    				<h2>Fixtures</h2>
+		    				
+		    			</div>
+		    			
+		    			
+		    			
+		    			<!-- Responsive Table Heading Labels -->
+		    			<style>
+		    				@media only screen and (max-width: 767px) {
+		    				.table-fixtures td:nth-of-type(1):before { content: "Team A"; }
+		    				.table-fixtures td:nth-of-type(2):before { content: "Vs"; }
+		    				.table-fixtures td:nth-of-type(3):before { content: "Team B"; }
+		    				.table-fixtures td:nth-of-type(4):before { content: "Details"; }
+		    				}
+		    			</style>
+		    			
+		    			
+		    			
+		    			<!-- Start Events Filter -->
+		    			<div class="events-filter">
+		    				<ul class="list-inline">
+		    					<li><strong>View: </strong></li>
+		    					<li><a class="feat-color" href="#"><em class="fa fa-table"></em> Game Fixtures</a> &nbsp;</li>
+		    					<li><a class="meta-text" href="results.html"><em class="fa fa-trophy"></em> Results</a> &nbsp;</li>
+		    					<li><a class="meta-text" href="points-leaderboard.html"><em class="fa fa-trophy"></em> Points Leaderboard</a> &nbsp;</li>
+		    					<li><a class="meta-text" href="format.html"><em class="fa fa-sticky-note-o"></em> Format</a> &nbsp;</li>
+		    					<li><a class="meta-text" href="grouping.html"><em class="fa fa-users"></em> Grouping  </a> &nbsp;</li>
+		    				</ul>
+		    			</div>
+		    			
+		    			<table class="table-striped tbl table-responsive table-hover table-leaderboard table-tops tbl">
+		    				<thead>
+		    				<tr>
+		    				    <th class="head1" style="">Time</th>
+		    					<th class="head1">Match</th>
+		    					<th class="head1" style="text-align: center;" colspan="3">COMMUNITY CUP - ST. ANDREWS, BANDRA</th>
+		    					<th class="head1">Pool</th>
+		    					<th class="head1">Field</th>
+		    				</tr>
+
+		    				</thead>
+		    				<tbody>
+
+		    				<tr>
+		    					<th class="head1" colspan="7" style="text-align: center;">19.11.2017</th>
+		    				</tr>
+
+		    				<!-- Under Time 1 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc">8.00 TO 8.30AM</td>
+		    					<td>1</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;" /> PANTHERS</td>
+		    					<td>Vs</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" /> KOPANA FS A U12</td>
+		    					<td>U12 C</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>2</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GOALSTERS U12</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOOH B U12</td>
+		    					<td>U12 D</td>
+		    					<td>G2</td>
+		    				</tr>
+
+		    				<tr>
+		    					<td>3</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" /> KENKRE 06 B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SHOURYA FA</td>
+		    					<td>U12 G</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>4</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />OE U12</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />REAL MUMBAI</td>
+		    					<td>U12 G</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+		    				<!-- Time 2 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle; background-color:#e0e0e0">8.30 TO 9.00AM</td>
+		    					<td>5</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />CASTLE BY B U12</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOSCO FALCONS</td>
+		    					<td>U12 B</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>6</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH SHOOTERS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />HUSKIES</td>
+		    					<td>U12 E</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>7</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U12 A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS B U12</td>
+		    					<td>U12 G</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>8</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />MUMBAI ROOKIES</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOOH A U12</td>
+		    					<td>U12 B</td>
+		    					<td>G4</td>
+		    				</tr>
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc">9.00 TO 9.30AM</td>
+		    					<td>9</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />PANTHERS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOSCO DRAGONS</td>
+		    					<td>U12 C</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>10</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA RED</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOOH B U12</td>
+		    					<td>U12 D</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>11</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE 06 B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />OE U12</td>
+		    					<td>U12 G</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>12</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />REAL MUMBAI</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SHOURYA FA</td>
+		    					<td>U12 G</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle; background-color:#e0e0e0;">9.30 TO 10.00AM</td>
+		    					<td>13</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOSCO FALCONS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOOH A U12</td>
+		    					<td>U12 B</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>14</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA BLUE</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />HUSKIES</td>
+		    					<td>U12 E</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>15</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS B U12</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE 06 A</td>
+		    					<td>U12 F</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>16</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SHINING STARS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U12 B</td>
+		    					<td>U12 A</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc">10.00 TO 10.30AM</td>
+		    					<td>17</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOSCO DRAGONS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS A U12</td>
+		    					<td>U12 C</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>18</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />EFIB A U12</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA RED</td>
+		    					<td>U12 D</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>19</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH BRAVEHEARTS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW B</td>
+		    					<td>U8 A</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>20</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U8 A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />LIONS</td>
+		    					<td>U8 A</td>
+		    					<td>G4</td>
+		    				</tr>
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle; background-color:#e0e0e0;">10.30 TO 11.00AM</td>
+		    					<td>21</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />CASTLE BY A U12</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SHINING STARS</td>
+		    					<td>U12 A</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>22</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />EFIB B U12</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA BLUE</td>
+		    					<td>U12 E</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>23</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />HEARTS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE 06 A</td>
+		    					<td>U12 F</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>24</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW U12</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U12 B</td>
+		    					<td>U12 A</td>
+		    					<td>G4</td>
+		    				</tr>
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">11.00 TO 11.30AM</td>
+		    					<td>25</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GOLDEN EAGLETS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW A</td>
+		    					<td>U8 B</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>26</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GOALSTERS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U8 B</td>
+		    					<td>U8 B</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>27</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH BRAVEHEARTS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U8 A</td>
+		    					<td>U8 A</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>28</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />LIONS</td>
+		    					<td>U8 A</td>
+		    					<td>G4</td>
+		    				</tr>
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle; background-color:#e0e0e0;">11.30 TO 12.00PM</td>
+		    					<td>29</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />CASTLE BY</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE</td>
+		    					<td>U8 C</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>30</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SAMUEL FA</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO U8</td>
+		    					<td>U8 C</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>31</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOSCO 7</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH DEVIL RED</td>
+		    					<td>U10 A</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>32</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />EFIB</td>
+		    					<td>U10 B</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">12.00 TO 12.30PM</td>
+		    					<td>33</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GOLDEN EAGLETS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />GOALSTERS</td>
+		    					<td>U8 B</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>34</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U8 B</td>
+		    					<td>U8 B</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>35</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW B</td>
+		    					<td>U10 C</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>36</td>
+		    					<td><img src="img/teamwork.png"  alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DIAMOND FC</td>
+		    					<td>U10 C</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">12.30 TO 01.00PM</td>
+		    					<td>37</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />CASTLE BY</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SAMUEL FA</td>
+		    					<td>U8 C</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>38</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO U8</td>
+		    					<td>U8 C</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>39</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />STANIS KNIGHTS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH DEVIL RED</td>
+		    					<td>U10 A</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>40</td>
+		    					<td><img src="img/teamwork.png"  alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUNG SHALL GROW A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOSCO 7</td>
+		    					<td>U10 A</td>
+		    					<td>G4</td>
+		    				</tr>
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">01.00 TO 01.30PM</td>
+		    					<td>41</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO C</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U10 A</td>
+		    					<td>U10 D</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>42</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U10 B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOMBAY STALLIONS U10</td>
+		    					<td>U10 D</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>43</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U10 A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />EFIB</td>
+		    					<td>U10 B</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>44</td>
+		    					<td><img src="img/teamwork.png"  alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUTH SA</td>
+		    					<td>U10 B</td>
+		    					<td>G4</td>
+		    				</tr>
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">01.30 TO 02.00PM</td>
+		    					<td>45</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH DEVIL BLUE</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />OE U10</td>
+		    					<td>U10 E</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>46</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U14 B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />JAGUARS</td>
+		    					<td>U14 D</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>47</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U14 A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DRAGONS</td>
+		    					<td>U14 C</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>48</td>
+		    					<td><img src="img/teamwork.png"  alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FFA</td>
+		    					<td>U10 C</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">02.00 TO 02.30PM</td>
+		    					<td>49</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DON BOSCO C</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOPANA FS U10 B</td>
+		    					<td>U10 D</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>50</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE 05 B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ROOKIES</td>
+		    					<td>U14 B</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>51</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUTH SA A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BG TIGERS</td>
+		    					<td>U16 A</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>52</td>
+		    					<td><img src="img/teamwork.png"  alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />MHT</td>
+		    					<td>U16 A</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">02.30 TO 03.00PM</td>
+		    					<td>53</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />JOGA BONITO</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE 05 A</td>
+		    					<td>U14 A</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>54</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U10 B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />OE U10</td>
+		    					<td>U10 E</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>55</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUTH SA B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BG LIONS</td>
+		    					<td>U16 B</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>56</td>
+		    					<td><img src="img/teamwork.png"  alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOMBAY STALLIONS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />NERDS</td>
+		    					<td>U16 B</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">03.00 TO 03.30PM</td>
+		    					<td>57</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />DRAGONS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />FC PREDATORS</td>
+		    					<td>U14 C</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>58</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KOOH SPORTS U14</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE 05 B</td>
+		    					<td>U14 B</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>59</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUTH SA A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE B</td>
+		    					<td>U16 A</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>60</td>
+		    					<td><img src="img/teamwork.png"  alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BG TIGERS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />MHT</td>
+		    					<td>U16 A</td>
+		    					<td>G4</td>
+		    				</tr>
+
+
+		    				<!-- Time 3 -->
+		    				<tr>
+		    				    <td rowspan="4" style="vertical-align: middle;background-color: #cccccc;">03.30 TO 04.00PM</td>
+		    					<td>61</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />ASPIRE U10 B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />SCOTTISH DEVIL BLUE</td>
+		    					<td>U10 E</td>
+		    					<td>G1</td>
+		    				</tr>
+		    				<tr>
+		    					<td>62</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />KENKRE 05 A</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />HAWKS</td>
+		    					<td>U14 A</td>
+		    					<td>G2</td>
+		    				</tr>
+		    				<tr>
+		    					<td>63</td>
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />YOUTH SA B</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BOMBAY STALLIONS</td>
+		    					<td>U16 B</td>
+		    					<td>G3</td>
+		    				</tr>
+		    				<tr>
+		    					<td>64</td>
+		    					<td><img src="img/teamwork.png"  alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />BG LIONS</td>
+		    					
+		    					<td>Vs</td>
+		    					
+		    					<td><img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;margin-right: .5em;" />NERDS</td>
+		    					<td>U16 B</td>
+		    					<td>G4</td>
+		    				</tr>
+		    				</tbody>
+		    			</table>
+		    			
+		    			
+		    			
+		    			
+		    				    			
+		    				    			
+		    				    			    				
+					</div><!--/.main-column -->
+								
+					
+					
+					
+		
+		    </div><!-- /.container -->
+		</main><!-- /.main-content -->
+		
+		
+		
+		
+		
+		<!--Start Footer -->
+		<div id="footer">
+			<!-- Start Pre Footer -->
+			
+			
+			
+			
+			<!-- Start Footer -->
+			<footer class="main-footer">
+				<div class="container">
+					<!-- Start Row -->
+					<div class="row">
+						<div class="col-md-6">
+							<div class="widget widget-contact">
+								<h3>
+								<img class="logo-img" src="img/logo1.png" alt="Logo" />
+								
+								</h3>
+							</div>		
+						</div>
+						
+						
+						
+						<div class="col-md-6">
+							<div class="widget widget-brand-address">
+								
+								<ul class="list-styled list-bordered">
+									<li><strong>Address:</strong><br/>
+												No. 2, Mahim House,
+												Mogul Lane, Mahim (W), Mumbai 400016 
+									</li>
+									<li><strong>Phone:</strong><br/>
+												 7738098599 / 7738054599 / 9821445880
+									</li>
+									
+								</ul>
+							</div>
+						</div>	
+					</div><!--/.row -->
+				</div>
+			</footer>
+			
+			
+			
+			<!-- Start Post Footer -->
+			<footer class="post-footer">
+				<div class="container">
+					<div class="foot-center">
+						<div>&copy; Kenkre Football Club 2017-2018. All rights reserved.</div> 
+					</div>
+					
+					
+				</div>
+			</footer>
+		</div><!--/footer -->
+	
+	
+	
+    	<!-- JavaScript
+	   	================================================== -->
+	   	<script src="../../../ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	   	<script>window.jQuery || document.write('<script src="library/js/vendor/jquery.min.html"><\/script>')</script>
+	   	<script src="library/bs/js/bootstrap.min.js"></script>
+	   	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	    <script type="text/javascript" src="library/js/jquery.scrollUp.min.js"></script>
+		<script type="text/javascript" src="library/js/menuzord.js"></script>
+		<script src="js/scripts.js"></script>
+	</body>
+
+
+</html>

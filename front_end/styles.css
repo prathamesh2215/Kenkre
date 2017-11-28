@@ -1,0 +1,2312 @@
+/* Theme Styles */
+/* Last Updated 12-07-2016 - KW */
+
+
+
+/* ==================================================
+ 01.Color Options
+-----------------------------------------------------
+ - Main Content Background 
+ - Boxed Site Background ONLY
+ - Main Content Typography 
+ - Buttons + Labels + Badges
+ - Pre-Header
+ - Main-Header
+ - Post-Header
+ - Common Header Styles
+ - Full Screen Overlay
+ - Vertical Side Menu
+ - Slidebars + Sidr
+ - Pagination + Paging
+ - Pre Footer
+ - Footer
+ - Post Footer
+ - Common Footer Styles
+ - Pace Page Loader
+ 
+ 
+
+ 02.Font Options
+-----------------------------------------------------
+ - Font Sizes
+ - Font Selection
+ - Load Fonts 
+ 
+ 
+ 
+ 03.Custom Styles
+-----------------------------------------------------
+ - Lists
+ 
+  
+=================================================== */
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Main Content Background
+-------------------------------------------------- */
+.main-content,
+ul.tab-nav li.active,
+.review-bars .progress,
+.table-striped.time-table > tbody > tr:nth-of-type(2n+1) td:first-child,
+.table-striped.time-table > tbody > tr:nth-of-type(2n+1) th:first-child,
+.fancybox-skin,
+.hr-title,
+.table-price-cell > ul li:nth-child(odd),
+.main-content form .radio i,
+.main-content form .checkbox i,
+.main-content form .toggle i,
+.widget-player-profile,
+.section-neg-margin,
+.widget-countdown  .versus > span{
+	background: #fff;
+}
+
+
+
+
+/* --------------------------------------------------
+ Boxed Site Background ONLY
+-------------------------------------------------- */
+body.boxed{
+	background: #f1f1f1;
+}
+
+
+
+
+/* --------------------------------------------------
+ Main Content Typography
+-------------------------------------------------- */ 
+.main-content,
+.fancybox-skin{
+	color: #3d4942;
+}
+
+/* Primary Feature Text Color */ 
+ul.list-styled li::before,
+ul.list-styled-alt li::before,
+ul.list-filter li a::before,
+.main-content ul.list-filter li a.active,
+.main-content a.feat-color,
+.read-more::before,
+.main-content .tab-nav li.active,
+.main-content .hover-box-content a:hover,
+.main-content .hover-box-content a:hover *,
+.main-content .widget-stats .counter,
+.main-content .widget-stats .stat-icon,
+.icons-list > li span.glyphicon,
+.icons-list > li span.fa,
+.icons-list [class^="icon-"],
+.main-content .table-events td.current-day b:first-child,
+.main-content .table-events td.active-time b:first-child,
+.data-row-cell:after,
+.table-data-row td:after,
+.data-row-cell span.interval,
+table.table-data-row tr:nth-child(odd) td:first-child span.interval,
+.table-data-row tr.featured td:first-child:before,
+div.table-price-cell div.price-plan,
+.table-price > div[class*="col-"] .table-price-cell.featured:before,
+.main-content form .rating input + label:hover,
+.main-content form .rating input + label:hover ~ label,
+.widget-countdown  .versus > span,
+.fa-heart.active {
+	color: #ffae00;
+}
+
+.feat-color,
+.feat-color *{
+	color: #ffae00!important;
+}
+
+/* Primary Feature Block Color*/ 
+.progress-bar,
+.main-content .list-tags li a:hover,
+.main-content .list-categories li span.badge,
+.item-notice,
+.main-content .delete-item:before,
+.main-content .delete-item:after{
+	background-color: #ffae00;
+}
+
+/* Secondary Feature Block Color*/ 
+.main-content .active-time,
+.table-striped > tbody > tr:nth-of-type(odd) td.active-time,
+.item-notice-2,
+table.table-data-row tr:nth-child(odd) td:first-child,
+.data-row-cell:first-child,
+.table-price-cell div.price-interval,
+.table-price-cell div.price-plan,
+.table-price-cell div.price{
+	background-color: #1c7c47;
+}
+
+/* White Text Color*/
+.parallax-element *,
+.main-content .list-tags li a:hover,
+.main-content .list-categories li span.badge,
+.hover-box-content,
+.hover-box-content *,
+.main-content .hover-box-content,
+.main-content .hover-box-content *,
+.main-content .hover-box-content .lead,
+.hb-effect-fade-reverse .caption-text,
+.main-content .active-time,
+.main-content .active-time a,
+.item-notice,
+table.table-data-row tr:nth-child(odd) td:first-child,
+.data-row-cell:first-child,
+.table-price-cell div.price-interval,
+.table-price-cell div.price-plan,
+.table-price-cell div.price,
+.wishlist.btn-warning .active{
+	color: #fff;
+}
+
+/* Main Content Headings*/ 
+.main-content h1,
+.main-content h2,
+.main-content h3,
+.fancybox-skin h1,
+.fancybox-skin h2,
+.fancybox-skin h3 {
+	color: #004720;
+}
+
+/* Secondary Content Headings*/ 
+.main-content h4,
+.main-content h5,
+.main-content h6,
+.fancybox-skin h4,
+.fancybox-skin h5,
+.fancybox-skin h6{
+	color: #004720;
+}
+
+/* Main Content Headings Span/Small*/ 
+.h1 .small, .h1 small, h1 .small, h1 small, .h1 span, h1 span,
+.h2 .small, .h2 small, h2 .small, h2 small, .h2 span, h2 span,
+.h3 .small, .h3 small, h3 .small, h3 small, .h3 span, h3 span,
+.h4 .small, .h4 small, h4 .small, h4 small, .h4 span, h4 span,
+.h5 .small, .h5 small, h5 .small, h5 small, .h5 span, h5 span,
+.h6 .small, .h6 small, h6 .small, h6 small, .h6 span, h6 span{
+	color: #00632c;
+}  
+
+/* Main Content Links */
+.main-content a,
+.fancybox-skin a{
+	color: #3d4942;
+}
+
+/* Main Content Links Hover */
+.main-content a:hover,
+.main-content a.toggle-btn.active,
+.main-content a.accordion-btn.active,
+.main-content a:hover h1,
+.main-content a:hover h2,
+.main-content a:hover h3,
+.main-content a:hover h4,
+.main-content a:hover h5,
+.main-content a:hover h6,
+.main-content a:hover strong,
+.main-content .post-meta a:hover,
+.main-content .meta-text a:hover,
+.main-content .product  a:hover small.price.discount,
+.fancybox-skin a:hover,
+.parallax-background a:hover,
+.parallax-background a:active,
+.parallax-background a:focus{
+	color: #ffae00;
+}
+
+/* Main Content Lead text */
+.main-content .lead{
+	color: #1c2721;
+}
+
+/* Main Content Highlight Text */
+.mark, mark{
+	color: #14934d;
+	background: #eaeaea;
+}
+
+/* Main Content Blockquotes */
+blockquote,
+.blockquote-reverse {
+    border-color: #f5f5f5;
+    color: #1c2721;
+}
+
+/* Main Content Meta */
+.main-content blockquote footer,
+.main-content cite,
+.main-content .list-post-thumbs li div p + em,
+.main-content .list-product-thumbs li div p + em,
+.main-content .post-meta,
+.main-content .post-meta a,
+.main-content .post-tags::before,
+.main-content .author-meta,
+.main-content .comment-reply-link, 
+.main-content .comment-edit-link, 
+.main-content #cancel-comment-reply-link,
+.main-content .meta-text,
+.main-content .meta-text a,
+.main-content .table-events td b:first-child,
+.main-content small.price.discount,
+.fancybox-skin small.price.discount,
+.table-tops tr td:first-child:after,
+form .icon_append,
+form .icon_prepend,
+.rule-icon{
+    color: #bdbdbd;
+}
+
+/* Main Content Code */
+code {
+    background-color: #f9f2f4;
+    color: #c7254e;
+}
+
+/* Main Content Borders */
+.page-header,
+.main-content ul.list-bordered li,
+.main-content ul.sitemap li li,
+.main-content pre,
+.main-content .user-rating,
+.main-content .post-section,
+.main-content ul.comments > li,
+.main-content ul.comments > li ul li,
+.main-content .review-bars,
+.main-content .review-tally,
+.main-content aside.sidebar .widget,
+.main-content .team-member-details .social-links,
+.main-content .team-page .grid-item,
+.main-content .list-stats li,
+.main-content table th,
+.main-content table td,
+.main-content table.table-striped td:first-child,
+.main-content table.table-striped th:first-child,
+.main-content .table-fixtures td,
+.main-content .table-fixtures th,
+.main-content div.grid-item.product,
+.main-content .widget-shop-cart .sub-total,
+.main-content .cart-subtotal .cart-total,
+.main-content .cart-payment,
+.main-content .events-filter,
+.main-content .event-details dl,
+.main-content .table-bordered > tbody > tr > td, 
+.main-content .table-bordered > tbody > tr > th, 
+.main-content .table-bordered > tfoot > tr > td, 
+.main-content .table-bordered > tfoot > tr > th, 
+.main-content .table-bordered > thead > tr > td, 
+.main-content .table-bordered > thead > tr > th,
+.main-content .data-row-cell,
+.table-price > div[class*="col-"] .table-price-cell,
+.table-price > div[class*="col-"] .table-price-cell > div,
+.table-price > div[class*="col-"] .table-price-cell > ul,
+.main-content form fieldset + fieldset,
+.rule-icon:before,
+.rule-icon:after,
+.section-bordered,
+.main-content .widget-player-profile h1,
+.main-content .widget-countdown .meta-text,
+.main-content .widget-countdown  .versus,
+.main-content .widget-player-profile + p,
+.main-content .toggle-btn:before,
+.main-content .accordion-btn:before,
+.main-content .list-stats {
+	border-color: #eaeaea;
+}
+
+
+/* Counter List */
+ol.list-styled > li:before,
+ol.list-styled > li:after{
+	background: #ffae00;
+	color: #fff;
+}
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Form Elements
+-------------------------------------------------- */
+
+/* Main Content Form Fields */
+.form-control,
+.menuzord-menu > li.search form input[type="text"],
+.input-group-addon,
+form .input input,
+form .select select,
+form .textarea textarea,
+form .radio i,
+form .checkbox i,
+form .toggle i,
+.main-content form .input-captcha img{
+	background: #f1f1f1;
+	background-color: rgba(241, 241, 241, .2);
+	color: #555;
+	box-shadow: none;
+}
+
+/* Main Content Form Borders */
+.form-control,
+.menuzord-menu > li.search form input[type="text"],
+.input-group-addon,
+form .input input,
+form .select select,
+form .textarea textarea,
+form .radio i,
+form .checkbox i,
+form .toggle i,
+form .icon_append,
+form .icon_prepend,
+.main-content form .input-captcha img,
+form .ui-slider{
+	border-color: #eaeaea;
+}
+
+/* Main Content Form Secondary text */
+form .icon_append,
+form .icon_prepend,
+form .rating label{
+	color: #bdbdbd;
+}
+
+/* Main Content Form Focus */
+.form-control:focus,
+form .input input:focus,
+form .select select:focus,
+form .textarea textarea:focus,
+form .radio input:focus + i,
+form .checkbox input:focus + i,
+form .toggle input:focus + i,
+form .input:hover input,
+form .select:hover select,
+form .textarea:hover textarea,
+form .radio:hover i,
+form .checkbox:hover i,
+form .toggle:hover i,
+form .ui-slider-handle:hover,
+form .input input:focus,
+form .select select:focus,
+form .textarea textarea:focus,
+form .radio input:focus + i,
+form .checkbox input:focus + i,
+form .toggle input:focus + i,
+form .ui-slider-handle{
+	border-color: #97d797;
+	box-shadow: none;
+}
+
+/* Main Content Form Fields Alt */
+.user-rating .form-control,
+.user-rating .input-group-addon,
+.section-fill .form-control{
+	background: #fff;
+	background-color: rgba(255, 255, 255, 1);
+	color: #555;
+	border-color: #eaeaea;
+}
+
+
+/* Checked States */
+form .radio input + i:after,
+form .toggle i:before,
+form .ui-slider-handle:focus,
+form .ui-slider-handle:hover  {
+	background-color: #449d44;	
+}
+
+form .checkbox input + i:after,
+form .rating input + label:hover,
+form .rating input + label:hover ~ label {
+	color: #449d44;
+}
+
+form .radio input:checked + i,
+form .checkbox input:checked + i,
+form .toggle input:checked + i,
+form .ui-slider-handle:focus {
+	border-color: #449d44;	
+}
+
+
+form .rating input:checked ~ label {
+	color: #f69600;	
+}
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Buttons + Labels + Badges
+-------------------------------------------------- */ 
+/* Default Button, label, Badge  */
+.btn,
+.btn-default,
+.label-default  {
+  color: #333!important;
+  background-color: #f9f9f9;
+  border-color: #e6e5e5;
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn-default:focus, 
+.btn-default.focus,
+.btn-default:hover,
+.label-default[href]:hover, 
+.label-default[href]:focus,
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open > .dropdown-toggle.btn-default:hover,
+.btn-default:active:focus,
+.btn-default.active:focus,
+.open > .dropdown-toggle.btn-default:focus,
+.btn-default:active.focus,
+.btn-default.active.focus,
+.open > .dropdown-toggle.btn-default.focus {
+  color: #333!important;
+  background-color: #e6e6e6;
+  border-color: #ccc;
+}
+
+.btn-default:active, 
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  color: #333!important;
+  background-color: #e6e6e6;
+  border-color: #ccc;
+}
+
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled.focus,
+.btn-default[disabled].focus,
+fieldset[disabled] .btn-default.focus {
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.btn-default .badge {
+  color: #fff;
+  background-color: #333;
+}
+
+
+/* Primary Button, label, Badge  */
+.btn-primary,
+.label-primary{
+  color: #fff!important;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:hover,
+.label-primary[href]:hover,
+.label-primary[href]:focus,
+.btn-primary:active:hover,
+.btn-primary.active:hover,
+.open > .dropdown-toggle.btn-primary:hover,
+.btn-primary:active:focus,
+.btn-primary.active:focus,
+.open > .dropdown-toggle.btn-primary:focus,
+.btn-primary:active.focus,
+.btn-primary.active.focus,
+.open > .dropdown-toggle.btn-primary.focus {
+  color: #fff!important;
+  background-color: #286090;
+  border-color: #122b40;
+}
+
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #fff!important;
+  background-color: #286090;
+  border-color: #204d74;
+}
+
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary.focus {
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+
+.btn-primary .badge {
+  color: #337ab7;
+  background-color: #fff;
+}
+
+
+/* Success Button, label, Badge  */
+.btn-success,
+.label-success,
+.progress-bar-success,
+.table-tops tr td:first-child:before,
+form .button,
+form .button.button-secondary {
+  color: #fff!important;
+  background-color: #449d44;
+  border-color: #449d44;
+}
+
+.btn-success:focus,
+.btn-success.focus,
+.btn-success:hover, 
+.label-success[href]:hover,
+.label-success[href]:focus,
+.btn-success:active:hover,
+.btn-success.active:hover,
+.open > .dropdown-toggle.btn-success:hover,
+.btn-success:active:focus,
+.btn-success.active:focus,
+.open > .dropdown-toggle.btn-success:focus,
+.btn-success:active.focus,
+.btn-success.active.focus,
+.open > .dropdown-toggle.btn-success.focus {
+  color: #fff!important;
+  background-color: #328432;
+  border-color: #328432;
+}
+
+.btn-success:active,
+.btn-success.active,
+.open > .dropdown-toggle.btn-success,
+ul.list-filter li a.btn.active {
+  color: #fff!important;
+  background-color: #328432;
+  border-color: #328432;
+}
+
+.btn-success.disabled:hover,
+.btn-success[disabled]:hover,
+fieldset[disabled] .btn-success:hover,
+.btn-success.disabled:focus,
+.btn-success[disabled]:focus,
+fieldset[disabled] .btn-success:focus,
+.btn-success.disabled.focus,
+.btn-success[disabled].focus,
+fieldset[disabled] .btn-success.focus {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+
+.btn-success .badge {
+  color: #5cb85c;
+  background-color: #fff;
+}
+
+
+/* Info Button, label, Badge  */
+.btn-info,
+.label-info,
+.progress-bar-info {
+  color: #fff!important;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+
+.btn-info:focus,
+.btn-info.focus,
+.btn-info:hover,
+.label-info[href]:hover,
+.label-info[href]:focus,
+.btn-info:active:hover,
+.btn-info.active:hover,
+.open > .dropdown-toggle.btn-info:hover,
+.btn-info:active:focus,
+.btn-info.active:focus,
+.open > .dropdown-toggle.btn-info:focus,
+.btn-info:active.focus,
+.btn-info.active.focus,
+.open > .dropdown-toggle.btn-info.focus {
+  color: #fff!important;
+  background-color: #31b0d5;
+  border-color: #31b0d5;
+}
+
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+  color: #fff!important;
+  background-color: #31b0d5;
+  border-color: #31b0d5;
+}
+
+.btn-info.disabled:hover,
+.btn-info[disabled]:hover,
+fieldset[disabled] .btn-info:hover,
+.btn-info.disabled:focus,
+.btn-info[disabled]:focus,
+fieldset[disabled] .btn-info:focus,
+.btn-info.disabled.focus,
+.btn-info[disabled].focus,
+fieldset[disabled] .btn-info.focus {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+
+.btn-info .badge {
+  color: #5bc0de;
+  background-color: #fff;
+}
+
+
+/* Warning Button, label, Badge  */
+.btn-warning,
+.label-warning,
+.progress-bar-warning,
+.wishlist.btn-warning {
+  color: #fff!important;
+  background-color: #ffae00;
+  border-color: #ffae00;
+}
+
+.btn-warning:focus,
+.btn-warning.focus,
+.btn-warning:hover, 
+.label-warning[href]:hover,
+.label-warning[href]:focus,
+.btn-warning:active:hover,
+.btn-warning.active:hover,
+.open > .dropdown-toggle.btn-warning:hover,
+.btn-warning:active:focus,
+.btn-warning.active:focus,
+.open > .dropdown-toggle.btn-warning:focus,
+.btn-warning:active.focus,
+.btn-warning.active.focus,
+.open > .dropdown-toggle.btn-warning.focus {
+  color: #fff!important;
+  background-color: #dba002;
+  border-color: #dba002;
+}
+
+.btn-warning:active,
+.btn-warning.active,
+.open > .dropdown-toggle.btn-warning {
+  color: #fff!important;
+  background-color: #dba002;
+  border-color: #dba002;
+}
+
+.btn-warning.disabled:hover,
+.btn-warning[disabled]:hover,
+fieldset[disabled] .btn-warning:hover,
+.btn-warning.disabled:focus,
+.btn-warning[disabled]:focus,
+fieldset[disabled] .btn-warning:focus,
+.btn-warning.disabled.focus,
+.btn-warning[disabled].focus,
+fieldset[disabled] .btn-warning.focus {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+
+.btn-warning .badge {
+  color: #f0ad4e;
+  background-color: #fff;
+}
+
+
+/* Danger Button, label, Badge  */
+.btn-danger,
+.label-danger,
+.progress-bar-danger  {
+  color: #fff!important;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+.btn-danger:focus,
+.btn-danger.focus,
+.btn-danger:hover,
+.label-danger[href]:hover,
+.label-danger[href]:focus,
+.btn-danger:active:hover,
+.btn-danger.active:hover,
+.open > .dropdown-toggle.btn-danger:hover,
+.btn-danger:active:focus,
+.btn-danger.active:focus,
+.open > .dropdown-toggle.btn-danger:focus,
+.btn-danger:active.focus,
+.btn-danger.active.focus,
+.open > .dropdown-toggle.btn-danger.focus {
+  color: #fff!important;
+  background-color: #c9302c;
+  border-color: #c9302c;
+}
+
+.btn-danger:active,
+.btn-danger.active,
+.open > .dropdown-toggle.btn-danger {
+  color: #fff!important;
+  background-color: #c9302c;
+  border-color: #c9302c;
+}
+
+.btn-danger.disabled:hover,
+.btn-danger[disabled]:hover,
+fieldset[disabled] .btn-danger:hover,
+.btn-danger.disabled:focus,
+.btn-danger[disabled]:focus,
+fieldset[disabled] .btn-danger:focus,
+.btn-danger.disabled.focus,
+.btn-danger[disabled].focus,
+fieldset[disabled] .btn-danger.focus {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+.btn-danger .badge {
+  color: #d9534f;
+  background-color: #fff;
+}
+
+
+/* Link Button, label, Badge  */
+.btn-link {
+  color: #337ab7;
+  border-radius: 0;
+}
+
+.btn-link,
+.btn-link:active,
+.btn-link.active,
+.btn-link[disabled],
+fieldset[disabled] .btn-link {
+  background-color: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.btn-link,
+.btn-link:hover,
+.btn-link:focus,
+.btn-link:active {
+  border-color: transparent;
+}
+
+.btn-link:hover,
+.btn-link:focus {
+  color: #23527c;
+  text-decoration: underline;
+  background-color: transparent;
+}
+
+.btn-link[disabled]:hover,
+fieldset[disabled] .btn-link:hover,
+.btn-link[disabled]:focus,
+fieldset[disabled] .btn-link:focus {
+  color: #777;
+  text-decoration: none;
+}
+
+
+/* Badge */
+.badge {
+  color: #fff;
+  background-color: #ffae00;
+}
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Contextual Colors
+-------------------------------------------------- */ 
+table > tbody > tr.active > td,
+table > tbody > tr.active > th,
+table > tbody > tr > td.active,
+table > tbody > tr > th.active,
+table > tfoot > tr.active > td,
+table > tfoot > tr.active > th,
+table > tfoot > tr > td.active,
+table > tfoot > tr > th.active,
+table > thead > tr.active > td,
+table > thead > tr.active > th,
+table > thead > tr > td.active,
+table > thead > tr > th.active,
+.table-striped > tbody > tr:nth-of-type(2n+1).active td {
+    background-color: #f5f5f5;
+}
+
+.table-hover > tbody > tr.active:hover > td,
+.table-hover > tbody > tr.active:hover > th,
+.table-hover > tbody > tr:hover > .active,
+.table-hover > tbody > tr > td.active:hover,
+.table-hover > tbody > tr > th.active:hover,
+.table-hover.table-striped > tbody > tr:nth-of-type(2n+1).active:hover td,
+.table-hover > tbody > tr:hover,
+.table-striped.table-hover > tbody > tr:nth-of-type(odd):hover td {
+    background-color: #f1f1f1;
+}
+
+
+/* Contextual Success BG  */
+table > tbody > tr.success > td,
+table > tbody > tr.success > th,
+table > tbody > tr > td.success,
+table > tbody > tr > th.success,
+table > tfoot > tr.success > td,
+table > tfoot > tr.success > th,
+table > tfoot > tr > td.success,
+table > tfoot > tr > th.success,
+table > thead > tr.success > td,
+table > thead > tr.success > th,
+table > thead > tr > td.success,
+table > thead > tr > th.success,
+.table-striped > tbody > tr:nth-of-type(2n+1).success td,
+.table-striped > tbody > tr:nth-of-type(2n+1) td.success  {
+    background-color: #dff0d8;
+}
+
+.table-hover > tbody > tr.success:hover > td,
+.table-hover > tbody > tr.success:hover > th,
+.table-hover > tbody > tr:hover > .success,
+.table-hover > tbody > tr > td.success:hover,
+.table-hover > tbody > tr > th.success:hover,
+.table-hover.table-striped > tbody > tr:nth-of-type(2n+1).success:hover td,
+.table-striped > tbody > tr:nth-of-type(2n+1):hover td.success {
+    background-color: #d0e9c6;
+}
+
+
+/* Contextual Info BG  */
+table > tbody > tr.info > td,
+table > tbody > tr.info > th,
+table > tbody > tr > td.info,
+table > tbody > tr > th.info,
+table > tfoot > tr.info > td,
+table > tfoot > tr.info > th,
+table > tfoot > tr > td.info,
+table > tfoot > tr > th.info,
+table > thead > tr.info > td,
+table > thead > tr.info > th,
+table > thead > tr > td.info,
+table > thead > tr > th.info,
+.table-striped > tbody > tr:nth-of-type(2n+1).info td,
+.table-striped > tbody > tr:nth-of-type(2n+1) td.info {
+    background-color: #d9edf7;
+}
+
+.table-hover > tbody > tr.info:hover > td,
+.table-hover > tbody > tr.info:hover > th,
+.table-hover > tbody > tr:hover > .info,
+.table-hover > tbody > tr > td.info:hover,
+.table-hover > tbody > tr > th.info:hover,
+.table-hover.table-striped > tbody > tr:nth-of-type(2n+1).info:hover td,
+.table-striped > tbody > tr:nth-of-type(2n+1):hover td.info  {
+    background-color: #c4e3f3;
+}
+
+
+/* Contextual Warning BG  */
+table > tbody > tr.warning > td,
+table > tbody > tr.warning > th,
+table > tbody > tr > td.warning,
+table > tbody > tr > th.warning,
+table > tfoot > tr.warning > td,
+table > tfoot > tr.warning > th,
+table > tfoot > tr > td.warning,
+table > tfoot > tr > th.warning,
+table > thead > tr.warning > td,
+table > thead > tr.warning > th,
+table > thead > tr > td.warning,
+table > thead > tr > th.warning,
+.table-striped > tbody > tr:nth-of-type(2n+1).warning td,
+.table-striped > tbody > tr:nth-of-type(2n+1) td.warning {
+    background-color: #fcf8e3;
+}
+
+.table-hover > tbody > tr.warning:hover > td,
+.table-hover > tbody > tr.warning:hover > th,
+.table-hover > tbody > tr:hover > .warning,
+.table-hover > tbody > tr > td.warning:hover,
+.table-hover > tbody > tr > th.warning:hover,
+.table-hover.table-striped > tbody > tr:nth-of-type(2n+1).warning:hover td,
+.table-striped > tbody > tr:nth-of-type(2n+1):hover td.warning  {
+    background-color: #faf2cc;
+}
+
+
+/* Contextual Danger BG  */
+table > tbody > tr.danger > td,
+table > tbody > tr.danger > th,
+table > tbody > tr > td.danger,
+table > tbody > tr > th.danger,
+table > tfoot > tr.danger > td,
+table > tfoot > tr.danger > th,
+table > tfoot > tr > td.danger,
+table > tfoot > tr > th.danger,
+table > thead > tr.danger > td,
+table > thead > tr.danger > th,
+table > thead > tr > td.danger,
+table > thead > tr > th.danger,
+.table-striped > tbody > tr:nth-of-type(2n+1).danger td,
+.table-striped > tbody > tr:nth-of-type(2n+1) td.danger  {
+    background-color: #f2dede;
+}
+
+.table-hover > tbody > tr.danger:hover > td,
+.table-hover > tbody > tr.danger:hover > th,
+.table-hover > tbody > tr:hover > .danger,
+.table-hover > tbody > tr > td.danger:hover,
+.table-hover > tbody > tr > th.danger:hover,
+.table-hover.table-striped > tbody > tr:nth-of-type(2n+1).danger:hover td,
+.table-striped > tbody > tr:nth-of-type(2n+1):hover td.danger {
+    background-color: #ebcccc;
+}
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Pre-Header
+-------------------------------------------------- */
+.pre-header,
+.pre-header ul.mini-nav ul.mini-sub-menu{
+	background-color: #1c2721;
+	background-color: rgba(28, 39, 33, 1);
+}
+
+/* Pre Header Stuck BG */ 
+.pre-header.stuck,
+.pre-header.header-reveal--stick{
+	background-color: #1c2721;
+	background-color: rgba(28, 39, 33, 1);
+}
+
+/* Pre Header Text */ 
+.pre-header,
+.pre-header .menuzord-menu a,
+.pre-header a{
+	color: #fff;
+}
+
+/* Pre Header Link Hover */
+.pre-header a:hover,
+.pre-header li.active > a,
+.pre-header .menuzord-menu > li:hover > a{
+	color: #ffae00;
+}
+
+/* Pre Header Borders */
+.pre-header .menuzord-responsive .menuzord-menu > li:first-child > a,
+.pre-header .menuzord-responsive .menuzord-menu > li > a,
+.pre-header .menuzord-responsive .menuzord-menu li .indicator,
+.pre-header .menuzord-responsive .menuzord-menu ul.dropdown li a,
+.pre-header .menuzord-responsive .menuzord-menu > li > .megamenu {
+	border-color: #33433a;
+}
+
+/* Pre Header Border Active */
+.pre-header .menuzord-responsive .menuzord-menu > li > a:hover,
+.pre-header .menuzord-menu > li:hover > a,
+.pre-header .menuzord-responsive .menuzord-menu > li.active > a{
+	border-color: #ffae00;
+}
+
+/* Pre Header Dropdown BG */
+.pre-header .menuzord-menu ul.dropdown,
+.pre-header .menuzord-menu > li > .megamenu{
+	background-color: #1c2721;
+	background-color: rgba(28, 39, 33, 1);
+}
+
+/* Pre Header Dropdown Link */
+.pre-header .menuzord-menu ul.dropdown > li > a{
+	color: #fff;
+}
+
+/* Pre Header Dropdown Link Hover */
+.pre-header .menuzord-menu ul.dropdown > li:hover > a{
+	color: #ffae00;
+}
+
+/* Pre Header Dropdown Secondary */
+.pre-header .menuzord-menu ul.dropdown li ul.dropdown{
+	background-color: #1c2721;
+	background-color: rgba(28, 39, 33, 1);
+}
+
+/* Pre Header Dropdown Secondary Link */
+.pre-header .menuzord-menu ul.dropdown > li > ul.dropdown li a{
+	color: #fff;
+}
+
+/* Pre Header Dropdown Secondary Link Hover*/
+.pre-header .menuzord-menu ul.dropdown > li > ul.dropdown li:hover a{
+	color: #ffae00;
+}
+
+/* Pre Header Social Icons */
+.pre-header .social-links.sl-circle li,
+.pre-header .social-links.sl-square li{
+	background: #fff;
+	background-color: rgba(255, 255, 255, .2);
+}
+
+/* Pre Header Feature Text Color */
+.pre-header .feat-color,
+.pre-header ul.list-styled li::before,
+.pre-header ul.list-styled-alt li::before{
+	color: #ffae00;
+}
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Main-Header Colors
+-------------------------------------------------- */
+.main-header,
+.main-header ul.mini-nav ul.mini-sub-menu{
+	background-color: #00632c;
+	background-color: rgba(0, 99, 44, 1);
+}
+
+/* Main Header Stuck BG */ 
+.main-header.stuck,
+.main-header.header-reveal--stick{
+	background-color: #00632c;
+	background-color: rgba(0, 99, 44, 1);
+}
+
+/* Main Header Text */ 
+.main-header,
+.main-header .menuzord-menu a,
+.main-header a{
+	color: #fff;
+}
+
+/* Main Header Link Hover */
+.main-header a:hover,
+.main-header li.active > a,
+.main-header .menuzord-menu > li:hover > a{
+	color: #ffae00;
+}
+
+/* Main Header Borders */
+.main-header .menuzord-responsive .menuzord-menu > li:first-child > a,
+.main-header .menuzord-responsive .menuzord-menu > li > a,
+.main-header .menuzord-responsive .menuzord-menu li .indicator,
+.main-header .menuzord-responsive .menuzord-menu ul.dropdown li a,
+.main-header .menuzord-responsive .menuzord-menu > li > .megamenu {
+	border-color: #1c7c47;
+}
+
+/* Main Header Border Active */
+.main-header .menuzord-responsive .menuzord-menu > li > a:hover,
+.main-header .menuzord-menu > li:hover > a,
+.main-header .menuzord-responsive .menuzord-menu > li.active > a{
+	border-color: #ffae00;
+}
+
+/* Main Header Dropdown BG */
+.main-header .menuzord-menu ul.dropdown,
+.main-header .menuzord-menu > li > .megamenu{
+	background-color: #00632c;
+	background-color: rgba(0, 99, 44, 1);
+}
+
+/* Main Header Dropdown Link */
+.main-header .menuzord-menu ul.dropdown > li > a{
+	color: #fff;
+}
+
+/* Main Header Dropdown Link Hover */
+.main-header .menuzord-menu ul.dropdown > li:hover > a{
+	color: #ffae00;
+}
+
+/* Main Header Dropdown Secondary */
+.main-header .menuzord-menu ul.dropdown li ul.dropdown{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, .9);
+}
+
+/* Main Header Dropdown Secondary Link */
+.main-header .menuzord-menu ul.dropdown > li > ul.dropdown li a{
+	color: #fff;
+}
+
+/* Main Header Dropdown Secondary Link Hover*/
+.main-header .menuzord-menu ul.dropdown > li > ul.dropdown li:hover a{
+	color: #ffae00;
+}
+
+/* Main Header Social Icons */
+.main-header .social-links.sl-circle li,
+.main-header .social-links.sl-square li{
+	background: #fff;
+	background-color: rgba(255, 255, 255, .2);
+}
+
+/* Main Header Feature Text Color */
+.main-header .feat-color,
+.main-header ul.list-styled li::before,
+.main-header ul.list-styled-alt li::before{
+	color: #ffae00;
+}
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Post-Header
+-------------------------------------------------- */
+.post-header,
+.post-header ul.mini-nav ul.mini-sub-menu{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, 1);
+}
+
+/* Post Header Stuck BG */ 
+.post-header.stuck,
+.post-header.header-reveal--stick{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, 1);
+}
+
+/* Post Header Text */ 
+.post-header,
+.post-header .menuzord-menu a,
+.post-header a{
+	color: #fff;
+}
+
+/* Post Header Link Hover */
+.post-header a:hover,
+.post-header li.active > a,
+.post-header .menuzord-menu > li:hover > a{
+	color: #ffae00;
+}
+
+/* Post Header Borders */
+.post-header .menuzord-responsive .menuzord-menu > li:first-child > a,
+.post-header .menuzord-responsive .menuzord-menu > li > a,
+.post-header .menuzord-responsive .menuzord-menu li .indicator,
+.post-header .menuzord-responsive .menuzord-menu ul.dropdown li a,
+.post-header .menuzord-responsive .menuzord-menu > li > .megamenu {
+	border-color: #33433a;
+}
+
+/* Post Header Border Active */
+.post-header .menuzord-responsive .menuzord-menu > li > a:hover,
+.post-header .menuzord-menu > li:hover > a,
+.post-header .menuzord-responsive .menuzord-menu > li.active > a{
+	border-color: #ffae00;
+}
+
+/* Post Header Dropdown BG */
+.post-header .menuzord-menu ul.dropdown,
+.post-header .menuzord-menu > li > .megamenu{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, 1);
+}
+
+/* Post Header Dropdown Link */
+.post-header .menuzord-menu ul.dropdown > li > a{
+	color: #fff;
+}
+
+/* Post Header Dropdown Link Hover */
+.post-header .menuzord-menu ul.dropdown > li:hover > a{
+	color: #ffae00;
+}
+
+/* Post Header Dropdown Secondary */
+.post-header .menuzord-menu ul.dropdown li ul.dropdown{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, 1);
+}
+
+/* Post Header Dropdown Secondary Link */
+.post-header .menuzord-menu ul.dropdown > li > ul.dropdown li a{
+	color: #fff;
+}
+
+/* Post Header Dropdown Secondary Link Hover*/
+.post-header .menuzord-menu ul.dropdown > li > ul.dropdown li:hover a{
+	color: #ffae00;
+}
+
+/* Post Header Social Icons */
+.post-header .social-links.sl-circle li,
+.post-header .social-links.sl-square li{
+	background: #fff;
+	background-color: rgba(255, 255, 255, .2);
+}
+
+/* Post Header Feature Text Color */
+.post-header .feat-color,
+.post-header ul.list-styled li::before,
+.post-header ul.list-styled-alt li::before{
+	color: #ffae00;
+}
+
+
+
+
+
+/* --------------------------------------------------
+ Common Header Elements
+-------------------------------------------------- */
+#header .form-control,
+.header-reveal--clone .form-control,
+#header .menuzord-menu > li.search form input[type="text"],
+.header-reveal--clone .menuzord-menu > li.search form input[type="text"]{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, 1);
+	color: #fff;
+	border-color: #003c1b;
+	box-shadow: none;
+}
+
+/* Common Header Buttons */
+#header .btn,
+.header-reveal--clone .btn {
+  color: #fff!important;
+  background-color: #ffae00;
+  border-color: #ffae00;
+}
+
+/* Common Header Buttons Hover */
+#header .btn:hover,
+#header .btn:focus,
+#header .btn:active,
+.header-reveal--clone .btn:hover,
+.header-reveal--clone .btn:focus,
+.header-reveal--clone .btn:active {
+  color: #fff!important;
+  background-color: #e4a600;
+  border-color: #e4a600;
+}
+
+/* Common Header Mega Menu Tabs */
+#header .menuzord-tabs-nav > li > a,
+#header .menuzord-tabs-nav > li:last-child > a,
+.header-reveal--clone .menuzord-tabs-nav > li > a,
+.header-reveal--clone .menuzord-tabs-nav > li:last-child > a{
+	border-color: #003c1b;
+}
+
+/* Common Header Mega Menu Tabs Hover */
+#header .menuzord-tabs-nav > li:hover > a,
+.header-reveal--clone .menuzord-tabs-nav > li:hover > a{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, 1);
+	border-color: #003c1b;
+}
+
+/* Common Header Mega Menu Tabs Active */
+#header .menuzord-tabs-nav > li.active > a,
+.header-reveal--clone .menuzord-tabs-nav > li.active > a{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, 1);
+	border-right-color: #004720;
+}
+
+#header .menuzord-tabs-content,
+.header-reveal--clone .menuzord-tabs-content{
+	background-color: #004720;
+	background-color: rgba(0, 71, 32, 1);
+	border-color: #003c1b;
+	color: #fff;
+}
+
+
+
+
+
+
+/* --------------------------------------------------
+ Full Screen Overlay
+-------------------------------------------------- */
+.canvas-overlay,
+.fancybox-overlay {
+	background-color: #000;
+	background-color: rgba(0, 0, 0, .9);
+}
+
+/* Overlay Text */
+.canvas-overlay {
+	color: #eaeaea;
+}
+
+/* Overlay Headings */
+.canvas-overlay h1,
+.canvas-overlay h2,
+.canvas-overlay h3,
+.canvas-overlay h4,
+.canvas-overlay h5,
+.canvas-overlay h6{
+	color: #fff;
+}
+
+/* Overlay Links */
+.canvas-overlay a{
+	color: #eaeaea;
+}
+
+/* Overlay Links Hover */
+.canvas-overlay a:hover{
+	color: #ffae00;
+}
+
+/* Overlay Close Button */
+a.btn-closer::after,
+a.btn-closer::before,
+.fancybox-close:before,
+.fancybox-close:after {
+	background:#fff;
+}
+
+/* Overlay Close Button Hover */
+a.btn-closer:hover::after,
+a.btn-closer:hover::before,
+.fancybox-close:hover::before,
+.fancybox-close:hover::after {
+	background: #ffae00;
+}
+
+/* Overlay Form Inputs */
+.canvas-overlay .form-control{
+	background-color: #000;
+	background-color: rgba(255, 255, 255, 1);
+	border-color: #fff;
+	color: #000;
+}
+
+/* Overlay Feature Text Color */
+.canvas-overlay ul li::before,
+.canvas-overlay .sl-vertical li .fa{
+	color: #ffae00;
+}
+
+/* Overlay Feature borders */
+.canvas-overlay .list-bordered li{
+	border-color: #434343;
+}
+
+
+
+
+
+
+/* --------------------------------------------------
+ Vertical Side Menu
+-------------------------------------------------- */
+.vert-menu,
+body.full-width.fixed-side header.side-header {
+	background:#f5f5f5;
+}
+
+/* Vert Menu Borders */
+.vert-menu li,
+.vert-menu li > ul li:first-child {
+	border-color: #eaeaea; 
+}
+
+/* Vert Menu Selected */
+.vert-menu li.selected {
+	background-color: #eeeeee; 
+}
+
+/* Vert Menu Links */
+.vert-menu li a {
+	color: #666;
+}
+
+/* Vert Menu Links Hover */
+.vert-menu li a:hover {
+	color: #ffae00;
+}
+
+/* Vert Menu Sub Links */
+.vert-menu li > ul li a {
+	color: #666;
+}
+
+/* Vert Menu Sub Links Hover */
+.vert-menu li > ul li a:hover {
+	color: #ffae00;
+}
+
+
+
+
+
+
+/* --------------------------------------------------
+ Slidebars + Sidr
+-------------------------------------------------- */
+[off-canvas],
+.sidr,
+.sidr .vert-menu {
+	background-color: #666;	
+}
+
+/* Slidebar Overlay OptionBackground */
+[off-canvas*=overlay]{
+	background-color: rgba(0, 0, 0, .8);
+}
+
+/* Slidebar Text */
+[off-canvas],
+.sidr { 
+	color: #ccc;
+}
+
+/* Slidebar Link */
+[off-canvas] a,
+.sidr a,
+.sidr .vert-menu li a{ 
+	color: #fff;
+}
+
+/* Slidebar Link */
+[off-canvas] a:hover,
+.sidr a:hover,
+.sidr .vert-menu li a:hover{ 
+	color: #ffae00;
+}
+
+/* Sidr Vert Menu Borders */
+.sidr .vert-menu li,
+.sidr .vert-menu li > ul li:first-child {
+	border-color: #000; 
+}
+
+/* Sidr Vert Menu Selected */
+.sidr .vert-menu li.selected {
+	background-color: #555555; 
+}
+
+/* Sidr Vert Menu Sub Links */
+.sidr .vert-menu li > ul li a {
+	color: #ccc;
+}
+
+/* Sidr Vert Menu Sub Links Hover */
+.sidr .vert-menu li > ul li a:hover {
+	color: #ffae00;
+}
+
+
+
+
+
+
+/* --------------------------------------------------
+ Pagination + Paging
+-------------------------------------------------- */
+.main-content .pagination > li > a,
+.main-content .pagination > li > span {
+  color: #3d4942;
+  background-color: #fff;
+  border: 0px solid #ddd;
+}
+
+.main-content .pagination > li > a:hover,
+.main-content .pagination > li > span:hover,
+.main-content .pagination > li > a:focus,
+.main-content .pagination > li > span:focus {
+  color: #ffae00;
+  background-color: #fff;
+  border: 0px solid #ddd;
+}
+
+.main-content .pagination > .active > a,
+.main-content .pagination > .active > span,
+.main-content .pagination > .active > a:hover,
+.main-content .pagination > .active > span:hover,
+.main-content .pagination > .active > a:focus,
+.main-content .pagination > .active > span:focus {
+  color: #ffae00;
+  background-color: #fff;
+  border: 0px solid #ddd;
+}
+
+.main-content .pagination > .disabled > span,
+.main-content .pagination > .disabled > span:hover,
+.main-content .pagination > .disabled > span:focus,
+.main-content .pagination > .disabled > a,
+.main-content .pagination > .disabled > a:hover,
+.main-content .pagination > .disabled > a:focus {
+  color: #bdbdbd;
+  background-color: #fff;
+  border-color: #ddd;
+}
+
+.main-content .pager li > a,
+.main-content .pager li > span {
+  /*background-color: fff;
+  border-color: #fff; */
+  color: #ffae00;
+}
+
+.main-content .pager li > a:hover,
+.main-content .pager li > a:focus {
+  /*background-color: #fff;*/
+  color: #ffae00;
+}
+
+.main-content .pager .disabled > a,
+.main-content .pager .disabled > a *,
+.main-content .pager .disabled > a:hover,
+.main-content .pager .disabled > a:focus,
+.main-content .pager .disabled > span {
+  color: #bdbdbd;
+  /*background-color: #fff;*/
+}
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Pre Footer
+-------------------------------------------------- */
+footer.pre-footer{
+	background-color: #f4f4f4;	
+}
+
+/* Pre Footer Text */
+footer.pre-footer,
+footer.pre-footer a{
+	color: #bdbdbd;	
+}
+
+/* Pre Footer Link Hover */
+footer.pre-footer a:hover{
+	color: #ffae00;	
+}
+
+/* Pre Footer Border Color */
+footer.pre-footer .list-bordered li{
+	border-color: #eaeaea;
+}
+
+/* Pre Footer Feature Text Color */
+footer.pre-footer .feat-color,
+footer.pre-footer ul.list-styled li::before,
+footer.pre-footer ul.list-styled-alt li::before{
+	color: #ffae00;
+}
+
+
+
+
+
+
+/* --------------------------------------------------
+ Footer
+-------------------------------------------------- */
+footer.main-footer{
+	background-color: #004720;	
+}
+
+/* Footer Text */
+footer.main-footer,
+footer.main-footer a{
+	color: #f0f6f3;	
+}
+
+/* Footer Link Hover */
+footer.main-footer a:hover{
+	color: #ffae00;	
+}
+
+/* Footer Headings */
+footer.main-footer h1,
+footer.main-footer h2,
+footer.main-footer h3,
+footer.main-footer h4,
+footer.main-footer h5,
+footer.main-footer h6{
+	color: #fff;
+} 
+
+/* Footer Border Color */
+footer.main-footer .list-bordered li{
+	border-color: #136337;
+}
+
+/* Footer Feature Text Color */
+footer.main-footer .feat-color,
+footer.main-footer ul.list-styled li::before,
+footer.main-footer ul.list-styled-alt li::before{
+	color: #ffae00;
+}
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Post Footer
+-------------------------------------------------- */
+footer.post-footer{
+	background-color: #1c2721;	
+}
+
+/* Footer Text */
+footer.post-footer,
+footer.post-footer a{
+	color: #fff;	
+}
+
+/* Footer Link Hover */
+footer.post-footer a:hover{
+	color: #ffae00;	
+}
+
+/* Post Footer Border Color */
+footer.post-footer .list-bordered li{
+	border-color: #eaeaea;
+}
+
+/* Post Footer Feature Text Color */
+footer.post-footer .feat-color,
+footer.post-footer ul.list-styled li::before,
+footer.post-footer ul.list-styled-alt li::before{
+	color: #ffae00;
+}
+
+
+
+
+
+
+/* --------------------------------------------------
+ Common Footer Styles
+-------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+Pace Page Load
+-------------------------------------------------- */
+.pace .pace-progress {
+  background: #ffae00;
+}
+
+/* Pace Overlay */
+.pace:after {
+	background-color: #000;
+	background-color: rgba(0, 0, 0, .75);
+}
+
+
+
+
+
+/* --------------------------------------------------
+Scroll To Top
+-------------------------------------------------- */
+#scrollUp {
+  background-color: #000;
+  background-color: rgba(0, 0, 0, .75);
+  color: #fff;
+}
+
+#scrollUp:hover {
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 1);
+  color: #fff;
+}
+
+
+
+
+
+
+/* --------------------------------------------------
+Layout Color Helpers
+-------------------------------------------------- */
+ul.sitemap > li > a,
+.jumbotron,
+.user-rating,
+ul.tab-nav li,
+.list-tags li a,
+.list-categories li a,
+.table-striped > tbody > tr:nth-of-type(odd) td,
+.data-row,
+.table-price > div[class*="col-"] .table-price-cell,
+.rev_slider_wrapper,
+.widget-countdown  .versus > div,
+.team-page .grid-item:not(.team-header),
+.shop-page .grid-item.product {
+	background: #f5f5f5;
+}
+
+
+
+
+
+/* --------------------------------------------------
+Section Fills
+-------------------------------------------------- */
+.section-fill,
+.section-fill .section-neg-margin{
+	background-color: #f5f5f5;
+}
+
+/* Section 2 */
+.section-fill-2, 
+.section-fill-2 .section-neg-margin{
+	background-color: #004720;
+}
+
+.section-fill-2 *, 
+.section-fill-2 .main-content *{
+	color: #fff;
+}
+
+
+/* Section 3 */
+.section-fill-3, 
+.section-fill-3 .section-neg-margin{
+	background-color: #ffae00;	
+}
+
+.section-fill-3 *, 
+.section-fill-3 .main-content *{
+	color: #fff;
+}
+
+
+/* Section 4 */
+.section-fill-4, 
+.section-fill-2 .section-neg-margin{
+	background-color: #1c2721;
+}
+
+.section-fill-4 *, 
+.section-fill-4 .main-content *{
+	color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Font Sizes
+-------------------------------------------------- */
+html, body{
+	font-size: 1em;
+	line-height: 1.333333;
+}
+
+.pre-header{
+	font-size: .8rem;
+}
+
+.main-header{
+	/*font-size: .9rem;*/
+}
+
+.post-header{
+	font-size: .8rem;
+}
+
+.logo-text,
+.menuzord-brand{
+	font-size: 1.75rem;
+}
+
+.tag-line{
+	font-size: .5rem;
+}
+
+.side-header{
+	font-size: .8rem;
+}
+
+.sidr{
+	font-size: .8rem;
+}
+
+.h1, h1{
+	font-size: 2.25rem;
+}
+
+.h2, h2{
+	font-size: 1.65rem;
+}
+
+.h3, h3{
+	font-size: 1.4rem;
+}
+
+.h4, h4{
+	font-size: 1.125rem;
+}
+
+.h5, h5{
+	font-size: .875rem;
+}
+
+.h6, h6{
+	font-size: .75rem;
+}
+
+.btn,
+.button{
+ 	font-size: 1rem;
+}
+ 
+.form-control{
+	font-size: .9rem;
+} 
+
+.lead,
+.jumbotron p{
+	font-size: 1.375rem;
+}
+
+blockquote{
+	font-size: 1.25rem;
+}
+
+.jumbotron h1,
+.jumbotron .h1 {
+  font-size: 4rem;
+}
+
+.pre-footer{
+	font-size: .8rem;
+}
+
+.main-footer{
+	font-size: 1rem;
+}
+
+.post-footer{
+	font-size: .8rem;
+}
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Font Selection
+-------------------------------------------------- */
+htm, body, 
+.hover-box .date,
+.list-post-thumbs li div p + em,
+.list-product-thumbs li div p + em,
+.post-meta em,
+.author-meta,
+.review-tally span,
+.main-content .list-categories li span.badge,
+form .state-error + em{
+	/*font-family: 'Montserrat';*/
+	font-weight: normal;
+}
+
+.logo-text,
+.menuzord-brand{
+	font-family: 'chunkfive_exregular';
+}
+
+.tag-line{
+	font-family: 'robotoregular';
+}
+
+h1{
+	font-family: 'chunkfive_exregular';
+}
+
+h2{
+	font-family: 'Montserrat';
+}
+
+h3,
+.list-stats h4.counter,
+div.table-price-cell div.price-plan{
+	font-family: 'chunkfive_exregular';
+}
+
+h4,
+.review-tally{
+	font-family: 'robotobold';
+}
+
+h5{
+	font-family: 'robotobold';
+}
+
+h6{
+	font-family: 'robotobold';
+}
+
+strong, b,
+.main-content .post-tags,
+cite{
+	font-family: 'Montserrat';
+	font-weight: normal;
+}
+
+em, i,
+.list-paired li span{
+	font-family: 'robotolight_italic';
+	font-style: normal;
+}
+
+.lead{
+	font-family: 'robotolight';
+}
+
+blockquote{
+	font-family: 'antic_slabregular';
+}
+
+.main-content ul.pagination,
+table th,
+.table-responsive td::before,
+.time-table tr td:first-child, 
+.time-table tr th:first-child,
+label,
+dl dt,
+.data-row-cell:first-child p span.interval,
+.table-data-row td p span.interval,
+.table-price-cell div.price-interval,
+.table-price-cell div.price-plan,
+.table-price-cell div.price small,
+.table-price-cell div.price span,
+form .button,
+form .toggle input:checked + i::after,
+form .toggle i::after,
+ul.tab-nav li,
+.widget-countdown  .versus > span,
+small strong  {
+	font-family: 'Montserrat';
+}
+
+.btn,
+.read-more {
+	font-family: 'Montserrat';
+}
+
+input,
+textarea,
+select{
+	font-family: 'robotoregular';
+}
+
+.pre-header{
+	font-family: 'robotoregular';
+}
+
+.main-header{
+	font-family: 'Montserrat,bold';
+}
+
+.post-header{
+	font-family: 'Montserrat,bold';
+}
+
+.pre-footer{
+	font-family: 'Montserrat,bold';
+}
+
+.main-footer{
+	font-family: 'robotolight';
+}
+
+.post-footer{
+	font-family: 'Montserrat';
+}
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Load Fonts
+-------------------------------------------------- */
+@font-face {
+font-family: 'Montserrat';
+ src: url('font/montserrat/Montserrat-Regular.eot');
+ src: url('font/montserrat/Montserrat-Regular.eot') format('embedded-opentype'),  url('font/montserrat/Montserrat-Regular.woff') format('woff'),  url('font/montserratb/Montserrat-Regular.ttf') format('truetype');
+ font-weight: normal;
+ font-style: normal;
+}
+
+
+@font-face {
+font-family: 'Montserrat,bold';
+ src: url('font/montserratb/Montserrat-Bold.eot');
+ src: url('font/montserratb/Montserrat-Bold.eot') format('embedded-opentype'),  url('font/montserratb/Montserrat-Bold.woff') format('woff'),  url('font/montserratb/Montserrat-Bold.ttf') format('truetype');
+ font-weight: normal;
+ font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'chunkfive_exregular';
+    src: url('font/chunk-five/chunkfive_ex-webfont.html');
+    src: url('font/chunk-five/chunkfive_ex-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/chunk-five/chunkfive_ex-webfont-2.html') format('woff2'),
+         url('font/chunk-five/chunkfive_ex-webfont-3.html') format('woff'),
+         url('font/chunk-five/chunkfive_ex-webfont-4.html') format('truetype'),
+         url('font/chunk-five/chunkfive_ex-webfont-5.html#chunkfive_exregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotobold';
+    src: url('font/roboto/roboto_bold/Roboto-Bold-webfont.html');
+    src: url('font/roboto/roboto_bold/Roboto-Bold-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/roboto/roboto_bold/Roboto-Bold-webfont-2.html') format('woff'),
+         url('font/roboto/roboto_bold/Roboto-Bold-webfont-3.html') format('truetype'),
+         url('font/roboto/roboto_bold/Roboto-Bold-webfont-4.html#robotobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotobold_italic';
+    src: url('font/roboto/roboto_bolditalic/Roboto-BoldItalic-webfont.html');
+    src: url('font/roboto/roboto_bolditalic/Roboto-BoldItalic-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/roboto/roboto_bolditalic/Roboto-BoldItalic-webfont-2.html') format('woff'),
+         url('font/roboto/roboto_bolditalic/Roboto-BoldItalic-webfont-3.html') format('truetype'),
+         url('font/roboto/roboto_bolditalic/Roboto-BoldItalic-webfont-4.html#robotobold_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotoitalic';
+    src: url('font/roboto/roboto_italic/Roboto-Italic-webfont.html');
+    src: url('font/roboto/roboto_italic/Roboto-Italic-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/roboto/roboto_italic/Roboto-Italic-webfont-2.html') format('woff'),
+         url('font/roboto/roboto_italic/Roboto-Italic-webfont-3.html') format('truetype'),
+         url('font/roboto/roboto_italic/Roboto-Italic-webfont-4.html#robotoitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotolight';
+    src: url('font/roboto/roboto_light/Roboto-Light-webfont.html');
+    src: url('font/roboto/roboto_light/Roboto-Light-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/roboto/roboto_light/Roboto-Light-webfont-2.html') format('woff'),
+         url('font/roboto/roboto_light/Roboto-Light-webfont-3.html') format('truetype'),
+         url('font/roboto/roboto_light/Roboto-Light-webfont-4.html#robotolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotolight_italic';
+    src: url('font/roboto/roboto_lightitalic/Roboto-LightItalic-webfont.html');
+    src: url('font/roboto/roboto_lightitalic/Roboto-LightItalic-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/roboto/roboto_lightitalic/Roboto-LightItalic-webfont-2.html') format('woff'),
+         url('font/roboto/roboto_lightitalic/Roboto-LightItalic-webfont-3.html') format('truetype'),
+         url('font/roboto/roboto_lightitalic/Roboto-LightItalic-webfont-4.html#robotolight_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotomedium';
+    src: url('font/roboto/roboto_medium/Roboto-Medium-webfont.html');
+    src: url('font/roboto/roboto_medium/Roboto-Medium-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/roboto/roboto_medium/Roboto-Medium-webfont-2.html') format('woff'),
+         url('font/roboto/roboto_medium/Roboto-Medium-webfont-3.html') format('truetype'),
+         url('font/roboto/roboto_medium/Roboto-Medium-webfont-4.html#robotomedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotomedium_italic';
+    src: url('font/roboto/roboto_mediumitalic/Roboto-MediumItalic-webfont.html');
+    src: url('font/roboto/roboto_mediumitalic/Roboto-MediumItalic-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/roboto/roboto_mediumitalic/Roboto-MediumItalic-webfont-2.html') format('woff'),
+         url('font/roboto/roboto_mediumitalic/Roboto-MediumItalic-webfont-3.html') format('truetype'),
+         url('font/roboto/roboto_mediumitalic/Roboto-MediumItalic-webfont-4.html#robotomedium_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotoregular';
+    src: url('font/roboto/roboto_regular/Roboto-Regular-webfont.html');
+    src: url('font/roboto/roboto_regular/Roboto-Regular-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/roboto/roboto_regular/Roboto-Regular-webfont-2.html') format('woff'),
+         url('font/roboto/roboto_regular/Roboto-Regular-webfont-3.html') format('truetype'),
+         url('font/roboto/roboto_regular/Roboto-Regular-webfont-4.html#robotoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'antic_slabregular';
+    src: url('font/antic-slab/anticslab-regular-webfont.html');
+    src: url('font/antic-slab/anticslab-regular-webfontd41d.html?#iefix') format('embedded-opentype'),
+         url('font/antic-slab/anticslab-regular-webfont-2.html') format('woff'),
+         url('font/antic-slab/anticslab-regular-webfont-3.html') format('truetype'),
+         url('font/antic-slab/anticslab-regular-webfont-4.html#antic_slabregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+ Custom Styles
+-------------------------------------------------- */
+.logo-img{
+	max-width: 250px;
+}
+
+/* List Bullet Points */
+ul.list-styled li::before{
+	content:"\f054"; /* http://fontawesome.bootstrapcheatsheets.com/ */
+	font-family: "FontAwesome";
+	font-size: .65rem;
+	top: 4px;	
+}
+
+ul.list-styled-alt li::before,
+ul.list-filter li a::before{
+	content:"\f067";
+	font-family: "FontAwesome";
+	font-size: .65rem;
+	top: 4px;	
+}
+
+ul.list-filter li a.active::before{
+	content:"\f068";
+}
+
+blockquote .small::before, 
+blockquote footer::before, 
+blockquote small::before {
+    content: "— ";
+    display: none;
+}
+
+
+/*.head1
+{
+  font-weight: 700;
+}*/
+
+
+
+/* --------------------------------------------------
+ Custom Author Styles
+-------------------------------------------------- */

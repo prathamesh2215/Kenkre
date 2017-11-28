@@ -1,5 +1,4 @@
 <?php
-
  include('includes/db_con.php');
  include('includes/query-helper.php');
 ?>
@@ -17,39 +16,28 @@
 		
 		<title>Home | Kenkre Sport Club</title>
 		
-		<!-- Bootstrap core CSS -->
-		<link rel="stylesheet" type="text/css" href="library/bs/css/bootstrap.min.css">
-		
-		<!-- Menu Stylesheets -->
-		<link rel="stylesheet" type="text/css" href="library/css/menuzord/menuzord.css">
-		<link rel="stylesheet" type="text/css" href="library/css/menuzord/menuzord-animations.css">
-		<link rel="stylesheet" type="text/css" href="library/css/menuzord/skins/menuzord-border-top.css">
-		
-		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-		<link rel="stylesheet" type="text/css" href="library/css/library.css">
-		<link rel="stylesheet" type="text/css" href="library/css/responsive.css">
-		<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-		<!-- Custom styles for this template -->
-		<link rel="stylesheet" type="text/css" href="styles.css">
+		<?php include('st-head.php'); ?>
 		
 		<style type="text/css">
 			
 			.tbl th,th{
 				text-align: center;
 			}
+		@media only screen and (max-width: 767px) {
+				.table-fixtures td:nth-of-type(1):before { content: "Team A"; }
+				.table-fixtures td:nth-of-type(2):before { content: "Vs"; }
+				.table-fixtures td:nth-of-type(3):before { content: "Team B"; }
+				.table-fixtures td:nth-of-type(4):before { content: "Details"; }
+				}
 		</style>
+        
 	</head>
 	
 	
 	
 	<body class="">
-  
-    
-	    <!-- Start Full Screen Overlay -->
-	    <div class="canvas-overlay">
-	    	<!-- Close Button -->
+	    <!--<div class="canvas-overlay">
 	    	<a class="overlay-btn btn-closer" href="#"></a>
-	    	<!-- Content Container -->
 	    	<div class="container" data-anijs="if: scroll, on:window, do: fadeInDown animated, before: scrollReveal, after: $fireOnce removeAnim ">
 	    		
 	
@@ -83,102 +71,38 @@
 	    			</div>
 	    		</div>
 	    	</div>
-	    </div>
-	    <!-- End Full Screen Overlay -->
-	    
-	    
-	    
+	    </div>-->
 		
-		<!-- Start Header -->
-		<header id="header">
-			
-			
-			
-			
-			<!-- Start Main Header -->
-			<nav class="main-header header-reveal">
-			  <div class="container">
-				<!-- Start Menu -->
-				<div id="menuzord" class="menuzord">
-					<div class="head-left">
-						<a href="index.html" class="menuzord-brand">
-							
-							<img  class="logo-img" src="img/logo1.png" alt="Logo" />
-						</a>
-					</div>
-					
-					<ul class="menuzord-menu head-right">
-						<li class="active"><a href="">Home</a></li>
-						<li><a href="about.html">About</a>
-						</li>
-						
-					</ul>
-				</div><!--/.menuzord -->
-			  </div>
-			</nav>
-			<!-- End Main Header -->
-			
-			
-			
-			
-			
-		</header>
-		<!-- End Header -->
-		
-		
-		
-		
-	
-	
+		<?php include('st-header.php'); ?>
 		
 		<!-- Start Main Content -->
 		<main class="main-content">
 		    <div class="container body-content">
-		    	
 		    	<div class="row">
 		    		<div class="col-sm-12 main-column fixtures-page">
-		    			
 		    			<div class="page-header">
-		    				<h2>Fixtures</h2>
-		    				
+		    				<h2>Game Fixtures</h2>
 		    			</div>
-		    			
-		    			
-		    			
-		    			<!-- Responsive Table Heading Labels -->
-		    			<style>
-		    				@media only screen and (max-width: 767px) {
-		    				.table-fixtures td:nth-of-type(1):before { content: "Team A"; }
-		    				.table-fixtures td:nth-of-type(2):before { content: "Vs"; }
-		    				.table-fixtures td:nth-of-type(3):before { content: "Team B"; }
-		    				.table-fixtures td:nth-of-type(4):before { content: "Details"; }
-		    				}
-		    			</style>
-		    			<!-- Start Events Filter -->
 		    			<div class="events-filter">
-		    				<ul class="list-inline">
-		    					<li><strong>View: </strong></li>
-		    					<li><a class="feat-color" href="#"><em class="fa fa-table"></em> Game Fixtures</a> &nbsp;</li>
-		    					<li><a class="meta-text" href="results.php"><em class="fa fa-trophy"></em> Results</a> &nbsp;</li>
-		    					<li><a class="meta-text" href="points-leaderboard.php"><em class="fa fa-trophy"></em> Points Leaderboard</a> &nbsp;</li>
-		    					<li><a class="meta-text" href="format.php"><em class="fa fa-sticky-note-o"></em> Format</a> &nbsp;</li>
-		    					<li><a class="meta-text" href="grouping.php"><em class="fa fa-users"></em> Grouping  </a> &nbsp;</li>
-		    				</ul>
+		    				<?php include('st-eventfilter.php'); ?>
 		    			</div>
 		    			<table class="table-striped tbl table-responsive table-hover table-leaderboard table-tops tbl">
 		    				<thead>
+
 		    				<tr>
-		    				    <th class="head1" style="">Time</th>
+		    					
+		    				</tr>
+
+		    				<tr>
+		    				    <th class="head1">Time</th>
 		    					<th class="head1">Match</th>
 		    					<th class="head1" style="text-align: center;" colspan="3">COMMUNITY CUP - ST. ANDREWS, BANDRA</th>
 		    					<th class="head1">Pool</th>
 		    					<th class="head1">Field</th>
 		    				</tr>
-
 		    				</thead>
 		    				<tbody>
 		    			    <?php
-
 		    					$sql  = " SELECT * FROM tbl_fixtures WHERE status = 1 ";
 		    					$sql .= " AND fixture_date >='".date('Y-m-d')."'";
 		    					$sql .=" GROUP By fixture_date ORDER By fixture_date ASC";
@@ -221,7 +145,7 @@
 				    						}
 				    						$f++;
 		    						 	?>
-		    						 <td rowspan="<?php echo $num; ?>"  style="vertical-align: middle;background-color: <?php echo $color; ?>">8.00 TO 8.30AM</td>
+		    						 		<td rowspan="<?php echo $num; ?>"  style="vertical-align: middle;background-color: <?php echo $color; ?>"><?php echo $frow['fixture_time_start'] ?> TO <?php echo $frow['fixture_time_end'] ?></td>
 
 		    						 <?php
 		    						 	$l =0;
@@ -235,25 +159,20 @@
 
 		    						 		?>
 											 <td style="vertical-align: middle;"><?php echo $n++; ?></td>
-				    						
 				    						 <td style="vertical-align: middle;">
 				    						 	<img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;" />
 				    						 	<?php echo strtoupper($r['team_a']) ?>
 				    						 </td>
 				    						 <td  style="vertical-align: middle;">Vs</td>
-				    						<td style="vertical-align: middle;">
+				    						 <td style="vertical-align: middle;">
 				    						 	<img src="img/teamwork.png" alt="icon" style="max-width: 2.75em;float: left;" />
 				    						 	<?php echo strtoupper($r['team_b']) ?>
 				    						 </td>
-				    						  <td style="vertical-align: middle;"><?php echo strtoupper($r['pool']); ?></td>
+				    						 <td style="vertical-align: middle;"><?php echo strtoupper($r['pool']); ?></td>
 				    						 <td  style="vertical-align: middle;"><?php echo strtoupper($r['field']); ?></td>
 				    						 </tr>
 		    						 <?php
 		    						   }
-		    						 ?>
-		    						</tr>
-		    						<?php
-   
 		    						}
 		    						?>
 									   						
@@ -262,95 +181,17 @@
 		    				    ?>
 		    				</tbody>
 		    			</table>
-		    			
-		    			
-		    			
-		    			
-		    			
-		    			
-		    				    			
-		    				    			
-		    				    			    				
-					</div><!--/.main-column -->
-								
-					
-					
-					
-		
-		    </div><!-- /.container -->
-		</main><!-- /.main-content -->
-		
-		
-		
-		
-		
-		<!--Start Footer -->
-		<div id="footer">
-			<!-- Start Pre Footer -->
-			
-			
-			
-			
-			<!-- Start Footer -->
-			<footer class="main-footer">
-				<div class="container">
-					<!-- Start Row -->
-					<div class="row">
-						<div class="col-md-6">
-							<div class="widget widget-contact">
-								<h3>
-								<img class="logo-img" src="img/logo1.png" alt="Logo" />
-								
-								</h3>
-							</div>		
-						</div>
-						
-						
-						
-						<div class="col-md-6">
-							<div class="widget widget-brand-address">
-								
-								<ul class="list-styled list-bordered">
-									<li><strong>Address:</strong><br/>
-												No. 2, Mahim House,
-												Mogul Lane,Mahim (W), Mumbai 400016 
-									</li>
-									<li><strong>Phone:</strong><br/>
-												 7738098599 / 7738054599 / 9821445880
-									</li>
-									
-								</ul>
-							</div>
-						</div>	
-					</div><!--/.row -->
-				</div>
-			</footer>
-			
-			
-			
-			<!-- Start Post Footer -->
-			<footer class="post-footer">
-				<div class="container">
-					<div class="foot-center">
-						<div>&copy; Kenkre Sports Club 2017-2018. All rights reserved.</div> 
 					</div>
-					
-					
-				</div>
-			</footer>
-		</div><!--/footer -->
+		    	</div>
+            </div>    
+		</main>
+        <!-- /.main-content -->
+		
+		<?php include('st-footer.php'); ?>
 	
 	
 	
-    	<!-- JavaScript
-	   	================================================== -->
-	   	<script src="../../../ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	   	<script>window.jQuery || document.write('<script src="library/js/vendor/jquery.min.html"><\/script>')</script>
-	   	<script src="library/bs/js/bootstrap.min.js"></script>
-	   	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	    <script type="text/javascript" src="library/js/jquery.scrollUp.min.js"></script>
-		<script type="text/javascript" src="library/js/menuzord.js"></script>
-		<script src="js/scripts.js"></script>
+    	<?php include('st-javascript.php'); ?>
 	</body>
 
 

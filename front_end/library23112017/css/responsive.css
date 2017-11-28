@@ -1,0 +1,449 @@
+/* Summer Resonsive Styles */
+/* Last Updated 18-07-2016 - KW */
+
+
+/* Media Query 768px
+-------------------------------------------------- */
+@media (min-width:768px){
+	
+	.pull-right{
+		float:right!important;
+		
+	}
+	
+	.pull-left{
+		float:left!important;
+	}
+	
+	.pull-right,
+	.pull-left{
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+	
+	/* --------------------------------------------------
+	 Full Width body With Fixed Sidebar
+	-------------------------------------------------- */
+	body.full-width.fixed-side > header,
+	body.full-width.fixed-side > main,
+	body.full-width.fixed-side > footer{
+		width: calc(100% - 200px);
+		position: relative;
+		left: 200px;
+	}
+	
+	body.full-width.fixed-side header.side-header{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 200px;
+		padding-left: 0;
+		padding-right: 0;
+		height: 100%;
+	}
+	
+	
+	
+	/* --------------------------------------------------
+	 Text Column styles
+	-------------------------------------------------- */
+	.text-col-2,
+	.text-col-3,
+	.text-col-4,
+	.text-col-5,
+	.text-col-6{
+		-moz-column-count: 2;
+		-moz-column-gap: 15px;
+		-webkit-column-count: 2;
+		-webkit-column-gap: 15px;
+		column-count: 2;
+		column-gap: 15px;
+	}
+	
+	
+	
+	/* --------------------------------------------------
+	 Isotope styles
+	-------------------------------------------------- */
+	
+	
+	/* Isotope Grid Sizes
+	-------------------------------------------------- */
+	.grid-col-1 .grid-sizer,
+	.grid-col-1 .grid-item { width: 100%; margin-bottom: 3%; }
+	.grid-col-1 .gutter-sizer { width: 0%; }
+	
+	.grid-col-2 .grid-sizer,
+	.grid-col-2 .grid-item { width: 49%;  margin-bottom: 2.25%;}
+	.grid-col-2 .gutter-sizer { width: 2%; }
+	
+	.grid-col-3 .grid-sizer,
+	.grid-col-3 .grid-item { width: 32%;  margin-bottom: 1.85%;}
+	.grid-col-3 .gutter-sizer { width: 2%; }
+	
+	.grid-col-4 .grid-sizer,
+	.grid-col-4 .grid-item { width: 23.5%;  margin-bottom: 1.5%;}
+	.grid-col-4 .gutter-sizer { width: 2%; }
+	
+	.grid-col-5 .grid-sizer,
+	.grid-col-5 .grid-item { width: 18.5%;  margin-bottom: 1.85%;}
+	.grid-col-5 .gutter-sizer { width: 1.875%; }
+	
+	
+	
+	/* Isotope Grid Sizes
+	-------------------------------------------------- */
+	.grid-sizer,
+	.grid-item { width: 23.5%; }
+	.gutter-sizer { width: 2%; }
+	.grid-item.grid-item-width-2 { width: 49%; }
+	.grid-item.grid-item-width-3 { width: 74.5%; }
+	.grid-item.grid-item-width-4,
+	.grid-item.grid-item-full { width: 100%; }
+	
+	
+	.grid-col-3 .grid-item.grid-item-width-2 { width: 32%; }
+	
+	
+	
+	/* Full Width Isotope Styles
+	-------------------------------------------------- */
+	.full-width-gallery .gutter-sizer { width: 0px; }
+	.full-width-gallery .grid-item{ margin-bottom: 0; }
+	
+	.full-width-gallery .grid-col-1 .grid-sizer,
+	.full-width-gallery .grid-col-1 .grid-item { width: 100%; border: 1px solid transparent; }
+	
+	.full-width-gallery .grid-col-2 .grid-sizer,
+	.full-width-gallery .grid-col-2 .grid-item { width: 50%; border: 1px solid transparent; }
+	
+	.full-width-gallery .grid-col-3 .grid-sizer,
+	.full-width-gallery .grid-col-3 .grid-item { width: 33.333%; border: 1px solid transparent; }
+	
+	.full-width-gallery .grid-col-4 .grid-sizer,
+	.full-width-gallery .grid-col-4 .grid-item { width: 25%; border: 1px solid transparent;}
+	
+	.full-width-gallery .grid-col-5 .grid-sizer,
+	.full-width-gallery .grid-col-5 .grid-item { width: 20%; border: 1px solid transparent;}
+	
+	.full-width-gallery .grid-col-6 .grid-sizer,
+	.full-width-gallery .grid-col-6 .grid-item { width: 16.666%; border: 1px solid transparent; }
+
+	.full-width-gallery{ overflow: hidden; width: 100%; }
+	
+	.full-width-gallery .grid{
+		width: calc(100% + 4px);
+		margin-left: -2px;
+	}	
+	
+	
+	/* --------------------------------------------------
+	 Clean Tabs styles
+	-------------------------------------------------- */
+	ul.tab-nav {
+		position: relative;
+		width:100%;
+		margin: 0 auto;
+		padding-left: 0!important;
+		border-bottom-style: solid;
+		border-bottom-width: 0px;
+		border-color: #eaeaea;
+		display: block;
+	}
+	
+	ul.tab-nav:after{
+		content: "";
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: 1px;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-color: #eaeaea;
+	}
+	
+	ul.tab-nav li {
+		float:none;
+		position:relative;
+		display:inline-block;
+		text-align:center;
+		-webkit-box-sizing: border-box; 
+		-moz-box-sizing: border-box; 
+		box-sizing: border-box;
+		margin-right: 0px;
+		margin-bottom: 0px;
+		-webkit-transition: all 150ms ease-in-out;
+		-moz-transition: all 150ms ease-in-out;
+		-ms-transition: all 150ms ease-in-out;
+		-o-transition: all 150ms ease-in-out;
+		transition: all 150ms ease-in-out;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #eaeaea;
+		border-bottom: none;
+		padding: .3em .5em;
+		-webkit-border-radius: 2px 2px 0 0;
+		border-radius: 2px 2px 0 0;
+	}
+	
+	.tab-nav li:hover {
+		text-decoration:none;
+		cursor:pointer;
+	}
+	
+	.tab-nav li:last-child{
+		margin-right: 0;
+	} 
+	
+	.tab-nav li.active {
+		z-index:50;
+		background: #fff;
+	}
+	
+	a.v_nav {display: none;}
+	
+	
+	
+	
+	/* --------------------------------------------------
+	Common Header styles
+	-------------------------------------------------- */
+	
+	.head-left{
+		float: left;
+	}
+	
+	.head-right,
+	.menuzord-menu.head-right{
+		float: right;
+	}
+	
+	.head-left,
+	.head-right,
+	.menuzord-menu.head-right{
+		text-align: inherit;
+	}
+	
+	
+	
+	
+	
+	
+	/* --------------------------------------------------
+	Header Mini Nav
+	-------------------------------------------------- */
+	ul.mini-nav ul.mini-sub-menu {
+		visibility: hidden; /* hides sub-menu */
+		opacity: 0;
+		position: absolute;
+		display: table;
+		top: 100%;
+		left: -0.5em;
+		padding-left: 0;
+		width: 100%;
+		z-index: 100;
+		transform: translateZ(0);
+		transform: translateY(10px);
+		transition: all 0.5s ease 0s, visibility 0s linear 0.5s; /* the last value is the transition-delay for visibility */
+	}
+	
+	ul.mini-nav ul.mini-sub-menu > li {
+		float: none;
+		display: block;
+		margin: 0;
+		padding: 0.25em 0.5px 0.25em 0.5em;
+		position: relative;
+		line-height: 1.5;
+	}
+	
+	ul.mini-nav ul.mini-sub-menu li a{
+		white-space: nowrap;
+	}
+	
+	ul.mini-nav li:hover > ul.mini-sub-menu {
+		visibility: visible; /* shows sub-menu */
+		opacity: 1;
+		display: table;	
+		transform: translateX(0px);
+		transform: translateY(5px);
+		transition-delay: 0s; /* this removes the transition delay so the menu will be visible while the other styles transition */
+	}
+	
+	ul.mini-nav ul.mini-sub-menu > li:first-child{
+		margin-left: 0em;
+	}
+	
+	ul.mini-nav ul.mini-sub-menu > li:last-child{
+		margin-right: .5em;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/* --------------------------------------------------
+	Sidr
+	-------------------------------------------------- */
+	#sidr-menu-button {
+	    display: none;
+	}
+	
+	#sidr-nav{
+		display: block;
+	}
+	
+	.sidr {
+	    display: none;
+	}
+	
+	
+	
+	
+	
+	/* --------------------------------------------------
+	Pricing Styles
+	-------------------------------------------------- */
+	.table-price {
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		-ms-flex-align: center;
+		-webkit-align-items: center;
+		-webkit-box-align: center;
+		align-items: center;
+	}
+	
+	.table-price > div[class*="col-"] .table-price-cell.featured{
+		width: calc(100% + 1.6em);
+		margin-left: -.8em;
+		z-index: 3;
+		font-size: 115%;
+	}
+	
+
+	
+	
+	
+	
+	/* --------------------------------------------------
+	Common Footer styles
+	-------------------------------------------------- */
+	.foot-left{
+		float: left;
+	}
+	
+	.foot-right{
+		float: right;
+	}
+	
+	.foot-left,
+	.foot-right{
+		text-align: inherit;
+	}
+	
+	
+	
+	
+	.mobile-show{
+		display: none;
+	}
+	
+	
+}
+
+
+
+
+
+
+
+
+
+/* Media Query 992px
+-------------------------------------------------- */
+@media (min-width:992px){
+	
+	
+	
+	/* --------------------------------------------------
+	 Text Column styles
+	-------------------------------------------------- */
+	.text-col-2{
+		-moz-column-count: 2;
+		-moz-column-gap: 15px;
+		-webkit-column-count: 2;
+		-webkit-column-gap: 15px;
+		column-count: 2;
+		column-gap: 15px;
+	}
+	
+	.text-col-3{
+		-moz-column-count: 3;
+		-moz-column-gap: 15px;
+		-webkit-column-count: 3;
+		-webkit-column-gap: 15px;
+		column-count: 3;
+		column-gap: 15px;
+	}
+	
+	.text-col-4{
+		-moz-column-count: 4;
+		-moz-column-gap: 15px;
+		-webkit-column-count: 4;
+		-webkit-column-gap: 15px;
+		column-count: 4;
+		column-gap: 15px;
+	}
+	
+	.text-col-5{
+		-moz-column-count: 5;
+		-moz-column-gap: 15px;
+		-webkit-column-count: 5;
+		-webkit-column-gap: 15px;
+		column-count: 5;
+		column-gap: 15px;
+	}
+	
+	.text-col-6{
+		-moz-column-count: 6;
+		-moz-column-gap: 15px;
+		-webkit-column-count: 6;
+		-webkit-column-gap: 15px;
+		column-count: 6;
+		column-gap: 15px;
+	}
+	
+
+	
+	
+}
+
+
+
+
+
+
+/* Media Query 1200px
+-------------------------------------------------- */
+@media (min-width:1200px){
+
+	header.header-boxed{
+		top: 20px!important;
+	}
+	
+	body.boxed{
+		max-width: 1200px;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+}	
+
+
+
